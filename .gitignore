@@ -45,5 +45,6 @@ nbproject
 config/local.js
 
 ########################
-# config/brazucasConfig.js
+# Configurações Próprias do Brazucas
 ########################
+config/brazucasConfig.js
