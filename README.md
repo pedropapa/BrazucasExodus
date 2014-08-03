@@ -5,6 +5,7 @@ O novo UCP funcionará em tempo real e incluindo o competitivo, que deixará de 
 O competitivo usará como motor o SAMPP (SA-MP Plus) e o YSF para desenvolvimento, e utilizará também o Brazuca's Arcade como modo de jogo alternativo.
 
 Para fazer o fork do projeto em sua máquina local é necessário CONHECIMENTO dos seguintes programas/aplicações:
+
 Nodejs: http://nodejs.org/download/
 
 SailsJS: http://sailsjs.org/#!getStarted
