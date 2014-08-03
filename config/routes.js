@@ -35,7 +35,17 @@ module.exports.routes = {
   'get /': {
     controller: 'DefaultController',
     action: 'main'
-  }
+  },
+
+    'get /ucp': {
+        controller: 'UcpController',
+        action: 'main'
+    },
+
+    'get /echo': {
+        controller: 'SocketController',
+        action: 'main'
+    }
 
   /*
   // But what if you want your home page to display
