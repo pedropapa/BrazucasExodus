@@ -1,5 +1,5 @@
 {% extends '../layout.swig' %}
 
 {% block titulo %}
-    Inícioa
+    Início
 {% endblock titulo %}
