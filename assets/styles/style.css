@@ -1,0 +1,785 @@
+@charset "utf-8";
+
+body {
+	background: #1D1D1D url(../../images/body-bg.jpg) no-repeat top center;
+	color: #333;
+	font-family: Tahoma;
+}
+
+a, a:link, a:hover, a:visited, a:active, p { color: #333; margin: 0; padding: 0; }
+
+a.highlight:hover { background: #DDD; }
+
+body, h1, h2, h3, h4, h5, ul, ol, li, input, button {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+ol, li { list-style: none; }
+
+button { cursor: pointer; }
+
+button.submit {
+	background: #585858;
+	color: #FFF;
+	height: 37px;
+	width: 80px;	
+}
+
+input.field {
+	background: #EEE;
+	border: 1px solid #CCC;
+	height: 35px;
+	padding: 0 0 0 30px;
+	width: 150px;
+}
+
+input.field:focus, input.field:hover { border: 1px solid #669900; }
+
+input.money { background: #FFF url(../../images/money-icon.gif) no-repeat 7px 50%; }
+input.search { background: #FFF url(../../images/search-icon.gif) no-repeat 7px 50%; margin: 0 0 5px 0; }
+
+div.clear { clear: both; }
+
+/*--- Checkbox customizada ---*/
+label.custom-checkbox-helper, label.custom-checkbox-label { cursor: pointer; display: inline; vertical-align: top; }
+label.custom-checkbox-helper { margin: 0 3px 0 0; }
+input.custom-checkbox { display: none; }
+
+label.container, label.big-container { cursor: pointer; }
+
+/*--- Custom checkbox 12x12 ---*/
+label.container { line-height: 12px; }
+input.custom-checkbox + label.custom-checkbox-helper {
+	background: #EEE;
+	border: 1px solid #CCC;
+	padding: 6px;
+	display: inline-block;
+	position: relative;
+}
+
+input.custom-checkbox:checked + label.custom-checkbox-helper { border: 1px solid #669900; }
+
+input.custom-checkbox:checked + label.custom-checkbox-helper:after {
+	content: '\2714';
+	font-size: 9px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: #669900;
+}
+
+/*--- Custom checkbox 14x14 ---*/
+label.big-container { line-height: 14px; }
+input.big-checkbox + label.custom-checkbox-helper {
+	padding: 7px;	
+}
+
+input.big-checkbox:checked + label.custom-checkbox-helper:after {
+	font-size: 11px;
+	left: 3px;
+}
+
+/*--- Custom checkbox 20x20 ---*/
+label.huge-container { line-height: 20px; }
+input.huge-checkbox + label.custom-checkbox-helper {
+	padding: 10px;	
+}
+
+input.huge-checkbox:checked + label.custom-checkbox-helper:after {
+	font-size: 17px;
+	left: 4px;
+}
+
+/*--- Radio button customizado ---*/
+label.custom-radio-helper, label.custom-radio-label { cursor: pointer; display: inline; vertical-align: top; }
+label.custom-radio-helper { margin: 0 3px 0 0; }
+input.custom-radio { display: none; }
+
+input.custom-radio + label.custom-radio-helper {
+	background-color: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 50px;
+	display: inline-block;
+	padding: 6px;
+	position: relative;
+	-webkit-appearance: none;
+}
+
+input.custom-radio:checked + label.custom-radio-helper:after {
+	background: #669900;
+	border-radius: 50px;
+	content: ' ';
+	font-size: 32px;
+	height: 6px;
+	left: 3px;
+	position: absolute;
+	top: 3px;
+	width: 6px;
+}
+
+input.custom-radio:checked + label.custom-radio-helper { border: 1px solid #669900; }
+
+/*--- Select box customizada ---*/
+.custom-select {
+   background: url(../../images/select-arrow-icon.gif) no-repeat right center #FFF;
+   border: 1px solid #CCC;
+   height: 30px;
+   overflow: hidden;
+   width: 150px;
+}
+
+.custom-select select {
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	font-size: 15px;
+	height: 30px;
+	line-height: 1;
+	padding: 5px;
+	width: 200px;
+	-webkit-appearance: none;
+}
+
+/*--- Layout ---*/
+.layout {
+	margin: 0 auto;
+	width: 1200px;	
+}
+
+.layout .auto-fill { float: none; overflow: hidden; }
+.layout .rounded { border-radius: 7px; }
+.layout .shadowed { box-shadow: 0px 0px 10px #333; }
+.layout .left { float: left; }
+.layout .right { float: right; }
+.layout .alpha-80pct { background: rgba(255, 255, 255, 0.8); }
+.layout .alpha-50pct { background: rgba(255, 255, 255, 0.5); }
+
+.layout form.search { border-bottom: 1px dotted #CCC; margin-bottom: 5px; }
+
+/*--- Cabeçalho ---*/
+.layout > div.header { height: 135px; overflow: hidden; padding: 0 10px 0 0; }
+.layout > div.header div.logo { float: left; height: 135px; }
+.layout > div.header div.logo img { margin: 25px 0; }
+
+/*--- Loginbox ---*/
+div.header > div.quickLogin {
+	border-radius: 0 0 7px 7px;
+	float: right;
+	font-size: 11px;
+	padding: 5px 15px;
+}
+
+/*--- Loginbox > Efetuar login ---*/
+.quickLogin span#status { background-position: left center; background-repeat: no-repeat; display: block; height: 15px; }
+.quickLogin span.error#status { background-image: url(../../images/error.gif); color: #B33625; font-weight: bold; padding: 0 0 0 15px; }
+.quickLogin span.loading#status { background-image: url(../../images/loading.gif); padding: 0 0 0 22px; }
+
+div#quickLogin-container span#status { margin: -20px 0 5px 0; }
+
+form#quickLogin-form div.field-container { display: inline-block; vertical-align: top; }
+form#quickLogin-form div.field-container input[type=text], form#quickLogin-form div.field-container input[type=password], form#quickLogin-form div.field-container button { margin: 0 0 5px 0; }
+form#quickLogin-form div.field-container input.error { border: 1px solid #B33625; }
+form#quickLogin-form div.field-container input.field#ql-usr { background: #EEE url(../../images/usr-icon.png) no-repeat 8px center; }
+form#quickLogin-form div.field-container input.field#ql-pwd { background: #EEE url(../../images/pwd-icon.png) no-repeat 8px center; }
+
+div#passwordRecovery-container { display: none; }
+div#passwordRecovery-container > span#status { display: block; margin: 0 0 3px 0; }
+div#passwordRecovery-container form#passwordRecovery-form { margin: 0 0 3px 0; }
+div#passwordRecovery-container form#passwordRecovery-form button.submit { height: 32px; }
+div#passwordRecovery-container form#passwordRecovery-form input.field { background: #EEE url(../../images/messages.png) no-repeat 8px center; height: 30px; width: 180px; }
+
+/*--- Loginbox > Logado ---*/
+.logged-in { overflow: hidden; }
+
+.logged-in > div.header { margin: 0 0 5px 0; overflow: hidden; }
+.logged-in > div.header h1.title, .logged-in > div.header ul.menu, .logged-in > div.header ul.menu li { display: inline-block; }
+.logged-in > div.header h1.title { font-size: 12px; float: left; margin: 0 30px 0 0; }
+.logged-in > div.header > ul.menu { float: right; }
+.logged-in > div.header > ul.menu li { margin: 0 5px 0 0; }
+.logged-in > div.header > ul.menu li:last-child { margin: 0; }
+.logged-in > div.header > ul.menu li a.loading { background: url(../../images/loading.gif) no-repeat left center; display: block; padding: 0 0 0 25px; }
+
+.logged-in ul.my-account { float: left; margin: 0 70px 0 0; }
+.logged-in ul.my-account li { margin: 0 0 3px 0; }
+.logged-in ul.my-account li.messages { background: url(../../images/messages.png) no-repeat left center; padding: 0 0 0 17px; }
+.logged-in ul.my-account li.credits { background: url(../../images/credits.png) no-repeat left center; padding: 0 0 0 17px; }
+.logged-in ul.last-login { float: right; }
+.logged-in ul.last-login li { margin: 0 0 3px 0; }
+
+/*--- Menu ---*/
+.layout > div.menu {
+	background: url(../../images/menu-bg.png) repeat-x;
+	height: 70px;
+	margin: 0 0 20px 0;
+	width: 1200px;
+}
+
+div.menu > ul.menu, div.menu > div.server-widget { float: left; }
+div.menu > ul.menu li {
+	border-right: 1px dotted #CCC;
+	color: #333;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 17px;
+	height: 68px;
+	line-height: 68px;
+	margin-right: -5px;
+	position: relative;
+	text-align: center;
+	width: 104px;
+}
+div.menu > ul.menu li.active, div.menu > ul.menu li:hover { background: #DDD; }
+div.menu > ul.menu li#menu-home { border-bottom: 2px solid #669900; border-radius: 7px 0 0 7px; }
+div.menu > ul.menu li#menu-servidor { border-bottom: 2px solid #E1B500; }
+div.menu > ul.menu li#menu-ranking { border-bottom: 2px solid #008BE8; }
+div.menu > ul.menu li#menu-faq { border-bottom: 2px solid #FFF; }
+div.menu > ul.menu li#menu-forum { border-bottom: 2px solid #008BE8; }
+div.menu > ul.menu li#menu-ucp { border-bottom: 2px solid #E1B500; }
+
+div.menu > div.server-widget, div.menu > div.social { height: 62px; padding: 4px 10px; }
+
+div.menu > div.server-widget { border-right: 1px dotted #CCC; }
+div.menu > div.server-widget h1.title { font-size: 13px; margin: 0 0 5px 0; }
+div.menu > div.server-widget table.details { font-size: 13px; width: 100%; }
+div.menu > div.server-widget table.details tr td { background-position: left center; background-repeat: no-repeat; height: 15px; padding: 0 0 3px 20px; }
+div.menu > div.server-widget table.details tr td.mode { background-image: url(../../images/server-gamemode-icon.png); }
+div.menu > div.server-widget table.details tr td.ip { background-image: url(../../images/server-ip-icon.png); }
+div.menu > div.server-widget table.details tr td.map { background-image: url(../../images/server-map-icon.png); }
+div.menu > div.server-widget table.details tr td.players { background-image: url(../../images/server-players-icon.png); }
+
+div.menu > div.social div.networks { margin: 12px 0; text-align: center; }
+div.menu > div.social div.networks img { vertical-align: middle; }
+
+/*--- Banner ---*/
+.layout > div#banner {
+	border: 1px solid #FFF;
+	box-shadow: 0px 0px 10px #333;
+	color: #FFF;
+	height: 398px;
+	margin: 0 0 20px 0;
+	width: 1198px;
+}
+
+.layout > div#banner ul.bjqs li div.padding h1.title { font-size: 25px; height: 40px; line-height: 40px; margin: 0 0 30px 0; padding: 0 0 0 55px; }
+.layout > div#banner ul.bjqs li div.padding span.description { font-size: 17px; display: block; margin: 0 0 30px 0; }
+.layout > div#banner ul.bjqs li div.padding div.video { background: #000; border: 1px solid #000; float: right; margin: 0 0 0 15px; }
+.layout > div#banner ul.bjqs li div.padding div.buttons { text-align: center; }
+.layout > div#banner ul.bjqs li div.padding div.buttons button {
+	background: url(../../images/button-bg.png) repeat-x;
+	border: 1px solid #FFF;
+	border-radius: 10px;
+	color: #FFF;
+	font-size: 17px;
+	height: 75px;
+	width: 200px;
+	vertical-align: top;
+}
+.layout > div#banner ul.bjqs li div.padding div.buttons button:first-child { margin: 0 45px 0 0; }
+
+/*--- Conteúdo ---*/
+.content {
+	background: #EEE;
+	margin: 0 0 20px 0;
+	overflow: hidden;
+	padding: 20px;
+	width: 1160px;
+}
+
+.content div.border-right { border-right: 1px dotted #CCC; }
+.content div.border-left { border-left: 1px dotted #CCC; }
+.content div.left { padding-right: 15px; }
+.content div.right { padding-left: 15px; }
+.content div.padding-right { padding-right: 15px; }
+.content div.padding-left { padding-left: 15px; }
+
+.content > div.left { float: left; padding: 0 15px 0 0; }
+.content > div.right { float: right; padding: 0 0 0 15px; }
+.content > div.left, .content > div.right { display: inline-block; vertical-align: top; }
+
+.content h1 { padding: 0 0 5px 0; }
+.content h1, .content h2, .content h3 { font-weight: normal; }
+
+.content h1.title { border-bottom: 1px dotted #CCC; font-size: 30px; margin: 0 0 20px 0; }
+.content h2.sub-title { font-size: 22px; margin: 0 0 10px 0; }
+.content h3.little-title { font-size: 18px; margin: 0 0 5px 0; }
+
+/*--- Introdução ---*/
+.introduction ul.featured { width: 100%; }
+.introduction ul.featured li { float: left; width: 366px; }
+.introduction ul.featured li.middle { border-left: 1px dotted #CCC; border-right: 1px dotted #CCC; margin: 0 15px; padding: 0 15px; }
+
+.introduction ul.featured li h2 { background-position: left center; background-repeat: no-repeat; font-weight: normal; }
+.introduction ul.featured li h2.sub-title { height: 30px; line-height: 30px; margin: 0 0 10px 0; padding: 0 0 0 40px; }
+
+.introduction ul.featured li#featured-minigames h2.sub-title { background-image: url(../../images/introduction-minigames-icon.png); }
+.introduction ul.featured li#featured-rpg h2.sub-title { background-image: url(../../images/introduction-rpg-icon.png); }
+.introduction ul.featured li#featured-competitivo h2.sub-title { background-image: url(../../images/introduction-competitive-icon.png); }
+
+.introduction ul.featured li span.description { display: block; margin: 0 0 10px 0; font-size: 13px; text-align: justify; }
+
+.introduction ul.featured li a { font-size: 14px; }
+
+/*--- servidor.php ---*/
+#server-content { background: url(../../images/server-bg.jpg) no-repeat; border: 1px solid #FFF; padding: 0; }
+#server-content > div.logo { margin: 20px 20px 15px 20px; text-align: center; }
+
+#server-content > div.container > ul.menu { border: 1px solid #CCC; border-bottom: none; margin: 0 auto; overflow: hidden; width: 899px; }
+#server-content > div.container > ul.menu a li { border-right: 1px dotted #CCC; cursor: pointer; float: left; padding: 10px 0px 11px; width: 149px; text-align: center; }
+#server-content > div.container > ul.menu a:last-child li { border: none; }
+#server-content > div.container > ul.menu li.active, #server-content > div.container > ul.menu li:hover { background: #EEE; }
+
+#server-content > div.container { padding: 0 0 20px 0; }
+
+#server-content > div.container > div.padding { border: 1px solid #CCC; margin: 0 20px 0 20px; padding: 10px; }
+
+#server-content > div.container > div.padding > ul.about { height: 350px; overflow: hidden; }
+#server-content > div.container > div.padding > ul.about > li { height: 100%; }
+#server-content > div.container > div.padding > ul.about > li h1.title { font-size: 25px; margin: 0 0 10px 0; }
+#server-content > div.container > div.padding > ul.about > li span.description { display: block; text-align: justify; width: 100%; }
+
+/*--- servidor.php > Créditos ---*/
+#server-content > div.container > div.padding > ul.about > li > ul.credits { height: 300px; overflow-x: hidden; overflow-y: scroll; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li { margin: 0 0 5px 0; font-weight: 100; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li > h2.sub-title { color: #C00; font-size: 15px; margin: 0; font-weight: bold; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li ul { margin: 0 0 0 15px; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.main-section > li > h3.little-title { font-size: 15px; font-weight: bold; margin: 0; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.sub-section > li { background: url(../../images/arrow.gif) no-repeat left center; margin: 0 0 5px 0; padding: 0 0 0 12px; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.sub-section > li a { border-bottom: 1px dashed #333; text-decoration: none; }
+
+/*--- servidor.php > Galeria da página ---*/
+#server-content > div.container > div.padding > ul.about > li > ul.gallery { border-left: 1px dotted #CCC; height: 100%; margin-left: 15px; overflow-y: scroll; padding: 0 15px 0 10px; width: 280px; }
+#server-content > div.container > div.padding > ul.about > li > ul.gallery > li img { border: 1px solid #CCC; }
+
+/*--- ranking.php ---*/
+.ranking h2.sub-title { margin-bottom: 10px; padding: 0; }
+
+.ranking > div.filters form#ranking-search input.field { width: 170px; }
+.ranking > div.filters form#ranking-filter ul.ranking-type { margin-left: 15px; }
+.ranking > div.filters form#ranking-filter ul.ranking-type li { margin-bottom: 5px; }
+
+.ranking table.ranking-table { border: 1px solid #CCC; font-size: 15px; margin-bottom: 3px; }
+.ranking table.ranking-table tr td { padding: 3px 0; text-align: center; }
+.ranking table.ranking-table tr:nth-child(odd) td { background: #DFDFDF; }
+.ranking table.ranking-table tr.header td { padding-left: 7px; padding-right: 7px; }
+.ranking table.ranking-table tr.header { font-weight: bold; }
+
+/*--- faq.php > Índice ---*/
+.faq > div.index { width: 330px; }
+
+.faq > div.index form#faq-search input.field { width: 300px; }
+
+.faq > div.index ul.sections { counter-reset: index-section; display: block; margin: 0 0 20px 0; }
+.faq > div.index ul.sections li { font-size: 15px; margin: 0 0 2px 15px; }
+.faq > div.index ul.sections li:before { counter-increment: index-section; content: counter(index-section)". "; }
+.faq > div.index ul.sections li.first-sections { margin: 0 0 10px 10px; }
+.faq > div.index ul.sections li ul.sub-sections { counter-reset: index-subsection; }
+.faq > div.index ul.sections li ul.sub-sections li:before {
+	counter-increment: index-subsection;
+	content: counter(index-section)"."counter(index-subsection)" ";
+	font-size: 13px;
+}
+.faq > div.index ul.sections li ul.sub-sections li ul.sub-sections { counter-reset: index-subsubsection; }
+.faq > div.index ul.sections li ul.sub-sections li ul.sub-sections li:before {
+	counter-increment: index-subsubsection;
+	content: counter(index-section)"."counter(index-subsection)"."counter(index-subsubsection)" ";
+	font-size: 13px;
+}
+
+/*--- faq.php > Respostas ---*/
+.faq div.answers ul li.highlighted { background: #FF3; }
+.faq div.answers h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; line-height: 18px; padding-left: 15px; }
+
+.faq div.answers ul.sections { counter-reset: answers-section; }
+.faq div.answers ul.sections li.main-section { counter-increment: answers-section; }
+.faq div.answers ul.sections li.main-section p { text-align: justify; margin: 0 0 10px 15px; }
+.faq div.answers ul.sections li.main-section h2.sub-title:before { content: counter(answers-section)". "; }
+
+.faq div.answers ul.sections li.main-section ul.sub-sections { counter-reset: answers-subsection; }
+.faq div.answers ul.sections li.main-section ul.sub-sections li.sub-section { counter-increment: answers-subsection; }
+.faq div.answers ul.sections li.main-section ul.sub-sections li.sub-section { margin: 0 0 0 15px; }
+.faq div.answers ul.sections li.main-section ul.sub-sections li.sub-section h3.little-title:before { content: counter(answers-section)"."counter(answers-subsection)" "; }
+
+.faq div.answers ul.sections li.main-section ul.sub-sections li.sub-section ul.sub-sections { counter-reset: answers-subsubsection; }
+.faq div.answers ul.sections li.main-section ul.sub-sections li.sub-section ul.sub-sections li.sub-section { counter-increment: answers-subsubsection; }
+.faq div.answers ul.sections li.main-section ul.sub-sections li.sub-section ul.sub-sections li.sub-section h3.little-title:before {content: counter(answers-section)"."counter(answers-subsection)"."counter(answers-subsubsection)" "; }
+
+/*--- BASE UCP ---*/
+.ucp > div.header { border-bottom: 1px dotted #CCC; margin: 0 0 10px 0; overflow: hidden; padding: 0 0 7px 0; vertical-align: middle; }
+.ucp > div.header h1.title, .ucp > div.header ul.menu { display: inline; }
+.ucp > div.header h1.title { border-bottom: none; padding: 0; margin: 0 20px 0 0; }
+.ucp > div.header ul.menu { border-radius: 5px; display: block; overflow: hidden; }
+.ucp > div.header ul.menu li { background: #DFDFDF; border-right: 1px dotted #CCC; float: left; font-size: 18px; }
+.ucp > div.header ul.menu li:last-child { border-right: none; margin-right: none; }
+.ucp > div.header ul.menu li.active, .ucp > div.header ul.menu li:hover { background: #CDCDCD; }
+.ucp > div.header ul.menu li.gaia { background: #B33625; }
+.ucp > div.header ul.menu li.gaia.active, .ucp > div.header ul.menu li.gaia:hover { background: #892B1D; }
+.ucp > div.header ul.menu li.gaia a { color: #FFF; }
+.ucp > div.header ul.menu li a { display: block; padding: 5px 15px; text-decoration: none; }
+
+.ucp h2.sub-title { background: #DFDFDF; border-radius: 3px; padding: 3px 10px; }
+
+.ucp button.add { background: url(../../images/add-icon.png) no-repeat center center; height: 16px; width: 16px; }
+.ucp button.delete { background: url(../../images/delete-icon.png) no-repeat center center; height: 16px; width: 16px; }
+
+.ucp button.amount-add { background: url(../../images/plus-icon.gif) no-repeat center center; height: 16px; width: 16px; }
+.ucp button.amount-remove { background: url(../../images/minus-icon.gif) no-repeat center center; height: 16px; width: 16px; }
+
+.ucp span.label { background-position: left center; background-repeat: no-repeat; background-size: 10px 10px; display: block; margin-right: 5px; padding-left: 17px; }
+.ucp span.label.blue { background-image: url(../../images/background-percentage-blue.gif); }
+.ucp span.label.green { background-image: url(../../images/background-percentage-green.gif); }
+.ucp span.label.red { background-image: url(../../images/background-percentage-red.gif); }
+.ucp span.label.yellow { background-image: url(../../images/background-percentage-yellow.gif); }
+
+.ucp table.cool-table { border: 1px solid #CCC; }
+.ucp table.cool-table tr.header { font-size: 15px; font-weight: bold; }
+.ucp table.cool-table tr td { padding: 3px; }
+.ucp table.cool-table tr:nth-child(odd) td { background: #DFDFDF; }
+
+/*--- ucp/index.php [login] ---*/
+
+.ucp > div.login div.login-container span.description { display: block; margin-bottom: 25px; }
+.ucp > div.login div.login-container form#login-form { text-align: center; }
+.ucp > div.login div.login-container ul.login-form-fields { margin: 0 auto; }
+.ucp > div.login div.login-container ul.login-form-fields li { display: block; margin-bottom: 5px; }
+.ucp > div.login div.login-container ul.login-form-fields li label.title { display: inline-block; font-size: 20px; margin: 0 10px 0 0; text-align: right; width: 100px; }
+.ucp > div.login div.login-container ul.login-form-fields li input.field { background: #FFF; height: 40px; padding: 3px 7px; width: 200px; }
+
+.ucp > div.login table { margin-bottom: 10px; width: 100%; }
+
+.ucp > div.login table.server-stats tr td { padding: 3px }
+.ucp > div.login table.server-stats tr td.value { font-weight: bold; text-align: right; }
+.ucp > div.login table.server-stats tr td.title { background: #DFDFDF; }
+
+.ucp > div.login table.last-events-table { border: 1px solid #CCC; margin-bottom: 3px; }
+.ucp > div.login table.last-events-table tr { font-size: 14px; }
+.ucp > div.login table.last-events-table tr.header { font-size: 15px; }
+.ucp > div.login table.last-events-table tr td { padding: 3px 0; text-align: center; }
+.ucp > div.login table.last-events-table tr:nth-child(odd) td { background: #DFDFDF; }
+.ucp > div.login table.last-events-table tr.header td { padding-left: 7px; padding-right: 7px; }
+.ucp > div.login table.last-events-table tr.header { font-weight: bold; }
+
+/*--- ucp/registre-se.php ---*/
+.ucp > form#register input.custom-checkbox + label.custom-checkbox-helper { background: #FFF; }
+.ucp > form#register div.fields { width: 470px; }
+.ucp > form#register div.fields div.areas { height: 50px; }
+.ucp > form#register div.fields div.areas label.huge-container { display: inline-block; margin: 0 3px 0 0; padding: 18px 0; }
+.ucp > form#register div.fields div.areas label.huge-container label.custom-checkbox-label { font-size: 18px; }
+
+.ucp > form#register div.fields div#recaptcha { float: right; }
+.ucp > form#register div.fields div#recaptcha input { font-size: 15px; height: 25px; }
+
+.ucp > form#register div.fields label.title { display: block; font-size: 22px; height: 52px; line-height: 52px; margin: 0 0 15px 0; }
+
+.ucp > form#register div.fields input.field { background: #FFF; font-size: 22px; float: right; height: 40px; padding: 5px; width: 270px; }
+.ucp > form#register div.fields input.error { border: 1px solid #B33625; }
+
+.ucp > form#register div.termsAndProceed h2.sub-title { margin: 0 0 5px 0; }
+.ucp > form#register div.termsAndProceed ul.terms { margin: 0 0 5px 0; }
+.ucp > form#register div.termsAndProceed ul.terms li { width: 655px; }
+.ucp > form#register div.termsAndProceed ul.terms h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; font-size: 13px; font-weight: bold; margin: 0 0 0 15px; padding: 0 0 0 15px; }
+.ucp > form#register div.termsAndProceed ul.terms p { font-size: 13px; margin: 0 0 15px 30px; text-align: justify; }
+.ucp > form#register div.termsAndProceed label.big-container { display: block; margin-bottom: 7px; }
+
+.ucp > form#register div#status { border-radius: 5px; color: #EEE; display: none; font-size: 15px; margin: 0 0 15px 0; padding: 5px 10px; width: 1140px; }
+.ucp > form#register div#status span { display: block; }
+
+.ucp > form#register div.error#status { background: #B33625; border: 1px solid #660000; }
+.ucp > form#register div.error#status span { background: url(../../images/error.gif) no-repeat left center; padding: 0 0 0 17px; }
+.ucp > form#register div.loading#status { background: #690; border: 1px solid #360; }
+.ucp > form#register div.loading#status span { background: url(../../images/loading.gif) no-repeat left center; padding: 0 0 0 23px; }
+
+/*--- ucp/registre-se2.php ---*/
+.ucp > form#register2 div.customize-char { background: #990; }
+.ucp > form#register2 div.tutorial { width: 500px; }
+.ucp > form#register2 div.tutorial p { font-size: 13px; margin: 0 0 15px 0; text-align: justify; }
+
+/*--- ucp/home.php [já logado] ---*/
+.ucp > div.home ul { margin: 0 0 10px 15px; }
+.ucp > div.home > div.left { width: 700px; }
+.ucp > div.home h2.sub-title { margin-bottom: 5px; }
+
+.ucp > div.home span.team-message { background: #690; border: 1px dashed #060; color: #FFF; display: block; margin: 0 0 10px 0; padding: 7px; text-align: center; }
+.ucp > div.home span.team-message a { color: #FFF; }
+
+.ucp > div.home div.chat-messages-container { border: 1px solid #CCC; margin: 0 0 10px 0; padding: 3px; }
+.ucp > div.home div.chat-messages-container ul.chat-messages { font-size: 14px; height: 220px; margin: 0; overflow-y: scroll; padding: 3px; }
+.ucp > div.home div.chat-messages-container ul.chat-messages li { border-bottom: 1px dashed #CCC; margin: 0 0 3px 0; padding: 0 0 3px 0; }
+.ucp > div.home div.chat-messages-container ul.chat-messages li:last-child { border: none; padding: 0; }
+.ucp > div.home div.chat-messages-container ul.chat-messages li span.username { font-weight: bold; }
+.ucp > div.home div.chat-messages-container ul.chat-messages li span.username.admin { color: #B33625; }
+.ucp > div.home div.chat-messages-container ul.chat-messages li span.username.moderator { color: #E1B500; }
+.ucp > div.home div.chat-messages-container ul.chat-messages li span.username.player { color: #669900; }
+
+.ucp > div.home div.chat-messages-container div.players-list-container { border-right: 1px dotted #CCC; height: 220px; margin: 0 5px 0 0; padding: 0 5px 0 0; }
+.ucp > div.home div.chat-messages-container div.players-list-container ul.players-list { font-size: 14px; height: 220px; margin: 0; padding: 0; }
+
+.ucp > div.home div.chat-messages-container div.actions { margin-top: 5px; overflow: hidden; padding: 3px; text-align: center; }
+
+.ucp > div.home div.chat-messages-container div.actions button.submit { height: 32px; display: block; }
+.ucp > div.home div.chat-messages-container div.actions div.middle { padding: 0 15px; overflow: hidden; }
+.ucp > div.home div.chat-messages-container div.actions div.middle input { background: #FFF; height: 30px; padding: 0; width: 100%; }
+
+.ucp > div.home h2.mail-title { background: #DFDFDF url(../../images/messages.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.home ul.mail-messages li { display: block; font-size: 15px; margin-bottom: 5px; overflow: hidden; }
+
+.ucp > div.home ul.mail-messages li.menu-container { height: 30px; line-height: 30px; margin-bottom: 5px; }
+.ucp > div.home ul.mail-messages li.menu-container ul { overflow: hidden; vertical-align: middle; }
+.ucp > div.home ul.mail-messages li.menu-container ul li { font-size: 13px; float: left; }
+.ucp > div.home ul.mail-messages li.menu-container ul.menu li { background: #DFDFDF; border-right: 1px dotted #CCC; }
+.ucp > div.home ul.mail-messages li.menu-container ul.menu li.active, .ucp > div.home ul.mail-messages li.menu-container ul.menu li:hover { background: #CCC; }
+.ucp > div.home ul.mail-messages li.menu-container ul.menu li:last-child { border-right: none; }
+.ucp > div.home ul.mail-messages li.menu-container ul.menu li a { display: block; padding: 0 7px; text-decoration: none; }
+
+.ucp > div.home ul.mail-messages li.new-message-container { display: none; }
+.ucp > div.home ul.mail-messages li.new-message-container ul.new-message li { display: block; overflow: hidden; width: 100%; }
+.ucp > div.home ul.mail-messages li.new-message-container ul.new-message li label.title { vertical-align: middle; }
+.ucp > div.home ul.mail-messages li.new-message-container ul.new-message li input.field { background: #FFF; padding: 3px 7px; vertical-align: middle; width: 400px; }
+.ucp > div.home ul.mail-messages li.new-message-container ul.new-message li textarea.message { border: 1px solid #CCC; font-size: 13px; font-family: Tahoma; height: 100px; padding: 7px; vertical-align: middle; width: 400px; }
+.ucp > div.home ul.mail-messages li.new-message-container ul.new-message li.actions { text-align: right; }
+
+.ucp > div.home ul.mail-messages li.message { border-bottom: 1px dashed #CCC; padding: 0 0 3px 0; }
+.ucp > div.home ul.mail-messages li.message label, .ucp > div.home ul.mail-messages li.message span { vertical-align: middle; }
+.ucp > div.home ul.mail-messages li.message div.header { cursor: pointer; }
+.ucp > div.home ul.mail-messages li.message span.label { display: inline-block; height: 10px; padding: 0; width: 10px; }
+.ucp > div.home ul.mail-messages li.message span.sender { font-weight: bold; }
+.ucp > div.home ul.mail-messages li.message p.message { background: #DFDFDF; border: 1px solid #CCC; display: none; margin: 3px 0; padding: 3px; text-align: justify; }
+
+.ucp > div.home ul.mail-messages li.actions button.submit { height: 30px; width: 70px; }
+
+.ucp > div.home h2.last-topics { background: #DFDFDF url(../../images/forum-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.home ul.last-topics-list li { background: url(../../images/arrow.gif) no-repeat left center; border-bottom: 1px dashed #CCC; font-size: 15px; margin-bottom: 5px; padding: 0 0 3px 15px; }
+.ucp > div.home ul.last-topics-list li span.author { font-weight: bold; }
+
+.ucp > div.home h2.last-videos { }
+.ucp > div.home ul.last-videos-list { overflow: hidden; width: 100%; }
+.ucp > div.home ul.last-videos-list li { font-size: 15px; margin: 0 auto 5px; }
+.ucp > div.home ul.last-videos-list li.video-container { border-bottom: 1px dashed #CCC; padding-bottom: 5px; width: 400px; }
+.ucp > div.home ul.last-videos-list li.video-container span.author { display: block; text-align: center; }
+.ucp > div.home ul.last-videos-list li.video-container div.video { background: #FFF; border: 1px solid #CCC; }
+
+.ucp > div.home ul.links { margin: 0 0 0 15px; }
+.ucp > div.home ul.links li { display: block; }
+
+/*--- ucp/minha-conta.php ---*/
+/*--- RPG ---*/
+.ucp > div.my-account div { overflow: hidden; }
+.ucp > div.my-account h2.sub-title { margin-bottom: 15px; }
+.ucp > div.my-account h4 { font-size: 15px; margin: 0; padding: 0; }
+.ucp > div.my-account ul { margin-bottom: 10px; }
+.ucp > div.my-account table { font-size: 14px; margin-bottom: 10px; width: 100%; }
+.ucp > div.my-account table tr .bold { font-weight: bold; }
+.ucp > div.my-account table tr .green { color: #669900; }
+.ucp > div.my-account table tr .purple { color: #993399; }
+.ucp > div.my-account table tr .red { color: #B33625; }
+.ucp > div.my-account table tr .yellow { color: #E1B500; }
+.ucp > div.my-account table tr td.title { font-weight: bold; text-align: right; }
+.ucp > div.my-account table tr td.value { text-align: left; }
+.ucp > div.my-account table tr td.icon-representation img { float: left; margin-right: 3px; }
+.ucp > div.my-account table tr td.icon-representation img.alpha { opacity: 0.5; }
+.ucp > div.my-account table tr td.icon-representation span { line-height: 16px; }
+
+.ucp > div.my-account > div.rpg-container { border-bottom: 1px dotted #CCC; margin-bottom: 5px; padding-bottom: 5px; }
+.ucp > div.my-account > div.rpg-container div.left { width: 700px; }
+.ucp > div.my-account > div.rpg-container div.left > h2.sub-title { text-align: center; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container div.title { border: 1px solid #CCC; margin-bottom: 5px; padding: 2px; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container h3.little-title { background: #DFDFDF; margin: 0; padding: 2px; text-align: center; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container img.skin { display: block; margin: 0 10px 0 0; width: 120px; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container table { margin-bottom: 10px; }
+
+.ucp > div.my-account > div.rpg-container div.rpg-info-container ul.weapon-skill { overflow: hidden; text-align: center; width: 100%; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container ul.weapon-skill li { float: left; margin-right: 10px; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container ul.weapon-skill li h4.weapon-name { margin-bottom: 5px; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container ul.weapon-skill li img { border: 1px solid #000; }
+.ucp > div.my-account > div.rpg-container div.rpg-info-container ul.weapon-skill li span.skill { display: block; font-size: 14px; font-weight: bold; }
+
+.ucp > div.my-account > div.rpg-container div.player-stuff table { text-align: center; }
+
+.ucp > div.my-account > div.rpg-container div.player-stuff h2.heritage-title { background: #DFDFDF url(../../images/house-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li { border: 1px solid #CCC; margin-bottom: 5px; overflow: hidden; padding: 3px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li img { border: 1px solid #CCC; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li:last-child { margin: 0; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li h4.heritage-title { border-bottom: 1px dashed #CCC; margin-bottom: 5px; padding-bottom: 3px; text-align: center; }
+
+.ucp > div.my-account > div.rpg-container div.player-stuff h2.weapons-title { background: #DFDFDF url(../../images/weapon-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.weapons-list { text-align: center; overflow: hidden; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.weapons-list li { float: left; margin-right: 5px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff ul.weapons-list li img { border: 1px solid #000; }
+
+.ucp > div.my-account > div.rpg-container div.player-stuff h2.financial-transactions-title { background: #DFDFDF url(../../images/money-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
+
+/*--- Minigames ---*/
+.ucp > div.my-account > div.minigames-container div.left { width: 700px; }
+.ucp > div.my-account > div.minigames-container div.player-stuff table { text-align: center; }
+/*--- ucp/chat.php --*/
+
+/*--- ucp/mapa.php ---*/
+.ucp > div.map h2.sub-title { background: #DFDFDF url(../../images/filter-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.map form#map-search input.search { width: 200px; }
+.ucp > div.map form#filter input.money { margin: 0 0 5px 25px; width: 175px; }
+.ucp > div.map form#filter h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; margin: 0 0 5px 10px; padding: 0 0 0 15px; }
+.ucp > div.map form#filter ul { margin: 0 0 0 25px; }
+.ucp > div.map form#filter input.custom-checkbox + label.custom-checkbox-helper { background: #FFF; }
+.ucp > div.map div.container div#map { background: #C96; height: 470px; }
+
+/*--- ucp/loja-virtual.php --*/
+.ucp > div.shop h2.sub-title { background-repeat: no-repeat; background-position: 5px 50%; margin: 0 0 10px; }
+.ucp > div.shop h2.categories-title { background-image: url(../../images/categories-icon.png); padding-left: 30px; }
+.ucp > div.shop h2.credits-title { background-image: url(../../images/credits.png); padding-left: 30px; }
+.ucp > div.shop h2.shopping-cart-title { background-image: url(../../images/shopping-cart-icon.png); padding-left: 30px; }
+.ucp > div.shop h3.category-top-title { margin-left: 15px; }
+
+.ucp > div.shop form#shop-search input.search { width: 200px; }
+
+.ucp > div.shop div.left ul { margin: 0 0 10px 25px; }
+.ucp > div.shop div.left ul li, .ucp > div.shop span.item { background: url(../../images/arrow.gif) no-repeat left center; margin: 0 0 3px 0; padding: 0 0 0 15px; }
+
+.ucp > div.shop span.item { display: block; margin-bottom: 10px; }
+
+.ucp > div.shop > div.container li { border: 1px solid #CCC; cursor: pointer; }
+.ucp > div.shop > div.container div.featured .left, .ucp > div.shop > div.container div.featured .right { padding: 0; }
+.ucp > div.shop > div.container div.featured { overflow: hidden; }
+.ucp > div.shop > div.container div.featured div.item { background: #9C6; border: 1px solid #CCC; height: 253px; }
+.ucp > div.shop > div.container div.featured ul.list { margin-left: 5px; }
+.ucp > div.shop > div.container div.featured ul.list li { background: #C06; height: 80px; margin: 0 0 5px 0; width: 150px; }
+.ucp > div.shop > div.container div.featured ul.list li:last-child { margin: 0; }
+
+.ucp > div.shop > div.container h2.sub-title { margin: 10px 0; }
+.ucp > div.shop > div.container ul.new-items, .ucp > div.shop > div.container ul.top-seller { overflow: hidden; }
+.ucp > div.shop > div.container ul.new-items li, .ucp > div.shop > div.container ul.top-seller li { float: left; height: 80px; margin-right: 10px; width: 150px; }
+.ucp > div.shop > div.container ul.new-items li:last-child, .ucp > div.shop > div.container ul.top-seller li:last-child { margin-right: 0; }
+
+.ucp > div.shop > div.container table.products-list { margin: 0 auto; text-align: center; }
+.ucp > div.shop > div.container table.products-list tr td { background: #DFDFDF; padding: 5px; width: 200px; }
+.ucp > div.shop > div.container table.products-list tr td h3.little-title { border-bottom: 1px dashed #CCC; margin-bottom: 5px; padding-bottom: 3px; }
+.ucp > div.shop > div.container table.products-list tr td div.actions { overflow: hidden; width: 100%; }
+.ucp > div.shop > div.container table.products-list tr td div.actions span { font-weight: bold; }
+.ucp > div.shop > div.container table.products-list tr td div.actions span.view-product { font-size: 15px; font-weight: normal; }
+.ucp > div.shop > div.container table.products-list tr td div.actions span.currency { display: block; }
+.ucp > div.shop > div.container table.products-list tr td div.actions span.currency.money { color: #669900; }
+.ucp > div.shop > div.container table.products-list tr td div.actions span.currency.credits { color: #E1B500; }
+.ucp > div.shop > div.container table.products-list tr td img { border: 1px solid #CCC; margin-bottom: 5px; }
+
+.ucp > div.shop > div.container div.product { overflow: hidden; }
+.ucp > div.shop > div.container div.product h3.little-title { background: #DFDFDF url(../../images/arrow.gif) no-repeat 7px 50%; padding: 3px 7px 3px 25px; }
+.ucp > div.shop > div.container div.product img { border: 1px solid #CCC; }
+.ucp > div.shop > div.container div.product img.featured-image { margin: 0 5px 5px 0; }
+.ucp > div.shop > div.container div.product ul.images { height: 350px; margin: 1px 10px 0 0; overflow-y: scroll; }
+.ucp > div.shop > div.container div.product ul.images li { border: none; }
+.ucp > div.shop > div.container div.product ul.images li img { margin: 0; }
+
+.ucp > div.shop > div.container div.product div.auto-fill div, .ucp > div.shop > div.container div.product div.auto-fill p.description { margin-bottom: 5px; }
+.ucp > div.shop > div.container div.product div.auto-fill p.description { text-align: center; }
+.ucp > div.shop > div.container div.product div.auto-fill div label.title { font-size: 15px; padding-right: 5px; vertical-align: middle; }
+.ucp > div.shop > div.container div.product div.auto-fill div input.field { background: #FFF; vertical-align: middle; padding: 0; text-align: center; }
+.ucp > div.shop > div.container div.product div.auto-fill div input.amount { height: 25px; width: 40px; }
+.ucp > div.shop > div.container div.product div.auto-fill div.colors { text-align: center; }
+
+.ucp > div.shop > div.container div.product div.auto-fill div.buy { overflow: hidden; vertical-align: middle; }
+.ucp > div.shop > div.container div.product div.auto-fill div.buy button { vertical-align: middle; }
+.ucp > div.shop > div.container div.product div.auto-fill div.buy button.submit { width: 100px; }
+.ucp > div.shop > div.container div.product div.auto-fill div.buy label.container { vertical-align: middle; }
+.ucp > div.shop > div.container div.product div.auto-fill div.buy label.title { display: inline-block; text-align: right; width: 90px; }
+
+.ucp > div.shop > div.container div.product div.auto-fill div.buy div.buy-gift { margin-top: 5px; }
+.ucp > div.shop > div.container div.product div.auto-fill div.buy div.buy-gift input.field { height: 25px; width: 90px; }
+
+/*--- ucp/configuracoes.php --*/
+.ucp > div.settings div { overflow: hidden; }
+.ucp > div.settings table { font-size: 14px; text-align: center; width: 100%; }
+/*.ucp > div.settings table tr.header td { background: #999; color: #EEE; font-weight: 500; }
+.ucp > div.settings table tr.no-border td { border-bottom: none; }*/
+.ucp > div.settings > div > div { margin-bottom: 10px; }
+
+.ucp > div.settings div.status { border-radius: 5px; color: #EEE; font-size: 15px; margin: 0 0 15px 0; padding: 5px 10px; }
+.ucp > div.settings div.status span { display: block; }
+.ucp > div.settings div.status#status { display: none; }
+
+.ucp > div.settings div.error { background: #B33625; border: 1px solid #660000; }
+.ucp > div.settings div.error span { background: url(../../images/error.gif) no-repeat left center; padding: 0 0 0 20px; text-align: justify; }
+.ucp > div.settings div.loading { background: #690; border: 1px solid #360; }
+.ucp > div.settings div.loading span { background: url(../../images/loading.gif) no-repeat left center; padding: 0 0 0 23px; }
+
+.ucp > div.settings form label.title { display: block; font-size: 22px; height: 52px; line-height: 52px; margin: 0 0 15px 0; }
+.ucp > div.settings input.field { background: #FFF; font-size: 22px; float: right; height: 40px; padding: 5px; width: 270px; }
+
+.ucp > div.settings div.account { width: 470px; }
+.ucp > div.settings div.left > div > span.description { display: block; margin: 0 0 10px; text-align: center; }
+
+.ucp > div.settings div.last-logins table { margin-bottom: 3px; }
+.ucp > div.settings div.last-logins div.last-logins-hacking-suspect { text-align: right; }
+.ucp > div.settings div.last-logins div.last-logins-hacking-suspect button { width: 115px; }
+
+.ucp > div.settings div.access-points h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; margin-left: 10px; padding-left: 15px; }
+.ucp > div.settings div.access-points input.field { float: none; font-size: 15px; height: 20px; text-align: center; width: 180px; }
+.ucp > div.settings div.access-points select { height: 20px; }
+.ucp > div.settings div.access-points span.description { display: block; font-size: 15px; text-align: justify; }
+.ucp > div.settings div.access-points table { margin-bottom: 3px; }
+.ucp > div.settings div.access-points table tr.add-access-point-HTML { display: none; }
+.ucp > div.settings div.access-points div.other-access-points-table-add { margin-bottom: 10px; text-align: right; }
+
+.ucp > div.settings div.delete-account span.warning { display: block; }
+
+/*--- ucp/gaia.php ---*/
+.ucp > div.gaia table { font-size: 15px; margin-bottom: 10px; width: 100%; }
+.ucp > div.gaia table tr td { text-align: center; }
+.ucp > div.gaia table tr td.title { font-weight: bold; padding: 3px 7px 3px 0; text-align: right; }
+.ucp > div.gaia table tr td.value { background: #DFDFDF; padding: 3px 0; text-align: center; }
+
+.ucp > div.gaia div.main { width: 370px; }
+.ucp > div.gaia div.main h2.physical-server { background: #DFDFDF url(../../images/server-ip-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.gaia div.main h2.sa-mp-server { background: #DFDFDF url(../../images/sa-mp-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.gaia div.main table tr td div.time { display: inline-block; vertical-align: middle; }
+.ucp > div.gaia div.main table tr td input.field { background: #FFF; height: 20px; padding: 3px; text-align: center; }
+.ucp > div.gaia div.main table tr td input.field#maxplayers, .ucp > div.gaia div.main table tr td input.field#port { width: 50px; }
+.ucp > div.gaia div.main table tr td input.field#hostname, .ucp > div.gaia div.main table tr td input.field#weburl { width: 90%; }
+.ucp > div.gaia div.main table tr td select, .ucp > div.gaia div.main table tr td button, .ucp > div.gaia div.main table tr td label { vertical-align: middle; }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value { background-color: #DFDFDF; background-repeat: repeat-y;  }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.cpu-percentage { background-image: url(../../images/background-percentage-green.gif); }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.ram-percentage { background-image: url(../../images/background-percentage-yellow.gif); }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.hdd-percentage { background-image: url(../../images/background-percentage-blue.gif); }
+
+.ucp > div.gaia div.main ul.menu { margin: 0 0 10px 15px; }
+.ucp > div.gaia div.main ul.menu li { background: url(../../images/arrow.gif) no-repeat left center; padding-left: 15px; }
+
+.ucp > div.gaia div.container > div { overflow: hidden; }
+
+.ucp > div.gaia div.container h2.connected-players-title { background: #DFDFDF url(../../images/server-players-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+
+.ucp > div.gaia div.container table.connected-players-table { font-size: 14px; margin-bottom: 3px; }
+
+.ucp > div.gaia div.container div.connected-players-action-container { background: #DFDFDF; border: 1px solid #CCC; margin-bottom: 10px; overflow: hidden; padding: 3px; text-align: center; }
+
+.ucp > div.gaia div.container div.connected-players-action-container button.submit { height: 32px; display: block; }
+.ucp > div.gaia div.container div.connected-players-action-container div.middle { padding: 0 15px; overflow: hidden; }
+.ucp > div.gaia div.container div.connected-players-action-container div.middle input { background: #FFF; height: 30px; padding: 0; width: 100%; }
+
+.ucp > div.gaia div.container table.server-stats-table tr td.title { font-weight: normal; padding-left: 2px; text-align: left; }
+.ucp > div.gaia div.container table.server-stats-table tr td.title span.percentage { font-weight: bold; }
+.ucp > div.gaia div.container table.server-stats-table tr td.value { background: none; font-weight: bold; text-align: right; }
+.ucp > div.gaia div.container table.server-stats-table tr.action {  }
+
+.ucp > div.gaia div.container div#last-connected-players-count-graph { height: 270px; margin-bottom: 10px; width: 420px; }
+
+.ucp > div.gaia div.container ul.server-last-logs-list, .ucp > div.gaia div.container ul.server-last-logs-list > li { overflow: hidden; width: 100%; }
+.ucp > div.gaia div.container ul.server-last-logs-list > li { border-bottom: 1px dashed #CCC; margin-bottom: 5px; padding-bottom: 3px; }
+
+.ucp > div.gaia div.container div.label-container { margin-bottom: 5px; text-align: center; }
+.ucp > div.gaia div.container div.label-container ul.label { display: inline-block; margin: 0 auto; }
+.ucp > div.gaia div.container div.label-container ul.label li { float: left; margin-right: 10px; }
+.ucp > div.gaia div.container div.label-container ul.label li:last-child { margin: 0; }
+
+/*--- Rodapé ---*/
+.layout > div.footer {
+	background: url(../../images/rodape_bg.png) repeat-x;
+	height: 35px;
+	margin: 0 0 20px 0;
+	padding: 10px 20px;
+}
+
+div.footer div { text-align: center; }
+
+div.footer div span { font-weight: bold; }
+div.footer div span:first-child { color: #999; font-size: 12px; }
+div.footer div span:last-child { color: #333; font-size: 13px; }
