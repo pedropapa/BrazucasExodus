@@ -1,1 +1,0 @@
-module.exports.sampSocket = require('../api/services/SampSocketService.js');
