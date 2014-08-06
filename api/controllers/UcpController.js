@@ -13,7 +13,6 @@ module.exports = {
    *    `/default/main`
    */
    main: function (req, res) {
-
     // Send a JSON response
     return res.view('home/ucp/index');
   },

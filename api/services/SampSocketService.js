@@ -43,10 +43,10 @@ exports.reconnect = function() {
   this.sampSocket = null;
 }
 
-exports.write = function(data) {
+exports.send = function(data) {
   if(this.sampSocket !== null) {
     this.sampSocket.write(data, function(e) {
-      console.log(e);
+      console.log(data + ' ' + e);
     });
   }
 }

@@ -9,9 +9,9 @@ module.exports.connections = {
   },
   remoteMysql: {
     adapter: 'sails-mysql',
-    host: '198.211.116.169',
-    user: 'brazucas',
+    host: this.remoteDatabaseHost,
+    user: this.remoteDatabaseUsername,
     password: this.remoteDatabasePassword,
-    database: 'ucp_hom'
+    database: this.remoteDatabaseName
   }
 };
