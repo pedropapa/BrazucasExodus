@@ -42,7 +42,7 @@ module.exports.routes = {
         action: 'main'
     },
 
-    'get /echo': {
+    'get /socket/go': {
         controller: 'SocketController',
         action: 'main'
     }

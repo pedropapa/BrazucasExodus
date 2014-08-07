@@ -1,5 +1,41 @@
 {% extends 'base.swig' %}
 
+{% block javascript_libs %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Enviar para a aplicação o pedido de autenticação e estabelecer a conexão com a mesma.
+            socket.get('/socket/go');
+
+            // Responsável por receber qualquer tipo de dado enviado pela aplicação via socket.
+            socket.on('message', function(data) {
+
+                // Onde o modelHooks é iniciado.
+                if(data.model) {
+                    modelHooks[data.model][data.verb](data.data);
+                }
+            });
+        });
+
+        /**
+         * modelHooks
+         * Responsável por receber qualquer tipo de instrução realizada em uma determinada model.
+         * Sendo a instrução de cada model criada da seguinte maneira: 'model.instrução()'.
+         */
+        var modelHooks = {
+            // Usuario.js Model
+            // Responsável por gerenciar os usuários da aplicação.
+            usuario: {
+                update: function(data) {
+                    alert(data.toSource());
+                },
+                create: function(data) {
+                    alert(data.toSource());
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
 {% block corpo %}
     <div class="layout">
         <div class="header">
