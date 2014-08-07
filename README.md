@@ -12,5 +12,4 @@ SailsJS: http://sailsjs.org/#!getStarted
 
 Swig template: http://paularmstrong.github.io/swig/
 
-Por fim, acesse a aplicação através da url:
-http://localhost:1337
+MongoDB: http://docs.mongodb.org/manual/
