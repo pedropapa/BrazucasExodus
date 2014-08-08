@@ -6,37 +6,26 @@
  */
 
 module.exports = {
-    
-  
+
+
   /**
    * Action blueprints:
    *    `/default/main`
    */
    main: function (req, res) {
-      // Get the value of a parameter
-//      var param = req.param('message');
+      if(req.isSocket) {
+        Usuario.stream({username:'teste' }).pipe(req.socket.emit);
+        /* @Deprecated
+        // Captura alterações dos futuros usuários adicionados ao banco.
+        Usuario.subscribe(req.socket);
 
-      // Cliente passa a receber qualquer alteração dos usuários do site.
-      Usuario.subscribe(req.socket);
-
-      console.log(req.session.usuario);
-
-      if(!req.session.usuario) {
-        console.log('Cliente ainda não possui um usuário, criando...');
-
-        res.json(UcpService.criarUsuario(req));
-      } else {
-        Usuario.find({id: req.session.usuario}).done(function(error, Usuario) {
-          if(error) {
-            console.log('Cliente possui um usuário mas este não foi encontrado na base, criando...');
-
-            res.json(UcpService.criarUsuario(req));
-          } else {
-            console.log('Cliente já possui um usuário.');
-
-            res.json(Usuario);
-          }
+        // Captura alterações de todos os usuários já adicionados ao banco.
+        Usuario.find({}).exec(function(e, usuarios) {
+          Usuario.subscribe(req.socket, usuarios);
         });
+        */
+      } else {
+        res.json({error: 500, message: '#'});
       }
   },
 

@@ -8,7 +8,7 @@
 
             // Responsável por receber qualquer tipo de dado enviado pela aplicação via socket.
             socket.on('message', function(data) {
-
+                console.log(data);
                 // Onde o modelHooks é iniciado.
                 if(data.model) {
                     modelHooks[data.model][data.verb](data.data);

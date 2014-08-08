@@ -7,6 +7,7 @@
  */
 
 module.exports = {
+    connection: 'memory',
 
     beforeCreate: function (attrs, next) {
         var bcrypt = require('bcryptjs');

@@ -7,7 +7,7 @@ module.exports.connections = {
   memory: {
     adapter: 'sails-memory'
   },
-  remoteMysql: {
+  sampDb: {
     adapter: 'sails-mysql',
     host: this.remoteDatabaseHost,
     user: this.remoteDatabaseUsername,

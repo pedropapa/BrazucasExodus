@@ -10,13 +10,9 @@ module.exports = {
    * @param req - Requisição enviada pelo cliente.
    */
   criarUsuario: function(req) {
-    var res = {};
-
     Usuario.create({username: 'PNA'+Math.round(Math.random()*1000000000), password: '123432432'}).done(function(error, Usuario) {
       if(error) {
-        res = {error: 500, controller: 'Socket', message: 'Não foi possível criar o usuário temporário.'};
-
-        console.log('Erro ao criar usuário.');
+        return {error: 500, controller: 'Socket', message: 'Não foi possível criar o usuário temporário.'};
       } else {
         req.session.usuario = Usuario.id;
 
@@ -24,6 +20,6 @@ module.exports = {
       }
     });
 
-    return res;
+    return true;
   }
 }

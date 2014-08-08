@@ -35,7 +35,7 @@ module.exports.session = {
 
 
   // Uncomment the following lines to use your Mongo adapter as a session store
-  adapter: 'sails-mongo',
+  adapter: 'mongo',
 
   host: '127.0.0.1',
   port: 27017,
