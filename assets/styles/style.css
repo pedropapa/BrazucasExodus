@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 body {
-	background: #1D1D1D url(../../images/body-bg.jpg) no-repeat top center;
+	background: #1D1D1D url(../images/body-bg.jpg) no-repeat top center;
 	color: #333;
 	font-family: Tahoma;
 }
@@ -37,8 +37,8 @@ input.field {
 
 input.field:focus, input.field:hover { border: 1px solid #669900; }
 
-input.money { background: #FFF url(../../images/money-icon.gif) no-repeat 7px 50%; }
-input.search { background: #FFF url(../../images/search-icon.gif) no-repeat 7px 50%; margin: 0 0 5px 0; }
+input.money { background: #FFF url(../images/money-icon.gif) no-repeat 7px 50%; }
+input.search { background: #FFF url(../images/search-icon.gif) no-repeat 7px 50%; margin: 0 0 5px 0; }
 
 div.clear { clear: both; }
 
@@ -123,7 +123,7 @@ input.custom-radio:checked + label.custom-radio-helper { border: 1px solid #6699
 
 /*--- Select box customizada ---*/
 .custom-select {
-   background: url(../../images/select-arrow-icon.gif) no-repeat right center #FFF;
+   background: url(../images/select-arrow-icon.gif) no-repeat right center #FFF;
    border: 1px solid #CCC;
    height: 30px;
    overflow: hidden;
@@ -173,22 +173,22 @@ div.header > div.quickLogin {
 
 /*--- Loginbox > Efetuar login ---*/
 .quickLogin span#status { background-position: left center; background-repeat: no-repeat; display: block; height: 15px; }
-.quickLogin span.error#status { background-image: url(../../images/error.gif); color: #B33625; font-weight: bold; padding: 0 0 0 15px; }
-.quickLogin span.loading#status { background-image: url(../../images/loading.gif); padding: 0 0 0 22px; }
+.quickLogin span.error#status { background-image: url(../images/error.gif); color: #B33625; font-weight: bold; padding: 0 0 0 15px; }
+.quickLogin span.loading#status { background-image: url(../images/loading.gif); padding: 0 0 0 22px; }
 
 div#quickLogin-container span#status { margin: -20px 0 5px 0; }
 
 form#quickLogin-form div.field-container { display: inline-block; vertical-align: top; }
 form#quickLogin-form div.field-container input[type=text], form#quickLogin-form div.field-container input[type=password], form#quickLogin-form div.field-container button { margin: 0 0 5px 0; }
 form#quickLogin-form div.field-container input.error { border: 1px solid #B33625; }
-form#quickLogin-form div.field-container input.field#ql-usr { background: #EEE url(../../images/usr-icon.png) no-repeat 8px center; }
-form#quickLogin-form div.field-container input.field#ql-pwd { background: #EEE url(../../images/pwd-icon.png) no-repeat 8px center; }
+form#quickLogin-form div.field-container input.field#ql-usr { background: #EEE url(../images/usr-icon.png) no-repeat 8px center; }
+form#quickLogin-form div.field-container input.field#ql-pwd { background: #EEE url(../images/pwd-icon.png) no-repeat 8px center; }
 
 div#passwordRecovery-container { display: none; }
 div#passwordRecovery-container > span#status { display: block; margin: 0 0 3px 0; }
 div#passwordRecovery-container form#passwordRecovery-form { margin: 0 0 3px 0; }
 div#passwordRecovery-container form#passwordRecovery-form button.submit { height: 32px; }
-div#passwordRecovery-container form#passwordRecovery-form input.field { background: #EEE url(../../images/messages.png) no-repeat 8px center; height: 30px; width: 180px; }
+div#passwordRecovery-container form#passwordRecovery-form input.field { background: #EEE url(../images/messages.png) no-repeat 8px center; height: 30px; width: 180px; }
 
 /*--- Loginbox > Logado ---*/
 .logged-in { overflow: hidden; }
@@ -199,21 +199,22 @@ div#passwordRecovery-container form#passwordRecovery-form input.field { backgrou
 .logged-in > div.header > ul.menu { float: right; }
 .logged-in > div.header > ul.menu li { margin: 0 5px 0 0; }
 .logged-in > div.header > ul.menu li:last-child { margin: 0; }
-.logged-in > div.header > ul.menu li a.loading { background: url(../../images/loading.gif) no-repeat left center; display: block; padding: 0 0 0 25px; }
+.logged-in > div.header > ul.menu li a.loading { background: url(../images/loading.gif) no-repeat left center; display: block; padding: 0 0 0 25px; }
 
 .logged-in ul.my-account { float: left; margin: 0 70px 0 0; }
 .logged-in ul.my-account li { margin: 0 0 3px 0; }
-.logged-in ul.my-account li.messages { background: url(../../images/messages.png) no-repeat left center; padding: 0 0 0 17px; }
-.logged-in ul.my-account li.credits { background: url(../../images/credits.png) no-repeat left center; padding: 0 0 0 17px; }
+.logged-in ul.my-account li.messages { background: url(../images/messages.png) no-repeat left center; padding: 0 0 0 17px; }
+.logged-in ul.my-account li.credits { background: url(../images/credits.png) no-repeat left center; padding: 0 0 0 17px; }
 .logged-in ul.last-login { float: right; }
 .logged-in ul.last-login li { margin: 0 0 3px 0; }
 
 /*--- Menu ---*/
 .layout > div.menu {
-	background: url(../../images/menu-bg.png) repeat-x;
-	height: 70px;
+	background: url(../images/menu-bg.png) repeat-x;
+	height: 68px;
 	margin: 0 0 20px 0;
 	width: 1200px;
+    padding: 0px;
 }
 
 div.menu > ul.menu, div.menu > div.server-widget { float: left; }
@@ -244,10 +245,10 @@ div.menu > div.server-widget { border-right: 1px dotted #CCC; }
 div.menu > div.server-widget h1.title { font-size: 13px; margin: 0 0 5px 0; }
 div.menu > div.server-widget table.details { font-size: 13px; width: 100%; }
 div.menu > div.server-widget table.details tr td { background-position: left center; background-repeat: no-repeat; height: 15px; padding: 0 0 3px 20px; }
-div.menu > div.server-widget table.details tr td.mode { background-image: url(../../images/server-gamemode-icon.png); }
-div.menu > div.server-widget table.details tr td.ip { background-image: url(../../images/server-ip-icon.png); }
-div.menu > div.server-widget table.details tr td.map { background-image: url(../../images/server-map-icon.png); }
-div.menu > div.server-widget table.details tr td.players { background-image: url(../../images/server-players-icon.png); }
+div.menu > div.server-widget table.details tr td.mode { background-image: url(../images/server-gamemode-icon.png); }
+div.menu > div.server-widget table.details tr td.ip { background-image: url(../images/server-ip-icon.png); }
+div.menu > div.server-widget table.details tr td.map { background-image: url(../images/server-map-icon.png); }
+div.menu > div.server-widget table.details tr td.players { background-image: url(../images/server-players-icon.png); }
 
 div.menu > div.social div.networks { margin: 12px 0; text-align: center; }
 div.menu > div.social div.networks img { vertical-align: middle; }
@@ -267,7 +268,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .layout > div#banner ul.bjqs li div.padding div.video { background: #000; border: 1px solid #000; float: right; margin: 0 0 0 15px; }
 .layout > div#banner ul.bjqs li div.padding div.buttons { text-align: center; }
 .layout > div#banner ul.bjqs li div.padding div.buttons button {
-	background: url(../../images/button-bg.png) repeat-x;
+	background: url(../images/button-bg.png) repeat-x;
 	border: 1px solid #FFF;
 	border-radius: 10px;
 	color: #FFF;
@@ -284,7 +285,6 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 	margin: 0 0 20px 0;
 	overflow: hidden;
 	padding: 20px;
-	width: 1160px;
 }
 
 .content div.border-right { border-right: 1px dotted #CCC; }
@@ -313,16 +313,16 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .introduction ul.featured li h2 { background-position: left center; background-repeat: no-repeat; font-weight: normal; }
 .introduction ul.featured li h2.sub-title { height: 30px; line-height: 30px; margin: 0 0 10px 0; padding: 0 0 0 40px; }
 
-.introduction ul.featured li#featured-minigames h2.sub-title { background-image: url(../../images/introduction-minigames-icon.png); }
-.introduction ul.featured li#featured-rpg h2.sub-title { background-image: url(../../images/introduction-rpg-icon.png); }
-.introduction ul.featured li#featured-competitivo h2.sub-title { background-image: url(../../images/introduction-competitive-icon.png); }
+.introduction ul.featured li#featured-minigames h2.sub-title { background-image: url(../images/introduction-minigames-icon.png); }
+.introduction ul.featured li#featured-rpg h2.sub-title { background-image: url(../images/introduction-rpg-icon.png); }
+.introduction ul.featured li#featured-competitivo h2.sub-title { background-image: url(../images/introduction-competitive-icon.png); }
 
 .introduction ul.featured li span.description { display: block; margin: 0 0 10px 0; font-size: 13px; text-align: justify; }
 
 .introduction ul.featured li a { font-size: 14px; }
 
 /*--- servidor.php ---*/
-#server-content { background: url(../../images/server-bg.jpg) no-repeat; border: 1px solid #FFF; padding: 0; }
+#server-content { background: url(../images/server-bg.jpg) no-repeat; border: 1px solid #FFF; padding: 0; }
 #server-content > div.logo { margin: 20px 20px 15px 20px; text-align: center; }
 
 #server-content > div.container > ul.menu { border: 1px solid #CCC; border-bottom: none; margin: 0 auto; overflow: hidden; width: 899px; }
@@ -345,7 +345,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 #server-content > div.container > div.padding > ul.about > li > ul.credits li > h2.sub-title { color: #C00; font-size: 15px; margin: 0; font-weight: bold; }
 #server-content > div.container > div.padding > ul.about > li > ul.credits li ul { margin: 0 0 0 15px; }
 #server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.main-section > li > h3.little-title { font-size: 15px; font-weight: bold; margin: 0; }
-#server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.sub-section > li { background: url(../../images/arrow.gif) no-repeat left center; margin: 0 0 5px 0; padding: 0 0 0 12px; }
+#server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.sub-section > li { background: url(../images/arrow.gif) no-repeat left center; margin: 0 0 5px 0; padding: 0 0 0 12px; }
 #server-content > div.container > div.padding > ul.about > li > ul.credits li > ul.sub-section > li a { border-bottom: 1px dashed #333; text-decoration: none; }
 
 /*--- servidor.php > Galeria da página ---*/
@@ -389,7 +389,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 
 /*--- faq.php > Respostas ---*/
 .faq div.answers ul li.highlighted { background: #FF3; }
-.faq div.answers h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; line-height: 18px; padding-left: 15px; }
+.faq div.answers h3.little-title { background: url(../images/arrow.gif) no-repeat left center; line-height: 18px; padding-left: 15px; }
 
 .faq div.answers ul.sections { counter-reset: answers-section; }
 .faq div.answers ul.sections li.main-section { counter-increment: answers-section; }
@@ -420,17 +420,17 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 
 .ucp h2.sub-title { background: #DFDFDF; border-radius: 3px; padding: 3px 10px; }
 
-.ucp button.add { background: url(../../images/add-icon.png) no-repeat center center; height: 16px; width: 16px; }
-.ucp button.delete { background: url(../../images/delete-icon.png) no-repeat center center; height: 16px; width: 16px; }
+.ucp button.add { background: url(../images/add-icon.png) no-repeat center center; height: 16px; width: 16px; }
+.ucp button.delete { background: url(../images/delete-icon.png) no-repeat center center; height: 16px; width: 16px; }
 
-.ucp button.amount-add { background: url(../../images/plus-icon.gif) no-repeat center center; height: 16px; width: 16px; }
-.ucp button.amount-remove { background: url(../../images/minus-icon.gif) no-repeat center center; height: 16px; width: 16px; }
+.ucp button.amount-add { background: url(../images/plus-icon.gif) no-repeat center center; height: 16px; width: 16px; }
+.ucp button.amount-remove { background: url(../images/minus-icon.gif) no-repeat center center; height: 16px; width: 16px; }
 
 .ucp span.label { background-position: left center; background-repeat: no-repeat; background-size: 10px 10px; display: block; margin-right: 5px; padding-left: 17px; }
-.ucp span.label.blue { background-image: url(../../images/background-percentage-blue.gif); }
-.ucp span.label.green { background-image: url(../../images/background-percentage-green.gif); }
-.ucp span.label.red { background-image: url(../../images/background-percentage-red.gif); }
-.ucp span.label.yellow { background-image: url(../../images/background-percentage-yellow.gif); }
+.ucp span.label.blue { background-image: url(../images/background-percentage-blue.gif); }
+.ucp span.label.green { background-image: url(../images/background-percentage-green.gif); }
+.ucp span.label.red { background-image: url(../images/background-percentage-red.gif); }
+.ucp span.label.yellow { background-image: url(../images/background-percentage-yellow.gif); }
 
 .ucp table.cool-table { border: 1px solid #CCC; }
 .ucp table.cool-table tr.header { font-size: 15px; font-weight: bold; }
@@ -478,7 +478,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > form#register div.termsAndProceed h2.sub-title { margin: 0 0 5px 0; }
 .ucp > form#register div.termsAndProceed ul.terms { margin: 0 0 5px 0; }
 .ucp > form#register div.termsAndProceed ul.terms li { width: 655px; }
-.ucp > form#register div.termsAndProceed ul.terms h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; font-size: 13px; font-weight: bold; margin: 0 0 0 15px; padding: 0 0 0 15px; }
+.ucp > form#register div.termsAndProceed ul.terms h3.little-title { background: url(../images/arrow.gif) no-repeat left center; font-size: 13px; font-weight: bold; margin: 0 0 0 15px; padding: 0 0 0 15px; }
 .ucp > form#register div.termsAndProceed ul.terms p { font-size: 13px; margin: 0 0 15px 30px; text-align: justify; }
 .ucp > form#register div.termsAndProceed label.big-container { display: block; margin-bottom: 7px; }
 
@@ -486,9 +486,9 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > form#register div#status span { display: block; }
 
 .ucp > form#register div.error#status { background: #B33625; border: 1px solid #660000; }
-.ucp > form#register div.error#status span { background: url(../../images/error.gif) no-repeat left center; padding: 0 0 0 17px; }
+.ucp > form#register div.error#status span { background: url(../images/error.gif) no-repeat left center; padding: 0 0 0 17px; }
 .ucp > form#register div.loading#status { background: #690; border: 1px solid #360; }
-.ucp > form#register div.loading#status span { background: url(../../images/loading.gif) no-repeat left center; padding: 0 0 0 23px; }
+.ucp > form#register div.loading#status span { background: url(../images/loading.gif) no-repeat left center; padding: 0 0 0 23px; }
 
 /*--- ucp/registre-se2.php ---*/
 .ucp > form#register2 div.customize-char { background: #990; }
@@ -521,7 +521,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > div.home div.chat-messages-container div.actions div.middle { padding: 0 15px; overflow: hidden; }
 .ucp > div.home div.chat-messages-container div.actions div.middle input { background: #FFF; height: 30px; padding: 0; width: 100%; }
 
-.ucp > div.home h2.mail-title { background: #DFDFDF url(../../images/messages.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.home h2.mail-title { background: #DFDFDF url(../images/messages.png) no-repeat 7px 50%; padding-left: 30px; }
 .ucp > div.home ul.mail-messages li { display: block; font-size: 15px; margin-bottom: 5px; overflow: hidden; }
 
 .ucp > div.home ul.mail-messages li.menu-container { height: 30px; line-height: 30px; margin-bottom: 5px; }
@@ -548,8 +548,8 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 
 .ucp > div.home ul.mail-messages li.actions button.submit { height: 30px; width: 70px; }
 
-.ucp > div.home h2.last-topics { background: #DFDFDF url(../../images/forum-icon.png) no-repeat 7px 50%; padding-left: 30px; }
-.ucp > div.home ul.last-topics-list li { background: url(../../images/arrow.gif) no-repeat left center; border-bottom: 1px dashed #CCC; font-size: 15px; margin-bottom: 5px; padding: 0 0 3px 15px; }
+.ucp > div.home h2.last-topics { background: #DFDFDF url(../images/forum-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.home ul.last-topics-list li { background: url(../images/arrow.gif) no-repeat left center; border-bottom: 1px dashed #CCC; font-size: 15px; margin-bottom: 5px; padding: 0 0 3px 15px; }
 .ucp > div.home ul.last-topics-list li span.author { font-weight: bold; }
 
 .ucp > div.home h2.last-videos { }
@@ -596,18 +596,18 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 
 .ucp > div.my-account > div.rpg-container div.player-stuff table { text-align: center; }
 
-.ucp > div.my-account > div.rpg-container div.player-stuff h2.heritage-title { background: #DFDFDF url(../../images/house-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff h2.heritage-title { background: #DFDFDF url(../images/house-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li { border: 1px solid #CCC; margin-bottom: 5px; overflow: hidden; padding: 3px; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li img { border: 1px solid #CCC; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li:last-child { margin: 0; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.heritage-list li h4.heritage-title { border-bottom: 1px dashed #CCC; margin-bottom: 5px; padding-bottom: 3px; text-align: center; }
 
-.ucp > div.my-account > div.rpg-container div.player-stuff h2.weapons-title { background: #DFDFDF url(../../images/weapon-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff h2.weapons-title { background: #DFDFDF url(../images/weapon-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.weapons-list { text-align: center; overflow: hidden; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.weapons-list li { float: left; margin-right: 5px; }
 .ucp > div.my-account > div.rpg-container div.player-stuff ul.weapons-list li img { border: 1px solid #000; }
 
-.ucp > div.my-account > div.rpg-container div.player-stuff h2.financial-transactions-title { background: #DFDFDF url(../../images/money-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.my-account > div.rpg-container div.player-stuff h2.financial-transactions-title { background: #DFDFDF url(../images/money-icon.gif) no-repeat 7px 50%; padding-left: 30px; }
 
 /*--- Minigames ---*/
 .ucp > div.my-account > div.minigames-container div.left { width: 700px; }
@@ -615,25 +615,25 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 /*--- ucp/chat.php --*/
 
 /*--- ucp/mapa.php ---*/
-.ucp > div.map h2.sub-title { background: #DFDFDF url(../../images/filter-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.map h2.sub-title { background: #DFDFDF url(../images/filter-icon.png) no-repeat 7px 50%; padding-left: 30px; }
 .ucp > div.map form#map-search input.search { width: 200px; }
 .ucp > div.map form#filter input.money { margin: 0 0 5px 25px; width: 175px; }
-.ucp > div.map form#filter h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; margin: 0 0 5px 10px; padding: 0 0 0 15px; }
+.ucp > div.map form#filter h3.little-title { background: url(../images/arrow.gif) no-repeat left center; margin: 0 0 5px 10px; padding: 0 0 0 15px; }
 .ucp > div.map form#filter ul { margin: 0 0 0 25px; }
 .ucp > div.map form#filter input.custom-checkbox + label.custom-checkbox-helper { background: #FFF; }
 .ucp > div.map div.container div#map { background: #C96; height: 470px; }
 
 /*--- ucp/loja-virtual.php --*/
 .ucp > div.shop h2.sub-title { background-repeat: no-repeat; background-position: 5px 50%; margin: 0 0 10px; }
-.ucp > div.shop h2.categories-title { background-image: url(../../images/categories-icon.png); padding-left: 30px; }
-.ucp > div.shop h2.credits-title { background-image: url(../../images/credits.png); padding-left: 30px; }
-.ucp > div.shop h2.shopping-cart-title { background-image: url(../../images/shopping-cart-icon.png); padding-left: 30px; }
+.ucp > div.shop h2.categories-title { background-image: url(../images/categories-icon.png); padding-left: 30px; }
+.ucp > div.shop h2.credits-title { background-image: url(../images/credits.png); padding-left: 30px; }
+.ucp > div.shop h2.shopping-cart-title { background-image: url(../images/shopping-cart-icon.png); padding-left: 30px; }
 .ucp > div.shop h3.category-top-title { margin-left: 15px; }
 
 .ucp > div.shop form#shop-search input.search { width: 200px; }
 
 .ucp > div.shop div.left ul { margin: 0 0 10px 25px; }
-.ucp > div.shop div.left ul li, .ucp > div.shop span.item { background: url(../../images/arrow.gif) no-repeat left center; margin: 0 0 3px 0; padding: 0 0 0 15px; }
+.ucp > div.shop div.left ul li, .ucp > div.shop span.item { background: url(../images/arrow.gif) no-repeat left center; margin: 0 0 3px 0; padding: 0 0 0 15px; }
 
 .ucp > div.shop span.item { display: block; margin-bottom: 10px; }
 
@@ -662,7 +662,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > div.shop > div.container table.products-list tr td img { border: 1px solid #CCC; margin-bottom: 5px; }
 
 .ucp > div.shop > div.container div.product { overflow: hidden; }
-.ucp > div.shop > div.container div.product h3.little-title { background: #DFDFDF url(../../images/arrow.gif) no-repeat 7px 50%; padding: 3px 7px 3px 25px; }
+.ucp > div.shop > div.container div.product h3.little-title { background: #DFDFDF url(../images/arrow.gif) no-repeat 7px 50%; padding: 3px 7px 3px 25px; }
 .ucp > div.shop > div.container div.product img { border: 1px solid #CCC; }
 .ucp > div.shop > div.container div.product img.featured-image { margin: 0 5px 5px 0; }
 .ucp > div.shop > div.container div.product ul.images { height: 350px; margin: 1px 10px 0 0; overflow-y: scroll; }
@@ -697,9 +697,9 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > div.settings div.status#status { display: none; }
 
 .ucp > div.settings div.error { background: #B33625; border: 1px solid #660000; }
-.ucp > div.settings div.error span { background: url(../../images/error.gif) no-repeat left center; padding: 0 0 0 20px; text-align: justify; }
+.ucp > div.settings div.error span { background: url(../images/error.gif) no-repeat left center; padding: 0 0 0 20px; text-align: justify; }
 .ucp > div.settings div.loading { background: #690; border: 1px solid #360; }
-.ucp > div.settings div.loading span { background: url(../../images/loading.gif) no-repeat left center; padding: 0 0 0 23px; }
+.ucp > div.settings div.loading span { background: url(../images/loading.gif) no-repeat left center; padding: 0 0 0 23px; }
 
 .ucp > div.settings form label.title { display: block; font-size: 22px; height: 52px; line-height: 52px; margin: 0 0 15px 0; }
 .ucp > div.settings input.field { background: #FFF; font-size: 22px; float: right; height: 40px; padding: 5px; width: 270px; }
@@ -711,7 +711,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > div.settings div.last-logins div.last-logins-hacking-suspect { text-align: right; }
 .ucp > div.settings div.last-logins div.last-logins-hacking-suspect button { width: 115px; }
 
-.ucp > div.settings div.access-points h3.little-title { background: url(../../images/arrow.gif) no-repeat left center; margin-left: 10px; padding-left: 15px; }
+.ucp > div.settings div.access-points h3.little-title { background: url(../images/arrow.gif) no-repeat left center; margin-left: 10px; padding-left: 15px; }
 .ucp > div.settings div.access-points input.field { float: none; font-size: 15px; height: 20px; text-align: center; width: 180px; }
 .ucp > div.settings div.access-points select { height: 20px; }
 .ucp > div.settings div.access-points span.description { display: block; font-size: 15px; text-align: justify; }
@@ -728,24 +728,24 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .ucp > div.gaia table tr td.value { background: #DFDFDF; padding: 3px 0; text-align: center; }
 
 .ucp > div.gaia div.main { width: 370px; }
-.ucp > div.gaia div.main h2.physical-server { background: #DFDFDF url(../../images/server-ip-icon.png) no-repeat 7px 50%; padding-left: 30px; }
-.ucp > div.gaia div.main h2.sa-mp-server { background: #DFDFDF url(../../images/sa-mp-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.gaia div.main h2.physical-server { background: #DFDFDF url(../images/server-ip-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.gaia div.main h2.sa-mp-server { background: #DFDFDF url(../images/sa-mp-icon.png) no-repeat 7px 50%; padding-left: 30px; }
 .ucp > div.gaia div.main table tr td div.time { display: inline-block; vertical-align: middle; }
 .ucp > div.gaia div.main table tr td input.field { background: #FFF; height: 20px; padding: 3px; text-align: center; }
 .ucp > div.gaia div.main table tr td input.field#maxplayers, .ucp > div.gaia div.main table tr td input.field#port { width: 50px; }
 .ucp > div.gaia div.main table tr td input.field#hostname, .ucp > div.gaia div.main table tr td input.field#weburl { width: 90%; }
 .ucp > div.gaia div.main table tr td select, .ucp > div.gaia div.main table tr td button, .ucp > div.gaia div.main table tr td label { vertical-align: middle; }
 .ucp > div.gaia div.main table.physical-server-stats-table tr td.value { background-color: #DFDFDF; background-repeat: repeat-y;  }
-.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.cpu-percentage { background-image: url(../../images/background-percentage-green.gif); }
-.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.ram-percentage { background-image: url(../../images/background-percentage-yellow.gif); }
-.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.hdd-percentage { background-image: url(../../images/background-percentage-blue.gif); }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.cpu-percentage { background-image: url(../images/background-percentage-green.gif); }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.ram-percentage { background-image: url(../images/background-percentage-yellow.gif); }
+.ucp > div.gaia div.main table.physical-server-stats-table tr td.value.hdd-percentage { background-image: url(../images/background-percentage-blue.gif); }
 
 .ucp > div.gaia div.main ul.menu { margin: 0 0 10px 15px; }
-.ucp > div.gaia div.main ul.menu li { background: url(../../images/arrow.gif) no-repeat left center; padding-left: 15px; }
+.ucp > div.gaia div.main ul.menu li { background: url(../images/arrow.gif) no-repeat left center; padding-left: 15px; }
 
 .ucp > div.gaia div.container > div { overflow: hidden; }
 
-.ucp > div.gaia div.container h2.connected-players-title { background: #DFDFDF url(../../images/server-players-icon.png) no-repeat 7px 50%; padding-left: 30px; }
+.ucp > div.gaia div.container h2.connected-players-title { background: #DFDFDF url(../images/server-players-icon.png) no-repeat 7px 50%; padding-left: 30px; }
 
 .ucp > div.gaia div.container table.connected-players-table { font-size: 14px; margin-bottom: 3px; }
 
@@ -772,10 +772,10 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 
 /*--- Rodapé ---*/
 .layout > div.footer {
-	background: url(../../images/rodape_bg.png) repeat-x;
-	height: 35px;
-	margin: 0 0 20px 0;
-	padding: 10px 20px;
+    background: url(../images/rodape_bg.png) repeat-x;
+    height: 54px;
+    margin: 0 0 20px 0;
+    padding: 10px 20px;
 }
 
 div.footer div { text-align: center; }

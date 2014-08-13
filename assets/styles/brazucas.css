@@ -1,0 +1,9 @@
+.brzOverlay {
+    background: url("../images/menu-bg.png") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    padding: 5x 5px 0px 5px;
+    margin: 5px 5px 0px 5px;
+    height: 40px;
+}
