@@ -14,9 +14,15 @@ Swig template: http://paularmstrong.github.io/swig/
 
 MongoDB: http://docs.mongodb.org/manual/
 
-13/08/2014 - Teste de notificações (https://github.com/pedropapa/BrazucasExodus/commit/d345b281d5aa543138da80fc711e5adc3cbe7a57#diff-d41d8cd98f00b204e9800998ecf8427e)
-[![CLique para Assistir](http://img.youtube.com/vi/nLAWkR9tETI/0.jpg)](https://www.youtube.com/watch?v=nLAWkR9tETI)
-(clique na imagem para assistir)
 
 <hr>
 <img src="http://s17.postimg.org/df353qopb/Untitled.png">
+
+
+<hr />
+
+Vídeos e imagens da fase de desenvolvimento:
+
+13/08/2014 - Teste de notificações (pedropapa/BrazucasExodus@d345b281d5aa543138da80fc711e5adc3cbe7a57)
+[![CLique para Assistir](http://img.youtube.com/vi/nLAWkR9tETI/0.jpg)](https://www.youtube.com/watch?v=nLAWkR9tETI)
+(clique na imagem para assistir)
