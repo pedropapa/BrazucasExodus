@@ -23,6 +23,6 @@ MongoDB: http://docs.mongodb.org/manual/
 
 Vídeos e imagens da fase de desenvolvimento:
 
-13/08/2014 - Teste de notificações (pedropapa/BrazucasExodus@d345b281d5aa543138da80fc711e5adc3cbe7a57)
+13/08/2014 - Teste de notificações (<a href='https://github.com/pedropapa/BrazucasExodus/commit/d345b281d5aa543138da80fc711e5adc3cbe7a57'>Commit</a>)
 [![CLique para Assistir](http://img.youtube.com/vi/nLAWkR9tETI/0.jpg)](https://www.youtube.com/watch?v=nLAWkR9tETI)
 (clique na imagem para assistir)
