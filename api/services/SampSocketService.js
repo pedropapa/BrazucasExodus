@@ -19,7 +19,17 @@ module.exports = {
     });
 
     this.sampSocket.on('data', function(data) {
-      console.log(data);
+      console.log(data.toString());
+      sampData = SampSocketService.filterData(data.toString());
+
+      if(typeof sampData['a'] == undefined) console.log('Comando não reconhecido.');
+      else {
+        switch(sampData['a']) {
+          case 'kill':
+            sails.sockets.blast({ sampAction: 'sampServerKill', killerName: sampData['killerName'], deadName: sampData['deadName'], reason: sampData['reason'] });
+            break;
+        }
+      }
     });
 
     this.sampSocket.on('error', function(data) {
@@ -39,6 +49,23 @@ module.exports = {
 
       SampSocketService.reconnect();
     });
+  },
+
+  filterData: function(data) {
+    //a=kill&killerName=Mandrakke_Army&deadName=Mandrakka_Army&reason=▼&p=0&t=server
+    variables = data.split('&');
+    returnData = [];
+
+    for(ind in variables) {
+      variableData = variables[ind].split('=');
+      index = variableData[0];
+      value = variableData[1];
+
+      returnData[index] = value;
+    }
+
+    console.log(returnData);
+    return returnData;
   },
 
   reconnect: function() {

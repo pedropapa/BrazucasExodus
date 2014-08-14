@@ -13,6 +13,15 @@
                 if(data.model) {
                     modelHooks[data.model][data.verb](data.data);
                 }
+
+                if(data.sampAction) {
+                    switch(data.sampAction) {
+                        // Evento de morte no servidor
+                        case 'sampServerKill':
+                            sampServerNotifications.killEvent(data.killerName, data.deadName, data.reason, (new Date()).getTime(), 'TODO');
+                        break;
+                    }
+                }
             });
         });
 

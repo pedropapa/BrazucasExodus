@@ -38,7 +38,7 @@ module.exports.routes = {
   },
 
     'get /ucp': {
-        controller: 'UcpController',
+        controller: 'CoreController',
         action: 'main'
     },
 

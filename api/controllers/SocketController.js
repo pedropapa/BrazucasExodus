@@ -17,13 +17,13 @@ module.exports = {
         if(!req.session.usuario) {
           console.log('Cliente ainda não possui um usuário, criando...');
 
-          UcpService.criarUsuario(req);
+          CoreService.criarUsuario(req);
         } else {
           Usuario.find({id: req.session.usuario}).exec(function(error, Usuario) {
             if(Usuario.length == 0) {
               console.log('Cliente possui um usuário mas este não foi encontrado na base, criando...');
 
-              UcpService.criarUsuario(req);
+              CoreService.criarUsuario(req);
             } else {
               console.log('Cliente já possui um usuário.');
             }

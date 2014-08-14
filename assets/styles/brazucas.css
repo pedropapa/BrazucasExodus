@@ -1,9 +1,124 @@
-.brzOverlay {
-    background: url("../images/menu-bg.png") repeat-x scroll 0 0 rgba(0, 0, 0, 0);
+.floatTabs {
     position: fixed;
+    right: 0;
     bottom: 0;
+    margin-right: 10%;
+}
+.floatTabs .floatTab {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.floatTabs .floatTab .tabTitle {
+    cursor: pointer;
+    border-image: none;
+    border-radius: 4px 4px 0px 0px;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 5px 25px;
+    background-color: #0074cc;
+    background-image: -moz-linear-gradient(center top , #08c, #05c);
+    background-repeat: repeat-x;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    font-weight: bold;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.floatTabs .floatTab .tabContent {
+    display: none;
+    background-color: white;
+    /*padding: 5px 25px 5px 25px;*/
+    margin-left: 0px;
+}
+
+.floatTabs .floatTab .tabTitle .notifications {
+    display: none;
+    float: left;
+    margin-left: 5px;
+    background: black;
+    position: absolute;
+    left: 0;
+    border-radius: 25%;
+    height: 17px;
+    width: 14px;
+    color: #fff;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 8px;
+    font-weight: normal;
+    background: #dc322f;
+    top: 9px;
+    padding-top: 2.5px;
+}
+
+.brzKillEvent .weapon {
+    position: relative;
+    left: 0;
+}
+
+.brzKillEvent .gamemodeOrMinigameName {
+    position: relative;
+    right: 0;
+}
+
+#webchat .chat {
+    /*position: relative;*/
+    width: 600px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#webchat .chat .panel {
+    float: left;
+    bottom: 0;
+    margin: 0;
+}
+
+#webchat .chat .panel .messages {
+    background-color: #ddd;
+    width: 400px;
+    height: 270px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin: 0;
+    max-height: 320px;
+    padding: 0;
+}
+
+#webchat .chat .panel .newMessageArea {
+    margin: 0;
+    padding: 1px;
+}
+
+#webchat .chat .panel .newMessageArea .textArea {
+    width: 100%;
+    font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
+    padding: 2px;
+    font-size: 12px;
+    border: 0 none;
+    display: block;
+    margin: 0;
+    min-height: 16px;
+    outline: medium none;
+    resize: none;
+}
+
+#webchat .chat .loggedUsers {
     background-color: #fff;
-    padding: 5x 5px 0px 5px;
-    margin: 5px 5px 0px 5px;
-    height: 40px;
+    width: 200px;
+    height: 295px;
 }

@@ -16,14 +16,16 @@
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+
+    <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
+    <script type="text/javascript" src="js/brz/core.js"></script>
     {% block javascript_libs %}{% endblock %}
 </head>
 
 <body>
     {% block corpo %}{% endblock %}
 
-    <div id="brzOverlay" class="brzOverlay rounded col-md-7 center-block">
-        teste
-    </div>
+    <div id="floatTabs" class="floatTabs"></div>
 </body>
 </html>

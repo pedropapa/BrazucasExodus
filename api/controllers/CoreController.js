@@ -1,5 +1,5 @@
 /**
- * UcpController
+ * CoreController
  *
  * @module      :: Controller
  * @description	:: Controller da rota /ucp, utilizado para login ao Painel.
