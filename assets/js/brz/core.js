@@ -11,16 +11,33 @@ $(document).ready(function() {
 
 function launchWebChat() {
   setCoreTabContent('#webchat', '' +
+    '<form id="chatForm">'+
     '<div class="chat">' +
     '<div class="panel">' +
     '<div class="messages"></div>' +
     '<div class="newMessageArea"><input type="text" maxlength="128" class="textArea"/></div>' +
     '</div>' +
     '<div class="loggedUsers"></div>' +
-    '</div>'
+    '</div>'+
+    '</form>'
   );
 
+  $('#webchat').click(function() {
+    $(this).find('.textArea').focus();
+  });
 
+  $('#chatForm').submit(function(e) {
+    var message = $(this).find('.textArea');
+
+    if(message.val().length > 0) {
+      socket.post('/socket/chatMessage', {message: message.val()}, function(data) {
+        message.val('');
+        message.focus();
+      });
+    }
+
+    e.preventDefault();
+  })
 }
 
 function adjustTabs() {
@@ -40,6 +57,7 @@ function adjustTabs() {
 function hideNotifications(obj) {
   $(obj).find('.tabTitle .notifications').hide();
   $(obj).find('.tabTitle').stopFlash();
+  $(obj).find('.tabTitle .notifications').html('0');
 }
 
 function showNotifications(obj) {

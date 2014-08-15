@@ -20,6 +20,45 @@
                         case 'sampServerKill':
                             sampServerNotifications.killEvent(data.killerName, data.deadName, data.reason, (new Date()).getTime(), 'TODO');
                         break;
+                        case 'chatMessage':
+                            var messagesContainer = $('#webchat .chat .panel .messages');
+                            // data.source 'ucp' ou 'samp', de onde a mensagem foi enviada.
+
+                            var newMessageDiv = $('<div></div>')
+                                    .addClass('col-md-8')
+                                    .addClass('othersMessage')
+                                    .append(
+                                            $('<div></div>')
+                                                    .addClass('username')
+                                                    .append($('<b></b>')
+                                                            .append(data.username)
+                                                    )
+                                    ).append(
+                                            $('<div></div>')
+                                                    .append(data.message)
+                                    );
+
+                            messagesContainer.append(newMessageDiv);
+
+                            setCoreTabNotifications('#webchat', getTabNotifications('#webchat') + 1);
+
+                            var messagesOriginalHeight = messagesContainer.height();
+                            var messagesActualHeight = messagesContainer.height('auto').height();
+                            messagesContainer.height(messagesOriginalHeight);
+
+                            messagesContainer.animate({ scrollTop: messagesActualHeight }, 1);
+
+//                            <div class="col-md-8" class="othersMessage">
+//                                    <div class="username"><b>Mandrakke_Army</b></div>
+//                                    <div>Teste! aisdjaisodj asdasoid asd asoidmoia s diasjo iasdiosaj diosaj oisjdoi</div>
+//                            </div>
+
+
+//                        <div class="col-md-5" style="float: right; font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif; font-size: 9px;  padding: 9px 3px 3px 3px; margin: 7px 3px 3px 3px; border: 1px solid #ddd; background-color: #fff; background-image: -moz-linear-gradient(center bottom , #fff, #eee);border-radius: 4px">
+//                                <div style="position: absolute; border-radius: 4px; top: -7px; right: 0; left: 5; z-index: 9999; border: 1px solid #ddd; background-color: #fff; background-image: -moz-linear-gradient(center bottom , #fff, #eee); padding: 1px"><b>Raquel</b></div>
+//                        <div style="text-align: right">Enviei uma mensagem pelo UCP!</div>
+//                        </div>
+                        break;
                     }
                 }
             });

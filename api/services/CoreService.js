@@ -15,7 +15,7 @@ module.exports = {
       if(error) {
         return {error: 500, controller: 'Socket', message: 'Não foi possível criar o usuário temporário.'};
       } else {
-        req.session.usuario = Usuario.id;
+        req.session.usuario = Usuario;
         req.session.save();
 
         console.log('Novo usuário criado: '+Usuario.id);

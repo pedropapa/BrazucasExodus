@@ -43,6 +43,20 @@ module.exports = {
   },
 
   /**
+   * Action chatMessage
+   *
+   * Responsável por receber mensagens do webchat.
+   *
+   * @param req
+   * @param res
+   */
+  chatMessage: function (req, res) {
+    sails.sockets.blast({ sampAction: 'chatMessage', username: req.session.usuario.username, message: req.param('message'), source: 'ucp'});
+
+    res.json({message: 'success'}, 200);
+  },
+
+  /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to DefaultController)
    */

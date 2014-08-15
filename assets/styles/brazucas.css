@@ -33,6 +33,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    /*color: #0088cc;*/
 }
 
 .floatTabs .floatTab .tabContent {
@@ -86,17 +87,41 @@
     float: left;
     bottom: 0;
     margin: 0;
+    height: 240px;
 }
 
 #webchat .chat .panel .messages {
     background-color: #ddd;
     width: 400px;
-    height: 270px;
-    overflow-y: scroll;
+    min-height: 270px;
+    overflow-y: auto;
     overflow-x: hidden;
+    height: 270px;
     margin: 0;
-    max-height: 320px;
     padding: 0;
+}
+
+#webchat .chat .panel .messages .othersMessage {
+    float: left;
+    font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
+    font-size: 9px;
+    padding: 9px 3px 3px 3px;
+    margin: 7px 3px 3px 3px;
+    border: 1px solid #008BE8;
+    background-color: #dbedfe;
+    background-image: -moz-linear-gradient(center bottom , #c7defe, #e7f1fe);
+    border-radius: 4px;
+}
+
+#webchat .chat .panel .messages .username {
+    position: absolute;
+    border-radius: 4px;
+    top: -7px;
+    left: 6;
+    z-index: 9999;
+    border: 1px solid #008BE8;
+    background-color: #dbedfe;
+    background-image: -moz-linear-gradient(center bottom , #c7defe, #e7f1fe);
 }
 
 #webchat .chat .panel .newMessageArea {

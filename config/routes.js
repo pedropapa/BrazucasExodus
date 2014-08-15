@@ -37,15 +37,20 @@ module.exports.routes = {
     action: 'main'
   },
 
-    'get /ucp': {
-        controller: 'CoreController',
-        action: 'main'
-    },
+  'get /ucp': {
+      controller: 'CoreController',
+      action: 'ucp'
+  },
 
-    'get /socket/go': {
-        controller: 'SocketController',
-        action: 'main'
-    }
+  'get /socket/go': {
+      controller: 'SocketController',
+      action: 'main'
+  },
+
+  'post /socket/chatMessage': {
+    controller: 'SocketController',
+    action: 'chatMessage'
+  }
 
   /*
   // But what if you want your home page to display

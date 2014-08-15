@@ -12,9 +12,9 @@ module.exports = {
    * Action blueprints:
    *    `/default/main`
    */
-   main: function (req, res) {
+   ucp: function (req, res) {
     // Send a JSON response
-    return res.view('home/ucp/index');
+    return res.view('ucp/index');
   },
 
 
