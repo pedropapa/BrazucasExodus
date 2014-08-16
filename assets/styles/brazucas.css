@@ -72,9 +72,12 @@
     right: 0;
 }
 
+#webchat {
+    z-index: 9999;
+}
 #webchat .chat {
     /*position: relative;*/
-    width: 600px;
+    width: 602px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -101,27 +104,61 @@
     padding: 0;
 }
 
+#webchat .chat .panel .messages div {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    clear: both;
+    hyphens: auto;
+}
+
 #webchat .chat .panel .messages .othersMessage {
     float: left;
     font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
     font-size: 9px;
     padding: 9px 3px 3px 3px;
     margin: 7px 3px 3px 3px;
-    border: 1px solid #008BE8;
     background-color: #dbedfe;
     background-image: -moz-linear-gradient(center bottom , #c7defe, #e7f1fe);
     border-radius: 4px;
+    max-width: 300px;
+}
+#webchat .chat .panel .messages .notification {
+    border: 1px solid #666;
+    padding: 3px;
+    margin: 0 auto;
+    display: table;
+    border-radius: 4px;
+    font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
+    font-size: 10px;
+}
+
+#webchat .chat .loggedUsers .username {
+    margin-left: 15px;
+    font-size: 12px;
+    font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
+}
+
+#webchat .chat .loggedUsers .loginType {
+    background-image: -moz-linear-gradient(center bottom , #c7defe, #e7f1fe);
+    border-radius: 4px;
+    font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif;
+    font-size: 9px;
+    padding: 2px;
+    float: right;
+    margin-top: 1px;
 }
 
 #webchat .chat .panel .messages .username {
-    position: absolute;
-    border-radius: 4px;
-    top: -7px;
-    left: 6;
-    z-index: 9999;
-    border: 1px solid #008BE8;
-    background-color: #dbedfe;
-    background-image: -moz-linear-gradient(center bottom , #c7defe, #e7f1fe);
+    font-weight: bold;
+    margin-top: -6px;
+}
+
+#webchat .chat .panel .messages .messageText {
+    font-size: 10px;
 }
 
 #webchat .chat .panel .newMessageArea {
@@ -146,4 +183,5 @@
     background-color: #fff;
     width: 200px;
     height: 295px;
+    display: table;
 }

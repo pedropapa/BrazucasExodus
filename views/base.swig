@@ -20,6 +20,11 @@
 
     <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
     <script type="text/javascript" src="js/brz/core.js"></script>
+
+    <script type="text/javascript">
+        // @TODO verificar uma melhor maneira de injetar arquivos de configuração server-side no cliente.
+        var brazucasConfig = {{ sails.config.brazucasConfig | json | raw }};
+    </script>
     {% block javascript_libs %}{% endblock %}
 </head>
 

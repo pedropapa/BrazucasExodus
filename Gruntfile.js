@@ -74,7 +74,7 @@ module.exports = function (grunt) {
    */
 
   var templateFilesToInject = [
-    'linker/**/*.html'
+    'linker/**/*.swig'
   ];
 
 
@@ -260,8 +260,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/**/*.html': jsFilesToInject,
-          'views/**/*.html': jsFilesToInject,
+          '.tmp/public/**/*.swig': jsFilesToInject,
+          'views/**/*.swig': jsFilesToInject,
           'views/**/*.ejs': jsFilesToInject
         }
       },
@@ -274,8 +274,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.html': ['.tmp/public/min/production.js'],
+          '.tmp/public/**/*.swig': ['.tmp/public/min/production.js'],
+          'views/**/*.swig': ['.tmp/public/min/production.js'],
           'views/**/*.ejs': ['.tmp/public/min/production.js']
         }
       },
@@ -290,8 +290,8 @@ module.exports = function (grunt) {
 
         // cssFilesToInject defined up top
         files: {
-          '.tmp/public/**/*.html': cssFilesToInject,
-          'views/**/*.html': cssFilesToInject,
+          '.tmp/public/**/*.swig': cssFilesToInject,
+          'views/**/*.swig': cssFilesToInject,
           'views/**/*.ejs': cssFilesToInject
         }
       },
@@ -304,8 +304,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.css'],
-          'views/**/*.html': ['.tmp/public/min/production.css'],
+          '.tmp/public/index.swig': ['.tmp/public/min/production.css'],
+          'views/**/*.swig': ['.tmp/public/min/production.css'],
           'views/**/*.ejs': ['.tmp/public/min/production.css']
         }
       },
@@ -319,8 +319,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/jst.js'],
-          'views/**/*.html': ['.tmp/public/jst.js'],
+          '.tmp/public/index.swig': ['.tmp/public/jst.js'],
+          'views/**/*.swig': ['.tmp/public/jst.js'],
           'views/**/*.ejs': ['.tmp/public/jst.js']
         }
       },
@@ -429,7 +429,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('linkAssets', [
 
-    // Update link/script/template references in `assets` index.html
+    // Update link/script/template references in `assets` index.swig
     'sails-linker:devJs',
     'sails-linker:devStyles',
     'sails-linker:devTpl',

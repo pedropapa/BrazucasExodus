@@ -13,33 +13,7 @@ module.exports = {
    *    `/default/main`
    */
    main: function (req, res) {
-      if(req.isSocket) {
-        if(!req.session.usuario) {
-          console.log('Cliente ainda não possui um usuário, criando...');
 
-          CoreService.criarUsuario(req);
-        } else {
-          Usuario.find({id: req.session.usuario}).exec(function(error, Usuario) {
-            if(Usuario.length == 0) {
-              console.log('Cliente possui um usuário mas este não foi encontrado na base, criando...');
-
-              CoreService.criarUsuario(req);
-            } else {
-              console.log('Cliente já possui um usuário.');
-            }
-          });
-        }
-
-        // Captura alterações dos futuros usuários adicionados ao banco.
-        Usuario.watch(req.socket);
-
-        // Captura alterações de todos os usuários já adicionados ao banco.
-        Usuario.find({id: '*'}).exec(function(e, usuarios) {
-          Usuario.subscribe(req.socket, usuarios);
-        });
-      } else {
-        res.json({error: 500, message: '#'});
-      }
   },
 
   /**
@@ -51,7 +25,9 @@ module.exports = {
    * @param res
    */
   chatMessage: function (req, res) {
-    sails.sockets.blast({ sampAction: 'chatMessage', username: req.session.usuario.username, message: req.param('message'), source: 'ucp'});
+    if(req.param('message').length <=  sails.config.brazucasConfig.maxChatMessageLength) {
+      SocketService.blastMessage(req, res, Salas.geral);
+    }
 
     res.json({message: 'success'}, 200);
   },

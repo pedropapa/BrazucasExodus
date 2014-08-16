@@ -15,7 +15,7 @@ function launchWebChat() {
     '<div class="chat">' +
     '<div class="panel">' +
     '<div class="messages"></div>' +
-    '<div class="newMessageArea"><input type="text" maxlength="128" class="textArea"/></div>' +
+    '<div class="newMessageArea"><input type="text" maxlength="'+brazucasConfig.maxChatMessageLength+'" class="textArea"/></div>' +
     '</div>' +
     '<div class="loggedUsers"></div>' +
     '</div>'+
@@ -137,6 +137,73 @@ function getTabNotifications(obj) {
   var notifications = parseInt(notificationElement.html());
 
   return notifications;
+}
+// Objeto responsável pelo gerenciamento do webchat.
+var webchat = {
+  messagesContainer: function() {return $('#webchat .chat .panel .messages')},
+  usersContainer: function() {return $('#webchat .chat .loggedUsers')},
+
+  othersMessage: {
+    create: function(username, message) {
+      var newMessageDiv = $('<div></div>')
+        .addClass('othersMessage')
+        .append(
+          $('<div></div>')
+            .addClass('username')
+            .append($('<b></b>')
+              .append(username)
+            )
+        ).append(
+          $('<div></div>')
+            .addClass('messageText')
+            .append(message)
+        );
+
+      webchat.messagesContainer().append(newMessageDiv);
+
+      webchat.internalUpdateScroll();
+    }
+  },
+
+  notifications: {
+    create: function(message) {
+      var notificationDiv = $('<div></div>')
+        .addClass('text-center')
+        .addClass('notification')
+        .append(message)
+      ;
+
+      webchat.messagesContainer().append(notificationDiv);
+
+      webchat.internalUpdateScroll();
+    }
+  },
+
+  users: {
+    login: function(username, loginType) {
+      if($('#webchatUser_'+username).length == 0) {
+        var userDiv = $('<div></div>')
+          .attr({'id': 'webchatUser_'+username})
+          .addClass('username')
+          .append(username)
+          .append(
+            $('<span></span>')
+              .addClass('loginType')
+              .append(loginType)
+          );
+
+        webchat.usersContainer().append(userDiv);
+
+        webchat.notifications.create('<b>' + data.username + '</b> entrou.' );
+      }
+    }
+  },
+
+  internalUpdateScroll: function() {
+    setCoreTabNotifications('#webchat', getTabNotifications('#webchat') + 1);
+
+    this.messagesContainer.scrollTop(messagesContainer.get(0).scrollHeight);
+  }
 }
 
 // Objeto responsável pelas notificações do servidor dentro do UCP.
