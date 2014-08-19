@@ -12,6 +12,14 @@ module.exports.bootstrap = function (cb) {
   // Método que inicia a conexão do site com o servidor sa-mp do Brazuca's.
   SampSocketService.init();
 
+  sails.sockets.customBroadcastTo = function(socket, model, verb, data) {
+    socketData = {};
+    socketData.model = model;
+    socketData.verb = verb;
+    socketData.data = data;
+    sails.sockets.emit(socket.id, socketData);
+  }
+
   // It's very important to trigger this callack method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();

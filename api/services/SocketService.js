@@ -13,12 +13,9 @@ module.exports = {
 
     // Captura alterações de todos os usuários já adicionados ao banco.
     Usuario.find().exec(function(e, usuarios) {
-      for(x in usuarios) {
-        // @TODO
-        // Verificar uma melhor forma enviar a lista de usuários para o cliente, req.socket.emit(usuarios) ???
-        Usuario.subscribe(socket, usuarios[x]);
-        Usuario.publishCreate(usuarios[x]);
-      }
+      Usuario.subscribe(socket, usuarios);
+
+      sails.sockets.customBroadcastTo(socket, 'usuario', 'create', usuarios);
     });
 
     // Sala padrão do chat geral do UCP.
@@ -50,6 +47,10 @@ module.exports = {
         // Transmite a mensagem para todos os usuários do UCP.
         sails.sockets.blast({ sampAction: 'chatMessage', username: req.session.usuario.username, message: req.param('message'), source: 'ucp'});
       }
+
+      // @TODO
+      // Verificar uma melhor maneira de enviar os comandos para o servidor SA-MP, o ideal seria enviar em forma de array.
+      SampSocketService.send('action=chatMessage&username='+req.session.usuario.username+'&message='+req.param('message')+'&source=ucp&room='+room);
 
       res.json({message: 'success'}, 200);
     } else {

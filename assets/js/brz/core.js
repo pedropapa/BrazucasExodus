@@ -194,7 +194,7 @@ var webchat = {
 
         webchat.usersContainer().append(userDiv);
 
-        webchat.notifications.create('<b>' + data.username + '</b> entrou.' );
+        webchat.notifications.create('<b>' + username + '</b> entrou.' );
       }
     }
   },
@@ -202,7 +202,7 @@ var webchat = {
   internalUpdateScroll: function() {
     setCoreTabNotifications('#webchat', getTabNotifications('#webchat') + 1);
 
-    this.messagesContainer.scrollTop(messagesContainer.get(0).scrollHeight);
+    this.messagesContainer().scrollTop(this.messagesContainer().get(0).scrollHeight);
   }
 }
 

@@ -9,9 +9,9 @@
             // Responsável por receber qualquer tipo de dado enviado pela aplicação via socket.
             socket.on('message', function(data) {
                 console.log(data);
-                // Onde o modelHooks é iniciado.
+                // Onde o modelsHook é iniciado.
                 if(data.model) {
-                    modelHooks[data.model][data.verb](data.data);
+                    modelsHook[data.model][data.verb](data.data);
                 }
 
                 if(data.sampAction) {
@@ -31,14 +31,25 @@
                     }
                 }
             });
+
+            socket.on('disconnect', function(data) {
+                // @TODO
+                // Desativar o webchat, competitivo e qualquer outro módulo do ucp que tenha conectividade via socket.
+                // Obrigar o usuário a atualizar a página ao reestabelecer a conexão.
+            });
+
+            socket.on('connect', function(data) {
+                // @TODO
+                // Se for um reconnect, obrigar o usuário a atualizar a página.
+            });
         });
 
         /**
-         * modelHooks
+         * modelsHook
          * Responsável por receber qualquer tipo de instrução realizada em uma determinada model.
          * Sendo a instrução de cada model criada da seguinte maneira: 'model.instrução()'.
          */
-        var modelHooks = {
+        var modelsHook = {
             // Usuario.js Model
             // Responsável por gerenciar os usuários da aplicação.
             usuario: {
@@ -46,7 +57,11 @@
                     alert(data.toSource());
                 },
                 create: function(data) {
-                    webchat.users.login(data.username, 'ucp');
+                    if(data.length > 0) {
+                        for(x in data) {
+                            webchat.users.login(data[x].username, 'ucp');
+                        }
+                    }
                 }
             }
         }
