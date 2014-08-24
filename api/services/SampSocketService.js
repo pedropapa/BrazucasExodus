@@ -24,11 +24,7 @@ module.exports = {
 
       if(typeof sampData['a'] == undefined) console.log('Comando não reconhecido.');
       else {
-        switch(sampData['a']) {
-          case 'kill':
-            sails.sockets.blast({ sampAction: 'sampServerKill', killerName: sampData['killerName'], deadName: sampData['deadName'], reason: sampData['reason'] });
-            break;
-        }
+        SampSocketService.on[sampData['a']](sampData);
       }
     });
 
@@ -51,8 +47,55 @@ module.exports = {
     });
   },
 
+  // Callbacks que são chamadas por comandos do servidor SA-MP.
+  on: {
+    kill: function(sampData) {
+      sails.sockets.blast({ sampAction: 'sampServerKill', killerName: sampData['killerName'], deadName: sampData['deadName'], reason: sampData['reason'] });
+    },
+    msg: function(sampData) {
+      if(sampData['msg'].length <= sails.config.brazucasConfig.maxChatMessageLength) {
+        SocketService.blastMessage(sampData['nick'], sampData['msg'], Salas.geral, false, 'servidor');
+      }
+    },
+    playerConnect: function(sampData) {
+      Usuario.findOne({username: sampData['nick']}).exec(function(err, findUsuario) {
+        if(!findUsuario) {
+          Usuario.create({username: sampData['nick'], source: Local.servidor}).exec(function(error, objUsuario) {
+            if(!error) {
+              Usuario.publishCreate(objUsuario);
+            }
+          });
+        }
+      })
+    },
+    playerDisconnect: function(sampData) {
+      Usuario.find({username: sampData['nick']}).exec(function(error, findUsuario) {
+        if(!error && findUsuario.length > 0) {
+          Usuario.destroy({id: findUsuario[0].id }).exec(function(error) {
+            if(!error) {
+              Usuario.publishDestroy(findUsuario[0].id, null, {previous: findUsuario[0]});
+            }
+          });
+        }
+      });
+    },
+    particularMessage: function(sampData) {
+      if(sampData['message'].length > 0) {
+        Usuario.findOne({username: sampData['from']}).exec(function(error, findUsuario) {
+          console.log(findUsuario);
+          if(!error && findUsuario.length > 0) {
+            Salas.find({salaId: sampData['salaId'], usuarioTo: findUsuario.id}).exec(function(error2, findSala) {
+              if(findSala) {
+                SocketService.blastMessage({username: sampData['from'], message: sampData['message'], req: false, source: findUsuario.source, action: 'particularMessage', extra: {targetUsername: findSala.usuarioFrom.username, salaId: sampData['salaId']}}, findSala.usuarioFrom.socketId);
+              }
+            });
+          }
+        });
+      }
+    }
+  },
+
   filterData: function(data) {
-    //a=kill&killerName=Mandrakke_Army&deadName=Mandrakka_Army&reason=▼&p=0&t=server
     variables = data.split('&');
     returnData = [];
 

@@ -50,6 +50,16 @@ module.exports.routes = {
   'post /socket/chatMessage': {
     controller: 'SocketController',
     action: 'chatMessage'
+  },
+
+  'post /socket/particularChatMessage': {
+    controller: 'SocketController',
+    action: 'particularChatMessage'
+  },
+
+  'post /socket/openParticularChat': {
+    controller: 'SocketController',
+    action: 'openParticularChat'
   }
 
   /*

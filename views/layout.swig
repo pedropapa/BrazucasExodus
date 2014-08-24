@@ -3,15 +3,12 @@
 {% block javascript_libs %}
     <script type="text/javascript">
         $(document).ready(function() {
-            // Enviar para a aplicação o pedido de autenticação e estabelecer a conexão com a mesma.
-//            socket.get('/socket/go');
-
             // Responsável por receber qualquer tipo de dado enviado pela aplicação via socket.
             socket.on('message', function(data) {
                 console.log(data);
                 // Onde o modelsHook é iniciado.
                 if(data.model) {
-                    modelsHook[data.model][data.verb](data.data);
+                    modelsHook[data.model][data.verb]((data.data)?data.data:data.previous);
                 }
 
                 if(data.sampAction) {
@@ -21,12 +18,8 @@
                             sampServerNotifications.killEvent(data.killerName, data.deadName, data.reason, (new Date()).getTime(), 'TODO');
                         break;
                         case 'chatMessage':
-                            webchat.othersMessage.create(data.username, data.message);
-
-//                        <div class="col-md-5" style="float: right; font-family: Helvetica,Arial,'lucida grande',tahoma,verdana,arial,sans-serif; font-size: 9px;  padding: 9px 3px 3px 3px; margin: 7px 3px 3px 3px; border: 1px solid #ddd; background-color: #fff; background-image: -moz-linear-gradient(center bottom , #fff, #eee);border-radius: 4px">
-//                                <div style="position: absolute; border-radius: 4px; top: -7px; right: 0; left: 5; z-index: 9999; border: 1px solid #ddd; background-color: #fff; background-image: -moz-linear-gradient(center bottom , #fff, #eee); padding: 1px"><b>Raquel</b></div>
-//                        <div style="text-align: right">Enviei uma mensagem pelo UCP!</div>
-//                        </div>
+                        case 'particularMessage':
+                            webchat.othersMessage.create(data);
                         break;
                     }
                 }
@@ -59,9 +52,17 @@
                 create: function(data) {
                     if(data.length > 0) {
                         for(x in data) {
-                            webchat.users.login(data[x].username, 'ucp');
+                            webchat.users.login(data[x].username, data[x].source);
                         }
+                    } else {
+                        webchat.users.login(data.username, data.source);
                     }
+                },
+                destroy: function(data) {
+                    webchat.users.logout(data.username);
+                },
+                init: function(data) {
+                    session.socketId = data;
                 }
             }
         }

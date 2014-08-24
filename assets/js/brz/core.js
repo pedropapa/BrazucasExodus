@@ -1,9 +1,10 @@
+var session = {};
 var flashElements = [];
 
 // Callback será chamada ao carregar todas as páginas do sistema.
 $(document).ready(function() {
   // Cria o tab do webchat.
-  createCoreTab('webchat', 'Chat do Servidor', 200);
+  createCoreTab('webchat', 'Chat do Servidor', false);
 
   // Inicializa o WebChat
   launchWebChat();
@@ -11,14 +12,14 @@ $(document).ready(function() {
 
 function launchWebChat() {
   setCoreTabContent('#webchat', '' +
-    '<form id="chatForm">'+
-    '<div class="chat">' +
+    '<form id="chatForm" class="row container-fluid">'+
+    '<div class="chat col-md-8">' +
     '<div class="panel">' +
     '<div class="messages"></div>' +
-    '<div class="newMessageArea"><input type="text" maxlength="'+brazucasConfig.maxChatMessageLength+'" class="textArea"/></div>' +
+    '<div class="newMessageArea row container-fluid col-md-12"><input type="text" maxlength="'+brazucasConfig.maxChatMessageLength+'" class="textArea"/></div>' +
     '</div>' +
-    '<div class="loggedUsers"></div>' +
     '</div>'+
+    '<div class="loggedUsers chat col-md-4"></div>' +
     '</form>'
   );
 
@@ -37,7 +38,49 @@ function launchWebChat() {
     }
 
     e.preventDefault();
-  })
+  });
+
+  $(document).on('click', '#webchat .loggedUsers .username', function(e) {
+    var userName = $(this).find('#targetName').val();
+
+    socket.post('/socket/openParticularChat', {targetUsername: userName}, function(data) {
+      createParticularChat(userName, data.salaId);
+    });
+  });
+
+  $(document).on('submit', '#particularChatForm*', function(e) {
+    var message = $(this).find('.textArea');
+    var target = $(this).find('#userName');
+    var sala = $(this).find('#salaId');
+
+    if(message.val().length > 0) {
+      socket.post('/socket/particularChatMessage', {message: message.val(), target: target.val(), salaId: sala.val()}, function(data) {
+        message.val('');
+        message.focus();
+      });
+    }
+
+    e.preventDefault();
+  });
+}
+
+function createParticularChat(username, salaId) {
+  if($('#pvt_'+salaId).length == 0) {
+    createCoreTab('pvt_'+salaId, username, 200);
+
+    setCoreTabContent('#pvt_'+ salaId, '' +
+      '<form id="particularChatForm" class="row container-fluid">'+
+      '<input type="hidden" value="'+username+'" id="userName"/>'+
+      '<input type="hidden" value="'+salaId+'" id="salaId"/>'+
+      '<div class="chat col-md-12">' +
+      '<div class="panel">' +
+      '<div class="messages"></div>' +
+      '<div class="newMessageArea row container-fluid col-md-12"><input type="text" maxlength="'+brazucasConfig.maxChatMessageLength+'" class="textArea"/></div>' +
+      '</div>' +
+      '</div>'+
+      '</form>'
+    );
+  }
 }
 
 function adjustTabs() {
@@ -94,12 +137,12 @@ function setCoreTabNotifications(obj, val) {
 function createCoreTab(elementId, title, width) {
   var ele = $('<div></div>')
     .addClass('floatTab')
-    .css({minWidth: width})
     .click(function() {
       hideNotifications(this);
       adjustTabs();
     })
     .attr({id: elementId})
+    .css({width: (width)?width:'auto'})
     .append(
       $('<div></div>')
         .addClass('tabTitle')
@@ -140,28 +183,56 @@ function getTabNotifications(obj) {
 }
 // Objeto responsável pelo gerenciamento do webchat.
 var webchat = {
-  messagesContainer: function() {return $('#webchat .chat .panel .messages')},
-  usersContainer: function() {return $('#webchat .chat .loggedUsers')},
+  messagesContainer: function() {return $('#webchat .panel .messages')},
+  usersContainer: function() {return $('#webchat .loggedUsers')},
 
   othersMessage: {
-    create: function(username, message) {
+    create: function(data) {
+      var messageClass;
+      var targetContainer;
+
+      if(data.socketId == session.socketId) {
+        messageClass = 'userMessage';
+      } else {
+        messageClass = 'othersMessage';
+      }
+
+      if(data.sampAction == 'particularMessage') {
+        targetContainer = $('#pvt_'+data.extra.salaId+' .panel .messages');
+
+        if(targetContainer.length == 0) {
+          socket.post('/socket/openParticularChat', {targetUsername: data.username}, function(_data) {
+            createParticularChat(data.username, data.extra.salaId);
+          });
+        }
+      } else {
+        targetContainer = webchat.messagesContainer();
+      }
+
       var newMessageDiv = $('<div></div>')
-        .addClass('othersMessage')
+        .addClass('col-md-12')
+        .css({margin: 0, padding: 0})
         .append(
-          $('<div></div>')
-            .addClass('username')
-            .append($('<b></b>')
-              .append(username)
-            )
-        ).append(
-          $('<div></div>')
-            .addClass('messageText')
-            .append(message)
-        );
+        $('<div></div>')
+          .addClass(messageClass)
+          .addClass('geral')
+          .append(
+            $('<div></div>')
+              .addClass('username')
+              .append($('<b></b>')
+                .append(data.username)
+              )
+          ).append(
+            $('<div></div>')
+              .addClass('messageText')
+              .addClass('force-break-line')
+              .append(data.message)
+          )
+      );
 
-      webchat.messagesContainer().append(newMessageDiv);
 
-      webchat.internalUpdateScroll();
+      targetContainer.append(newMessageDiv);
+      webchat.internalUpdateScroll(targetContainer);
     }
   },
 
@@ -184,25 +255,40 @@ var webchat = {
       if($('#webchatUser_'+username).length == 0) {
         var userDiv = $('<div></div>')
           .attr({'id': 'webchatUser_'+username})
+          .addClass('col-md-12')
+          .addClass('text-left')
           .addClass('username')
+          .addClass('force-break-line')
           .append(username)
           .append(
             $('<span></span>')
               .addClass('loginType')
               .append(loginType)
+          ).append(
+            $('<input/>')
+              .attr({'id': 'targetName', value: username, type: 'hidden'})
           );
 
         webchat.usersContainer().append(userDiv);
 
         webchat.notifications.create('<b>' + username + '</b> entrou.' );
       }
+    },
+    logout: function(username) {
+      var user = $('#webchatUser_'+username);
+
+      if(user.length > 0) {
+        user.remove();
+
+        webchat.notifications.create('<b>' + username + '</b> saiu.' );
+      }
     }
   },
 
-  internalUpdateScroll: function() {
+  internalUpdateScroll: function(container) {
     setCoreTabNotifications('#webchat', getTabNotifications('#webchat') + 1);
 
-    this.messagesContainer().scrollTop(this.messagesContainer().get(0).scrollHeight);
+    container.scrollTop(this.messagesContainer().get(0).scrollHeight);
   }
 }
 

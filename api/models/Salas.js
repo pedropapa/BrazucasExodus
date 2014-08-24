@@ -12,7 +12,28 @@ module.exports = {
     connection: 'memory',
     autoPK: false,
 
-    prefix: 'chat_',
-    geral: this.prefix + '1'
+    geral: 'chat_1',
+
+    attributes: {
+      id: {
+        type: 'integer',
+        unique: true,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      salaId: {
+        type: 'string',
+        unique: true,
+        required: true
+      },
+      usuarioFrom: {
+        model: 'Usuario',
+        required: true
+      },
+      usuarioTo: {
+        model: 'Usuario',
+        required: true
+      }
+    }
 
 };

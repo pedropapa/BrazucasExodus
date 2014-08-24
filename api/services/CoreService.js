@@ -5,12 +5,12 @@
  */
 module.exports = {
   /**
-   * Cria um usuário temporário na aplicação.
+   * Cria um usuário do UCP temporário na aplicação.
    *
    * @param session - Requisição enviada pelo cliente.
    */
-  criarUsuario: function(session) {
-    Usuario.create({username: 'PNA'+Math.round(Math.random()*1000000000)}).exec(function(error, objUsuario) {
+  criarUsuario: function(session, socket) {
+    Usuario.create({username: 'PNA'+Math.round(Math.random()*1000000000), socketId: socket.id, source: Local.ucp}).exec(function(error, objUsuario) {
 
       if(error) {
         return {error: 500, controller: 'Socket', message: 'Não foi possível criar o usuário temporário.'};
@@ -20,7 +20,7 @@ module.exports = {
 
         Usuario.publishCreate(objUsuario);
 
-        console.log('Novo usuário criado: '+objUsuario.id);
+        console.log('Novo usuário criado: '+objUsuario.username);
       }
     });
   }

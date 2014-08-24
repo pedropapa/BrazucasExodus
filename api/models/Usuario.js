@@ -27,15 +27,24 @@ module.exports = {
 
     attributes: {
         id: {
-            type: 'integer',
-            unique: true,
-            primaryKey: true,
-            autoIncrement: true
+          type: 'integer',
+          unique: true,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        socketId: {
+          type: 'string',
+          unique: true,
+          required: false
+        },
+        source: {
+          type: 'string',
+          required: true
         },
         username: {
-            type: 'string',
-            unique: true,
-            required: true
+          type: 'string',
+          unique: true,
+          required: true
         }//,
 //        password: {
 //            type: 'string',

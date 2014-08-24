@@ -1,5 +1,6 @@
 $.fn.stopFlash = function() {
   clearInterval(flashElements[this.attr('id')]);
+  flashElements[this.attr('id')] = null;
 };
 
 $.fn.isOnScreen = function(){
@@ -13,11 +14,13 @@ $.fn.isOnScreen = function(){
 };
 
 $.fn.flash = function(duration) {
-  var _this = this;
+  if(flashElements[this.attr('id')] == null) {
+    var _this = this;
 
-  var animateMs = duration || 1500;
+    var animateMs = duration || 1500;
 
-  flashElements[this.attr('id')] = setInterval( function() { flashElement(_this, duration) }, animateMs);
+    flashElements[this.attr('id')] = setInterval( function() { flashElement(_this, duration) }, animateMs);
+  }
 };
 
 function flashElement(obj, duration) {
