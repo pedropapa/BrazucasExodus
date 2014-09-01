@@ -82,10 +82,9 @@ module.exports = {
     particularMessage: function(sampData) {
       if(sampData['message'].length > 0) {
         Usuario.findOne({username: sampData['from']}).exec(function(error, findUsuario) {
-          console.log(findUsuario);
-          if(!error && findUsuario.length > 0) {
-            Salas.find({salaId: sampData['salaId'], usuarioTo: findUsuario.id}).exec(function(error2, findSala) {
-              if(findSala) {
+          if(!error && findUsuario) {
+            Salas.findOne({salaId: sampData['salaId'], usuarioTo: findUsuario.id}).populate('usuarioFrom').exec(function(error2, findSala) {
+              if(!error2 && findSala) {
                 SocketService.blastMessage({username: sampData['from'], message: sampData['message'], req: false, source: findUsuario.source, action: 'particularMessage', extra: {targetUsername: findSala.usuarioFrom.username, salaId: sampData['salaId']}}, findSala.usuarioFrom.socketId);
               }
             });

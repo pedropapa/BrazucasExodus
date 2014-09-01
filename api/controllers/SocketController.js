@@ -47,10 +47,12 @@ module.exports = {
     if(targetUsername !== req.session.usuario.username) {
       Usuario.findOne({username: targetUsername}).exec(function(err, objUsuario) {
         if(!err && objUsuario !== undefined && req.param('message').length <= sails.config.brazucasConfig.maxChatMessageLength) {
-          console.log(objUsuario);
           // Mensagem particular enviada para um jogador logado no servidor.
           if(objUsuario.source == Local.servidor || objUsuario.source == Local.ambos) {
             SampSocketService.send('a=particularMessage&from='+req.session.usuario.username+'&to='+targetUsername+'&message='+req.param('message')+'&source='+req.session.usuario.source+'&salaId='+salaId);
+
+            // Emite a mensagem para o usuário que está enviando.
+            SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: objUsuario.source, action: 'particularMessage', extra: {targetUsername: targetUsername, salaId: salaId}}, req.session.usuario.socketId);
           }
 
           // Mensagem particular enviada para um usuário do UCP.
@@ -58,7 +60,7 @@ module.exports = {
             SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: objUsuario.source, action: 'particularMessage', extra: {targetUsername: targetUsername, salaId: salaId}}, objUsuario.socketId);
           }
         } else {
-          console.log('Usuário '+ targetUsername+ 'não encontrado.');
+          res.json({error: '500'}, 200);
         }
       });
     }
@@ -67,28 +69,35 @@ module.exports = {
   },
 
   openParticularChat: function(req, res) {
-    salaId = 'SALA'+Math.round(Math.random()*1000000000);
-
     targetUsername = req.param('targetUsername');
 
+    salaId = UtilsService.generateHash(targetUsername+req.session.usuario.username);
+
+    // Verifica se o jogador requisitante e o jogador requisitado são diferentes.
     if(targetUsername !== req.session.usuario.username) {
+      // Verifica se o jogador alvo está conectado.
       Usuario.findOne({username: targetUsername}).exec(function(err, objUsuario) {
-        if(!err) {
-          Salas.create({salaId: salaId, usuarioFrom: req.session.usuario.id, usuarioTo: objUsuario.id}).exec(function(err2, newSala) {
-            if(!err2) {
-              console.log('chegou');
-              sails.sockets.join(req.socket, objUsuario.socketId);
-              res.json({message: 'success', salaId: salaId}, 200);
-            } else {
-              res.json({error: 500}, 300);
+        if(!err && objUsuario) {
+          // Verifica se a sala entre os dois jogadores já está criada.
+          Salas.findOne({salaId: salaId}).exec(function(err3, existsSala) {
+            if(!existsSala) {
+              // Caso não exista, cria.
+              Salas.create({salaId: salaId, usuarioFrom: req.session.usuario.id, usuarioTo: objUsuario.id}).exec(function(err2, newSala) {
+                if(!err2) {
+                  sails.sockets.join(req.socket, objUsuario.socketId);
+                  res.json({message: 'success', salaId: salaId}, 200);
+                } else {
+                  res.json({error: 500}, 300);
+                }
+              })
             }
-          })
+          });
         } else {
           res.json({error: 500}, 300);
         }
       });
     } else {
-      res.json({error: 500}, 300);
+      res.json({error: 500, message: 'Você não pode conversar particularmente consigo mesmo.'}, 300);
     }
   },
 

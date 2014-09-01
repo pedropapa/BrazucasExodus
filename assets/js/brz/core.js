@@ -44,7 +44,11 @@ function launchWebChat() {
     var userName = $(this).find('#targetName').val();
 
     socket.post('/socket/openParticularChat', {targetUsername: userName}, function(data) {
-      createParticularChat(userName, data.salaId);
+      if(data.error) {
+        noty({text: 'Um erro ocorreu ao tentar abrir o chat.'+(data.message)?'<br /><strong>'+data.message+'</strong>':'', timeout: 8000, layout: 'top', type: 'warning'});
+      } else {
+        createParticularChat(userName, data.salaId);
+      }
     });
   });
 
@@ -98,9 +102,9 @@ function adjustTabs() {
 }
 
 function hideNotifications(obj) {
-  $(obj).find('.tabTitle .notifications').hide();
-  $(obj).find('.tabTitle').stopFlash();
-  $(obj).find('.tabTitle .notifications').html('0');
+  obj.find('.tabTitle .notifications').hide();
+  obj.find('.tabTitle').stopFlash();
+  obj.find('.tabTitle .notifications').html('0');
 }
 
 function showNotifications(obj) {
@@ -114,8 +118,8 @@ function setCoreTabContent(obj, content) {
 }
 
 function setCoreTabNotifications(obj, val) {
-  var notificationElement = $(obj).find('.tabTitle .notifications');
-  var parentContent = $(obj).find('.tabContent');
+  var notificationElement = obj.find('.tabTitle .notifications');
+  var parentContent = obj.find('.tabContent');
 
   if(val > 0) {
     if(val > 99) {
@@ -127,7 +131,7 @@ function setCoreTabNotifications(obj, val) {
     if(parentContent.is(':hidden')) {
       notificationElement.show();
 
-      $(obj).find('.tabTitle').flash(1500);
+      obj.find('.tabTitle').flash(1500);
     }
   } else {
     hideNotifications(obj);
@@ -176,7 +180,7 @@ function createCoreTab(elementId, title, width) {
 }
 
 function getTabNotifications(obj) {
-  var notificationElement = $(obj).find('.tabTitle .notifications');
+  var notificationElement = obj.find('.tabTitle .notifications');
   var notifications = parseInt(notificationElement.html());
 
   return notifications;
@@ -190,6 +194,7 @@ var webchat = {
     create: function(data) {
       var messageClass;
       var targetContainer;
+      var targetDiv;
 
       if(data.socketId == session.socketId) {
         messageClass = 'userMessage';
@@ -199,14 +204,18 @@ var webchat = {
 
       if(data.sampAction == 'particularMessage') {
         targetContainer = $('#pvt_'+data.extra.salaId+' .panel .messages');
+        targetDiv = $('#pvt_'+data.extra.salaId);
 
         if(targetContainer.length == 0) {
           socket.post('/socket/openParticularChat', {targetUsername: data.username}, function(_data) {
             createParticularChat(data.username, data.extra.salaId);
+            targetContainer = $('#pvt_'+data.extra.salaId+' .panel .messages');
+            targetDiv = $('#pvt_'+data.extra.salaId);
           });
         }
       } else {
         targetContainer = webchat.messagesContainer();
+        targetDiv = $('#webchat');
       }
 
       var newMessageDiv = $('<div></div>')
@@ -232,7 +241,7 @@ var webchat = {
 
 
       targetContainer.append(newMessageDiv);
-      webchat.internalUpdateScroll(targetContainer);
+      webchat.internalUpdateScroll(targetDiv);
     }
   },
 
@@ -286,7 +295,11 @@ var webchat = {
   },
 
   internalUpdateScroll: function(container) {
-    setCoreTabNotifications('#webchat', getTabNotifications('#webchat') + 1);
+    if(!container) {
+      container = $('#webchat');
+    }
+
+    setCoreTabNotifications(container, getTabNotifications(container) + 1);
 
     container.scrollTop(this.messagesContainer().get(0).scrollHeight);
   }
