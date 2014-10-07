@@ -17,6 +17,8 @@
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script type="text/javascript" src="js/jquery.livequery.js"></script>
 
     <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
     <script type="text/javascript" src="js/brz/core.js"></script>

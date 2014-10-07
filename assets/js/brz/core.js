@@ -3,12 +3,52 @@ var flashElements = [];
 
 // Callback será chamada ao carregar todas as páginas do sistema.
 $(document).ready(function() {
+  createCoreTab('feedback', 'Problemas?', false);
   // Cria o tab do webchat.
   createCoreTab('webchat', 'Chat do Servidor', false);
 
   // Inicializa o WebChat
+  launchFeedback();
   launchWebChat();
+
+  $('#floatTabs .floatTab .tabTitle').livequery(function() {
+    $(this).click(function() {
+      adjustTabs();
+    });
+  });
 });
+
+function launchFeedback() {
+  setCoreTabContent('#feedback', '' +
+    '<div style="margin-left: 5px; margin-right: 5px;">'+
+    '<b>Encontrou um problema no site?</b>' +
+    '<br /><br />' +
+    'Por gentileza preencha o formulário abaixo para que nossa equipe possa resolver o problema o mais rápido possível.' +
+    '<br /><br />'+
+    'Descreva com detalhes o erro encontrado:' +
+    '<br />'+
+    '<textarea style="width: 100%" rows="5"></textarea>'+
+    '<br /><br />'+
+    'Imagem atual da tela:'+
+    '<br />'+
+    '<div style="width: 300px;"'+
+    '<a onclick="window.open($(this).find(\'img:first\').attr(\'src\'))" target="_blank">' +
+    '<img id="feedback_image" width="300px" height="200px"/>' +
+    '</a>'+
+    '</div>'+
+    '<br /><br />' +
+    '<input type="submit" class="btn btn-primary center-block" value="Enviar"/>'+
+    '</div>'
+  );
+
+  $('#feedback .tabTitle').click(function() {
+    html2canvas(document.body, {
+      onrendered: function(canvas) {
+        $('#feedback #feedback_image').attr('src', canvas.toDataURL());
+      }
+    });
+  });
+}
 
 function launchWebChat() {
   setCoreTabContent('#webchat', '' +
@@ -23,7 +63,7 @@ function launchWebChat() {
     '</form>'
   );
 
-  $('#webchat').click(function() {
+  $('#webchat .tabTitle').click(function() {
     $(this).find('.textArea').focus();
   });
 
