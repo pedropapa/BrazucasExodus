@@ -20,8 +20,12 @@
     <script type="text/javascript" src="js/html2canvas.js"></script>
     <script type="text/javascript" src="js/jquery.livequery.js"></script>
 
+    <script type="text/javascript" src="js/brz/floatTabs.js"></script>
+
     <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
     <script type="text/javascript" src="js/brz/core.js"></script>
+    <script type="text/javascript" src="js/brz/webchat/core.js"></script>
+    <script type="text/javascript" src="js/brz/serverNotifications.js"></script>
 
     <script type="text/javascript">
         // @TODO verificar uma melhor maneira de injetar arquivos de configuração server-side no cliente.
