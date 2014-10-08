@@ -8,6 +8,7 @@ var webchat = {
       var messageClass;
       var targetContainer;
       var targetDiv;
+      var private_room;
 
       if(data.socketId == session.socketId) {
         messageClass = 'userMessage';
@@ -16,16 +17,16 @@ var webchat = {
       }
 
       if(data.sampAction == 'particularMessage') {
-        targetContainer = $('#pvt_'+data.extra.salaId+' .panel .messages');
-        targetDiv = $('#pvt_'+data.extra.salaId);
+        private_room = particular_windows_tab[data.extra.salaId];
 
-        if(targetContainer.length == 0) {
+        if(!private_room) {
           socket.post('/socket/openParticularChat', {targetUsername: data.username}, function(_data) {
             createParticularChat(data.username, data.extra.salaId);
-            targetContainer = $('#pvt_'+data.extra.salaId+' .panel .messages');
-            targetDiv = $('#pvt_'+data.extra.salaId);
           });
         }
+
+        targetContainer = private_room.getTabElement().find('.panel .messages');
+        targetDiv = private_room.getTabElement();
       } else {
         targetContainer = webchat.messagesContainer();
         targetDiv = $('#'+webchat_tab.getId());
@@ -54,7 +55,7 @@ var webchat = {
 
 
       targetContainer.append(newMessageDiv);
-      webchat.internalUpdateScroll(targetDiv);
+      webchat.internalUpdateScroll(targetDiv.find('.messages'));
     }
   },
 

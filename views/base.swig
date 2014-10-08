@@ -25,7 +25,7 @@
     <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
     <script type="text/javascript" src="js/brz/core.js"></script>
     <script type="text/javascript" src="js/brz/webchat/core.js"></script>
-    <script type="text/javascript" src="js/brz/serverNotifications.js"></script>
+    <script type="text/javascript" src="js/brz/sampServerNotifications.js"></script>
 
     <script type="text/javascript">
         // @TODO verificar uma melhor maneira de injetar arquivos de configuração server-side no cliente.

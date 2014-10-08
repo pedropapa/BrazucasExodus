@@ -1,28 +1,45 @@
 var FloatTabs = {
+  tabsManager: null,
   adjustTabs: function () {
     var nextRight = 0;
 
     $('.floatTabs').find('.floatTab').each(function () {
-      $(this).css('right', nextRight);
-      nextRight += parseInt($(this).css('width')) + 15;
+      if($(this).is(':visible')) {
+        $(this).css('right', nextRight);
+        nextRight += parseInt($(this).css('width')) + 15;
 
-      if(parseInt($(this).offset().top) < 0) {
-        $(this).find('.tabContent').css('height', (parseInt($(this).css('height')) + parseInt($(this).offset().top)) - parseInt($(this).find('.tabTitle').css('height')));
-        $(this).find('.tabContent').css('overflow-y', 'auto');
-        $(this).find('.tabContent').css('overflow-x', 'hidden');
-      } else {
-        $(this).find('.tabContent').css('height', 'auto');
-        $(this).find('.tabContent').css('overflow-y', 'hidden');
-        $(this).find('.tabContent').css('overflow-x', 'hidden');
+        if(parseInt($(this).offset().top) < 0) {
+          $(this).find('.tabContent').css('height', (parseInt($(this).css('height')) + parseInt($(this).offset().top)) - parseInt($(this).find('.tabTitle').css('height')));
+          $(this).find('.tabContent').css('overflow-y', 'auto');
+          $(this).find('.tabContent').css('overflow-x', 'hidden');
+        } else {
+          $(this).find('.tabContent').css('height', 'auto');
+          $(this).find('.tabContent').css('overflow-y', 'hidden');
+          $(this).find('.tabContent').css('overflow-x', 'hidden');
+        }
       }
     });
 
     if ($('.floatTab').last().offset().left <= 0) {
-      this.onTabsReachPageBounds();
+      if(this.tabsManager == null) {
+        alert(this.tabsManager);
+        this.enableTabsManager();
+      }
     }
   },
-  onTabsReachPageBounds: function () {
-    alert(123);
+  enableTabsManager: function () {
+    if(this.tabsManager == null) {
+      this.tabsManager = new FloatTab('tabs_manager', 'Abas Agrupadas');
+    }
+
+    var tabBody = '';
+    $('.floatTabs').find('.floatTab').not($('#floatTab_tabs_manager')).not(webchat_tab.getTabElement()).each(function(index, element){
+      tabBody += $(element).find('.tabTitle').text()+'<br />';
+      $(element).hide();
+    });
+
+    this.tabsManager.setContent(tabBody);
+    this.adjustTabs();
   }
 }
 
@@ -143,9 +160,10 @@ FloatTab.prototype = {
       this.getTabElement().live(event, callback);
     } else {
       var element_to_apply_event = this.getTabElement().find(element);
-      if (element_to_apply_event.size() > 0) {
-        element_to_apply_event.on(event, callback);
-      }
+      element_to_apply_event.livequery(function() {$(this).on(event, callback)});
     }
+  },
+  destroy: function() {
+    this.getTabElement().remove();
   }
 }

@@ -3,10 +3,11 @@ var flashElements = [];
 
 var webchat_tab = null;
 var feedback_tab = null;
+var particular_windows_tab = [];
 
 // Callback será chamada ao carregar todas as páginas do sistema.
 $(document).ready(function() {
-  // Cria o tab do webchat.
+  // Cria o tab do feedback    .
   launchFeedbackTab();
   launchWebChat();
 
@@ -80,7 +81,7 @@ function launchWebChat() {
     e.preventDefault();
   });
 
-  $(document).on('click', '#webchat .loggedUsers .username', function(e) {
+  webchat_tab.applyEvent('click', '.loggedUsers .username', function(e) {
     var userName = $(this).find('#targetName').val();
 
     socket.post('/socket/openParticularChat', {targetUsername: userName}, function(data) {
@@ -91,28 +92,13 @@ function launchWebChat() {
       }
     });
   });
-
-  $(document).on('submit', '#particularChatForm*', function(e) {
-    var message = $(this).find('.textArea');
-    var target = $(this).find('#userName');
-    var sala = $(this).find('#salaId');
-
-    if(message.val().length > 0) {
-      socket.post('/socket/particularChatMessage', {message: message.val(), target: target.val(), salaId: sala.val()}, function(data) {
-        message.val('');
-        message.focus();
-      });
-    }
-
-    e.preventDefault();
-  });
 }
 
 function createParticularChat(username, salaId) {
-  if($('#pvt_'+salaId).length == 0) {
-    createCoreTab('pvt_'+salaId, username, 200);
+  if(!particular_windows_tab[salaId]) {
+    particular_windows_tab[salaId] = new FloatTab('pvt_'+salaId, username);
 
-    setCoreTabContent('#pvt_'+ salaId, '' +
+    particular_windows_tab[salaId].setContent('' +
       '<form id="particularChatForm" class="row container-fluid">'+
       '<input type="hidden" value="'+username+'" id="userName"/>'+
       '<input type="hidden" value="'+salaId+'" id="salaId"/>'+
@@ -122,8 +108,22 @@ function createParticularChat(username, salaId) {
       '<div class="newMessageArea row container-fluid col-md-12"><input type="text" maxlength="'+brazucasConfig.maxChatMessageLength+'" class="textArea"/></div>' +
       '</div>' +
       '</div>'+
-      '</form>'
-    );
+      '</form>');
+
+    particular_windows_tab[salaId].applyEvent('submit', '#particularChatForm*', function(e) {
+      var message = $(this).find('.textArea');
+      var target = $(this).find('#userName');
+      var sala = $(this).find('#salaId');
+
+      if(message.val().length > 0) {
+        socket.post('/socket/particularChatMessage', {message: message.val(), target: target.val(), salaId: sala.val()}, function(data) {
+          message.val('');
+          message.focus();
+        });
+      }
+
+      e.preventDefault();
+    });
   }
 }
 
