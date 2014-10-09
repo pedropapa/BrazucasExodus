@@ -1,45 +1,95 @@
+$(document).ready(function() {
+  FloatTabs.tabsManager = new FloatTab('tabs_manager', 'Abas Agrupadas', 150);
+  FloatTabs.tabsManager.hide();
+});
+
 var FloatTabs = {
   tabsManager: null,
+  tabs: [],
+  tabPrefix: 'floatTab_',
   adjustTabs: function () {
     var nextRight = 0;
+    var windowSize = $(window).width();
+    var elementsWidth = 0;
 
-    $('.floatTabs').find('.floatTab').each(function () {
-      if($(this).is(':visible')) {
-        $(this).css('right', nextRight);
-        nextRight += parseInt($(this).css('width')) + 15;
+    for(tab in this.tabs) {
+      var element = this.tabs[tab].getTabElement();
 
-        if(parseInt($(this).offset().top) < 0) {
-          $(this).find('.tabContent').css('height', (parseInt($(this).css('height')) + parseInt($(this).offset().top)) - parseInt($(this).find('.tabTitle').css('height')));
-          $(this).find('.tabContent').css('overflow-y', 'auto');
-          $(this).find('.tabContent').css('overflow-x', 'hidden');
-        } else {
-          $(this).find('.tabContent').css('height', 'auto');
-          $(this).find('.tabContent').css('overflow-y', 'hidden');
-          $(this).find('.tabContent').css('overflow-x', 'hidden');
+      if(element.size() > 0) {
+        if(this.tabsManager == null || (this.tabsManager !== null && !element[0].isEqualNode(this.tabsManager.getTabElement()[0]))) {
+          elementsWidth += element.find('.tabContent').width() + 15;
+        }
+
+        if(element.is(':visible')) {
+          element.css('right', nextRight);
+          nextRight += parseInt(element.css('width')) + 15;
+
+          if(parseInt(element.offset().top) < 0) {
+            element.find('.tabContent').css('height', (parseInt(element.css('height')) + parseInt(element.offset().top)) - parseInt(element.find('.tabTitle').css('height')));
+            element.find('.tabContent').css('overflow-y', 'auto');
+            element.find('.tabContent').css('overflow-x', 'hidden');
+          } else {
+            element.find('.tabContent').css('height', 'auto');
+            element.find('.tabContent').css('overflow-y', 'hidden');
+            element.find('.tabContent').css('overflow-x', 'hidden');
+          }
         }
       }
-    });
+    }
 
-    if ($('.floatTab').last().offset().left <= 0) {
-      if(this.tabsManager == null) {
-        alert(this.tabsManager);
-        this.enableTabsManager();
+    elementsWidth -= ($(window).width() - ($('.floatTab').last().offset().left + $('.floatTab').last().outerWidth())) - 70;
+
+    if(this.tabsManager !== null) {
+      if ($('.floatTab').last().offset().left < 0) {
+        if(this.tabsManager.getTabElement().is(':hidden')) {
+          this.enableTabsManager();
+        }
+      } else if($('.floatTab').first().offset().left > elementsWidth) {
+        if(this.tabsManager.getTabElement().is(':visible')) {
+          this.disableTabsManager();
+        }
       }
     }
   },
   enableTabsManager: function () {
-    if(this.tabsManager == null) {
-      this.tabsManager = new FloatTab('tabs_manager', 'Abas Agrupadas');
+    var tabBody = '';
+
+    for(tab in this.tabs) {
+      var element = this.tabs[tab].getTabElement();
+
+      if(element.size() > 0) {
+        if(!element[0].isEqualNode($('#floatTab_tabs_manager')[0])) {
+          tabBody += this.tabs[tab].getName()+'<br />';
+          element.find('.tabContent').hide();
+          element.hide();
+        }
+      }
     }
 
-    var tabBody = '';
-    $('.floatTabs').find('.floatTab').not($('#floatTab_tabs_manager')).not(webchat_tab.getTabElement()).each(function(index, element){
-      tabBody += $(element).find('.tabTitle').text()+'<br />';
-      $(element).hide();
-    });
-
     this.tabsManager.setContent(tabBody);
-    this.adjustTabs();
+    this.tabsManager.show();
+  },
+  disableTabsManager: function() {
+    for(tab in this.tabs) {
+      var element = this.tabs[tab].getTabElement();
+
+      if(element.size() > 0) {
+        if(!element[0].isEqualNode($('#floatTab_tabs_manager')[0])) {
+          element.show();
+        }
+      }
+    }
+
+    this.tabsManager.hide();
+  },
+  findTab: function(tabName) {
+    var findEle = $('#'+ FloatTabs.tabPrefix + tabName);
+
+    if(findEle.size() > 0) {
+      return findEle;
+    } else {
+      return false;
+    }
   }
 }
 
@@ -86,8 +136,9 @@ function FloatTab(tabName, title, width) {
 
     $('.floatTabs').append(ele);
 
-    this.applyDefaultEvents();
+    FloatTabs.tabs[tabName] = this;
 
+    this.applyDefaultEvents();
     FloatTabs.adjustTabs();
   } else {
     console.log('O nome da aba é obrigatório');
@@ -95,16 +146,23 @@ function FloatTab(tabName, title, width) {
 }
 
 FloatTab.prototype = {
-  tabPrefix: 'floatTab_',
   id: null,
+  name: null,
   getTabElement: function () {
     return $('#' + this.id);
   },
-  setId: function (id) {
-    this.id = this.tabPrefix + id;
+  setId: function (name) {
+    this.name = name;
+    this.id = FloatTabs.tabPrefix + name;
   },
   getId: function () {
     return this.id;
+  },
+  setName: function(newName) {
+    this.name = newName;
+  },
+  getName: function() {
+    return this.name;
   },
   hideNotifications: function () {
     this.getTabElement().find('.tabTitle .notifications').hide();
@@ -165,5 +223,14 @@ FloatTab.prototype = {
   },
   destroy: function() {
     this.getTabElement().remove();
+    delete FloatTabs.tabs[this.getName()];
+  },
+  hide: function() {
+    this.getTabElement().hide();
+    FloatTabs.adjustTabs();
+  },
+  show: function() {
+    this.getTabElement().show();
+    FloatTabs.adjustTabs();
   }
 }

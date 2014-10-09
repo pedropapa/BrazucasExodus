@@ -7,12 +7,17 @@ var particular_windows_tab = [];
 
 // Callback será chamada ao carregar todas as páginas do sistema.
 $(document).ready(function() {
-  // Cria o tab do feedback    .
+  // Cria o tab do feedback.
+  launchTaskManagerTab();
   launchFeedbackTab();
   launchWebChat();
 
   $(window).on("resize", function() {FloatTabs.adjustTabs()});
 });
+
+function launchTaskManagerTab() {
+
+}
 
 function launchFeedbackTab() {
   feedback_tab = new FloatTab('feedback', 'Problemas?');
