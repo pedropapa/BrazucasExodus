@@ -7,6 +7,7 @@ var FloatTabs = {
   tabsManager: null,
   tabs: [],
   tabPrefix: 'floatTab_',
+  lastTriggeredWidth: 0,
   adjustTabs: function () {
     var nextRight = 0;
     var windowSize = $(window).width();
@@ -17,7 +18,11 @@ var FloatTabs = {
 
       if(element.size() > 0) {
         if(this.tabsManager == null || (this.tabsManager !== null && !element[0].isEqualNode(this.tabsManager.getTabElement()[0]))) {
-          elementsWidth += element.find('.tabContent').width() + 15;
+          if(element.is(':visible')) {
+            this.tabs[tab].width = element.find('.tabContent').width();
+          }
+
+          elementsWidth += this.tabs[tab].width + 15;
         }
 
         if(element.is(':visible')) {
@@ -37,14 +42,20 @@ var FloatTabs = {
       }
     }
 
-    elementsWidth -= ($(window).width() - ($('.floatTab').last().offset().left + $('.floatTab').last().outerWidth())) - 70;
+
+
+    if($('.floatTab').filter(':visible:last').size() > 0) {
+      elementsWidth += parseInt($('.floatTabs').css('margin-right'));
+      console.log($('.floatTab').filter(':visible:first').offset().left, elementsWidth);
+    }
 
     if(this.tabsManager !== null) {
       if ($('.floatTab').last().offset().left < 0) {
         if(this.tabsManager.getTabElement().is(':hidden')) {
+          this.lastTriggeredWidth = elementsWidth;
           this.enableTabsManager();
         }
-      } else if($('.floatTab').first().offset().left > elementsWidth) {
+      } else if(this.lastTriggeredWidth < elementsWidth) {
         if(this.tabsManager.getTabElement().is(':visible')) {
           this.disableTabsManager();
         }
@@ -60,7 +71,7 @@ var FloatTabs = {
       if(element.size() > 0) {
         if(!element[0].isEqualNode($('#floatTab_tabs_manager')[0])) {
           tabBody += this.tabs[tab].getName()+'<br />';
-          element.find('.tabContent').hide();
+//          element.find('.tabContent').hide();
           element.hide();
         }
       }
@@ -148,6 +159,8 @@ function FloatTab(tabName, title, width) {
 FloatTab.prototype = {
   id: null,
   name: null,
+  width: 0,
+  height: 0,
   getTabElement: function () {
     return $('#' + this.id);
   },

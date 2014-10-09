@@ -20,7 +20,9 @@
     <script type="text/javascript" src="js/html2canvas.js"></script>
     <script type="text/javascript" src="js/jquery.livequery.js"></script>
 
+    <script type="text/javascript" src="js/jquery.browser.js"></script>
     <script type="text/javascript" src="js/brz/floatTabs.js"></script>
+    <script type="text/javascript" src="js/custom.protocol.detect.js"></script>
 
     <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
     <script type="text/javascript" src="js/brz/core.js"></script>
@@ -38,5 +40,9 @@
     {% block corpo %}{% endblock %}
 
     <div id="floatTabs" class="floatTabs"></div>
+
+    {#Utilizado para detectar protocolos customizados (o protocolo do sa-mp, por exemplo).#}
+    <iframe id="hiddenIframe" src="about:blank" style="display:none"></iframe>
+    <a id="hiddenLink" style="display:none;" href="#">custom protocol</a>
 </body>
 </html>
