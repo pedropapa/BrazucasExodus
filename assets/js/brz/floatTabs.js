@@ -46,7 +46,6 @@ var FloatTabs = {
 
     if($('.floatTab').filter(':visible:last').size() > 0) {
       elementsWidth += parseInt($('.floatTabs').css('margin-right'));
-      console.log($('.floatTab').filter(':visible:first').offset().left, elementsWidth);
     }
 
     if(this.tabsManager !== null) {
@@ -69,7 +68,7 @@ var FloatTabs = {
       var element = this.tabs[tab].getTabElement();
 
       if(element.size() > 0) {
-        if(!element[0].isEqualNode($('#floatTab_tabs_manager')[0])) {
+        if(!element[0].isEqualNode(this.tabsManager.getTabElement()[0])) {
           tabBody += this.tabs[tab].getName()+'<br />';
 //          element.find('.tabContent').hide();
           element.hide();
@@ -85,7 +84,7 @@ var FloatTabs = {
       var element = this.tabs[tab].getTabElement();
 
       if(element.size() > 0) {
-        if(!element[0].isEqualNode($('#floatTab_tabs_manager')[0])) {
+        if(!element[0].isEqualNode(this.tabsManager.getTabElement()[0])) {
           element.show();
         }
       }

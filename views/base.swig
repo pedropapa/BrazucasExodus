@@ -14,6 +14,7 @@
     <script type="text/javascript" src="js/socket.io.js"></script>
     <script type="text/javascript" src="js/sails.io.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+
     <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
@@ -33,6 +34,7 @@
         // @TODO verificar uma melhor maneira de injetar arquivos de configuração server-side no cliente.
         var brazucasConfig = {{ sails.config.brazucasConfig | json | raw }};
     </script>
+
     {% block javascript_libs %}{% endblock %}
 </head>
 
@@ -41,7 +43,8 @@
 
     <div id="floatTabs" class="floatTabs"></div>
 
-    {#Utilizado para detectar protocolos customizados (o protocolo do sa-mp, por exemplo).#}
+    {# Utilizado para detectar protocolos customizados (o protocolo do sa-mp, por exemplo). #}
+    <input id="protocol" value="" placeholder="custom protocol" type="hidden"/>
     <iframe id="hiddenIframe" src="about:blank" style="display:none"></iframe>
     <a id="hiddenLink" style="display:none;" href="#">custom protocol</a>
 </body>

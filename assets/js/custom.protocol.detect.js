@@ -29,7 +29,7 @@ function onProtocolSupportVerificationFinish() {
       if(isSupported) {
 
       } else {
-        alert(12332);
+
       }
       break;
   }
@@ -117,7 +117,6 @@ function launchChrome(){
   protcolEl.focus();
   protcolEl.onblur = function(){
     isSupported = true;
-    console.log("Text Field onblur called");
   };
 
 //will trigger onblur
