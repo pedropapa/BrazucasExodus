@@ -2,6 +2,8 @@
 
 {% block javascript_libs %}
     <script type="text/javascript">
+        var socketDisconnected = false;
+
         $(document).ready(function() {
             // Responsável por receber qualquer tipo de dado enviado pela aplicação via socket.
             socket.on('message', function(data) {
@@ -26,6 +28,7 @@
             });
 
             socket.on('disconnect', function(data) {
+                socketDisconnected = true;
                 // @TODO
                 // Desativar o webchat, competitivo e qualquer outro módulo do ucp que tenha conectividade via socket.
                 // Obrigar o usuário a atualizar a página ao reestabelecer a conexão.
@@ -35,8 +38,10 @@
             socket.on('connect', function(data) {
                 // @TODO
                 // Se for um reconnect, obrigar o usuário a atualizar a página.
-                $.noty.closeAll();
-                noty({text: 'Conexão reestabelecida!', type: 'success', killer: true, timeout: 3000});
+                if(socketDisconnected) {
+                    $.noty.closeAll();
+                    noty({text: 'Conexão reestabelecida!', type: 'success', killer: true, timeout: 3000});
+                }
             });
         });
 

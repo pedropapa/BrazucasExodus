@@ -30,7 +30,7 @@ module.exports = {
 
     this.sampSocket.on('error', function(data) {
       if(data.syscall == 'connect') { // Quando há um erro na conexão com o socket do servidor.
-        console.log('Ocorreu um erro ao estabelecer a conexão com o socket do servidor SA-MP.');
+        sails.log.info('Ocorreu um erro ao estabelecer a conexão com o socket do servidor SA-MP.');
       } else {
         console.log('Conexão com o servidor SA-MP perdida, tentando reconectar...');
       }

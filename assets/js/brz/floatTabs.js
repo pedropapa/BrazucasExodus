@@ -42,8 +42,6 @@ var FloatTabs = {
       }
     }
 
-
-
     if($('.floatTab').filter(':visible:last').size() > 0) {
       elementsWidth += parseInt($('.floatTabs').css('margin-right'));
     }
@@ -70,7 +68,6 @@ var FloatTabs = {
       if(element.size() > 0) {
         if(!element[0].isEqualNode(this.tabsManager.getTabElement()[0])) {
           tabBody += this.tabs[tab].getName()+'<br />';
-//          element.find('.tabContent').hide();
           element.hide();
         }
       }
