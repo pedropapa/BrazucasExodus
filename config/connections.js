@@ -14,4 +14,5 @@ module.exports.connections = {
     password: this.remoteDatabasePassword,
     database: this.remoteDatabaseName
   }
+
 };
