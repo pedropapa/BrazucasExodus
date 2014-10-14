@@ -11,18 +11,18 @@ module.exports = {
     this.sampSocket = new net.Socket();
 
     this.sampSocket.connect(sails.config.brazucasConfig.serverSocketPort, sails.config.brazucasConfig.serverIp, function(error) {
-      console.log('Connectado ao servidor SA-MP. IP: '+sails.config.brazucasConfig.serverIp+', Porta: '+sails.config.brazucasConfig.serverSocketPort);
+      sails.log.info('Connectado ao servidor SA-MP. IP: '+sails.config.brazucasConfig.serverIp+', Porta: '+sails.config.brazucasConfig.serverSocketPort);
 
       if(error) {
-        console.log(error);
+        sails.log.error(error);
       }
     });
 
     this.sampSocket.on('data', function(data) {
-      console.log(data.toString());
+      sails.log.info(data.toString());
       sampData = SampSocketService.filterData(data.toString());
 
-      if(typeof sampData['a'] == undefined) console.log('Comando não reconhecido.');
+      if(typeof sampData['a'] == undefined) sails.log.warn('Comando '+sampData['a']+' não reconhecido.');
       else {
         SampSocketService.on[sampData['a']](sampData);
       }
@@ -30,18 +30,18 @@ module.exports = {
 
     this.sampSocket.on('error', function(data) {
       if(data.syscall == 'connect') { // Quando há um erro na conexão com o socket do servidor.
-        sails.log.info('Ocorreu um erro ao estabelecer a conexão com o socket do servidor SA-MP.');
+        sails.log.error('Ocorreu um erro ao estabelecer a conexão com o socket do servidor SA-MP.');
       } else {
-        console.log('Conexão com o servidor SA-MP perdida, tentando reconectar...');
+        sails.log.info('Conexão com o servidor SA-MP perdida, tentando reconectar...');
       }
 
       SampSocketService.reconnect();
 
-      console.log(data);
+      sails.log.silly(data);
     });
 
     this.sampSocket.on('end', function() {
-      console.log('Conexão perdida com o servidor SA-MP.');
+      sails.log.error('Conexão perdida com o servidor SA-MP.');
 
       SampSocketService.reconnect();
     });
@@ -106,7 +106,7 @@ module.exports = {
       returnData[index] = value;
     }
 
-    console.log(returnData);
+    sails.log.info(returnData);
     return returnData;
   },
 
@@ -121,7 +121,7 @@ module.exports = {
   send: function(data) {
     if(this.sampSocket !== null) {
       this.sampSocket.write(data, function(e) {
-        console.log(data + ' ' + e);
+        sails.log.info(data + ' ' + e);
       });
     }
   }

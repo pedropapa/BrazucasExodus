@@ -257,8 +257,7 @@ div.menu > div.social div.networks img { vertical-align: middle; }
 .layout > div#banner {
 	border: 1px solid #FFF;
 	box-shadow: 0px 0px 10px #333;
-	color: #FFF;
-	height: 398px;
+	color: black;
 	margin: 0 0 20px 0;
 	width: 1198px;
 }

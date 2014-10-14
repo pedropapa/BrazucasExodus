@@ -12,6 +12,9 @@ module.exports.bootstrap = function (cb) {
   // Método que inicia a conexão do site com o servidor sa-mp do Brazuca's.
   SampSocketService.init();
 
+  // Iniciamos a configuração das tarefas cronjobs utilizadas pela aplicação.
+  Cron.init();
+
   sails.sockets.customBroadcastTo = function(socket, model, verb, data) {
     socketData = {};
     socketData.model = model;

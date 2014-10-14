@@ -13,6 +13,12 @@ $(document).ready(function() {
   launchWebChat();
 
   $(window).on("resize", function() {FloatTabs.adjustTabs()});
+
+  $('.playButton').click(function() {
+    if($(this).hasAttribute('ip')) {
+      window.open('samp://'+ $(this).prop('ip'));
+    }
+  });
 });
 
 function launchTaskManagerTab() {

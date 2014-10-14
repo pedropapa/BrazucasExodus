@@ -20,7 +20,7 @@ module.exports = {
 
         Usuario.publishCreate(objUsuario);
 
-        console.log('Novo usuário criado: '+objUsuario.username);
+        sails.log.info('Novo usuário criado: '+objUsuario.username);
       }
     });
   }
