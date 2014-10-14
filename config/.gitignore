@@ -2,3 +2,8 @@
 # Configurações Próprias do Brazucas
 ########################
 brazucasConfig.js
+
+########################
+# Configurações das conexões de banco.
+########################
+connections.js
