@@ -59,12 +59,12 @@ function launchFeedbackTab() {
 }
 
 function launchWebChat() {
-  webchat_tab = new FloatTab('webchat', 'Chat do Servidor', 500);
+  webchat_tab = new FloatTab('webchat', 'Chat do Servidor');
 
   webchat_tab.setClasses(['webchat']);
 
   webchat_tab.setContent('' +
-    '<form id="chatForm" class="row container-fluid">'+
+    '<form id="chatForm" class="row container-fluid" style="width: 500px;">'+
     '<div class="chat col-md-8">' +
     '<div class="panel">' +
     '<div class="messages"></div>' +

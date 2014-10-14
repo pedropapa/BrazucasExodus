@@ -41,7 +41,7 @@
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/57055858/1213982736152_bigger.png"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/378800000129127173/1497f21c43386a3c867db12d49b0e97b_bigger.png"></div>
 
-                <button ip="198.211.116.169" class="btn btn-danger playButton">Assistir</button>
+                <button ip="198.211.116.169" class="btn btn-warning playButton">Assistir</button>
             </div>
 
             <div class="text-center publicMatch rounded">
@@ -57,7 +57,7 @@
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/57055858/1213982736152_bigger.png"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/378800000129127173/1497f21c43386a3c867db12d49b0e97b_bigger.png"></div>
 
-                <button ip="198.211.116.169" class="btn btn-danger playButton">Assistir</button>
+                <button ip="198.211.116.169" class="btn btn-warning playButton">Assistir</button>
             </div>
 
             <div class="text-center publicMatch rounded">
@@ -73,7 +73,7 @@
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/57055858/1213982736152_bigger.png"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/378800000129127173/1497f21c43386a3c867db12d49b0e97b_bigger.png"></div>
 
-                <button ip="198.211.116.169" class="btn btn-danger playButton">Assistir</button>
+                <button ip="198.211.116.169" class="btn btn-warning playButton">Assistir</button>
             </div>
 
             <div class="text-center publicMatch rounded">
@@ -89,7 +89,7 @@
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/57055858/1213982736152_bigger.png"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/378800000129127173/1497f21c43386a3c867db12d49b0e97b_bigger.png"></div>
 
-                <button ip="198.211.116.169" class="btn btn-danger playButton">Assistir</button>
+                <button ip="198.211.116.169" class="btn btn-warning playButton">Assistir</button>
             </div>
 
             <div class="text-center publicMatch rounded">
@@ -105,7 +105,7 @@
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/57055858/1213982736152_bigger.png"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/378800000129127173/1497f21c43386a3c867db12d49b0e97b_bigger.png"></div>
 
-                <button ip="198.211.116.169" class="btn btn-danger playButton">Assistir</button>
+                <button ip="198.211.116.169" class="btn btn-warning playButton">Assistir</button>
             </div>
         </div>
 
@@ -126,6 +126,16 @@
                     {% endif %}
                 {% endfor %}
             </div>
+        </div>
+
+        <div class="col-md-7">
+            <button class="btn btn-danger" style="margin: 0 auto; display: block">Ver Mais</button>
+        </div>
+
+        <div class="col-md-5">
+            <a target="_blank" href="https://github.com/{{ sails.config.brazucasConfig.gitHubAppPath }}/" style="text-decoration: none">
+                <button class="btn btn-primary" style="margin: 0 auto; display: block">Ver no GitHub</button>
+            </a>
         </div>
     </div>
 

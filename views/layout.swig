@@ -47,8 +47,8 @@
         {% block rodape %}
             <div class="rounded shadowed footer">
                 <div class="left">
-                    <span>Desenvolvido por</span><br />
-                    <span><a class="highlight" href="/servidor.php#credits">Equipe do Brazuca's</a></span>
+                    <span>Este é um projeto Open-Source</span><br />
+                    <span><a class="highlight" target="_blank" href="https://github.com/{{ sails.config.brazucasConfig.gitHubAppPath }}/">Acesse nosso GitHub</a></span>
                 </div>
                 <div class="right">
                     <span>Copyright© 2006-2014 Brazucas-Server.com</span><br />
@@ -57,4 +57,6 @@
             </div>
         {% endblock %}
     </div>
+
+    <br />
 {% endblock %}

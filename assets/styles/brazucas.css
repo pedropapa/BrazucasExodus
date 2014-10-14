@@ -81,6 +81,11 @@
     z-index: 9999;
     min-width: 380px;
 }
+
+.webchat .tabTitle {
+    min-width: 150px;
+}
+
 .chat {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -228,6 +233,19 @@
     float: left;
     margin-right: 7px;
     margin-left: 7px;
+}
+
+.realtime .publicMatch .player img {
+    padding: 2px;
+}
+
+.realtime .publicMatch .player img:hover {
+    padding: 0px;
+    border: 2px solid #0b97c4;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
 }
 
 .realtime .publicMatch .versus {
