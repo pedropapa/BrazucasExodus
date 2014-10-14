@@ -16,13 +16,10 @@ module.exports = {
     return md5(sails.config.brazucasConfig.hashSalt + string);
   },
 
-  updateLastCommits: function() {
-    sails.log.info('Atualizando últimos commits da aplicação no GitHub...');
-
-    var https = require('https');
+  getOptions: function(method) {
     var options = {
       host: 'api.github.com',
-      path: '/repos/' + sails.config.brazucasConfig.gitHubAppPath + '/commits',
+      path: '/repos/' + sails.config.brazucasConfig.gitHubAppPath + '/'+ method,
       headers: {
         accept: '*/*',
         'user-agent': 'node.js'
@@ -30,6 +27,15 @@ module.exports = {
       setEncoding: 'utf8',
       method: 'GET'
     }
+
+    return options;
+  },
+
+  updateLastCommits: function() {
+    sails.log.info('Atualizando últimos commits da aplicação no GitHub...');
+
+    var https = require('https');
+    options = this.getOptions('commits');
 
     https.get(options, function(resp) {
       var json_data = '';

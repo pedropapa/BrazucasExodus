@@ -5,6 +5,7 @@ module.exports.brazucasConfig = {
   serverIp: '127.0.0.1',
   serverSocketPort: 7778,
   maxChatMessageLength: 128,
-  hashSalt: 'yourgeneralhashsalt'
+  hashSalt: 'yourgeneralhashsalt',
+  gitHubAppPath: ':username/:repository'
 };
 

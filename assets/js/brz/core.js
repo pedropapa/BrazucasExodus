@@ -39,7 +39,7 @@ function launchFeedbackTab() {
     '<br /><br />'+
     'Imagem atual da tela:'+
     '<br />'+
-    '<div style="width: 300px;"'+
+    '<div style="width: 300px; height: 200px;"'+
     '<a onclick="window.open($(this).find(\'img:first\').attr(\'src\'))" target="_blank">' +
     '<img id="feedback_image" width="300px" height="200px"/>' +
     '</a>'+

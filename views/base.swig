@@ -27,6 +27,7 @@
 
         <script type="text/javascript" src="js/brz/jqueryCustoms.js"></script>
         <script type="text/javascript" src="js/brz/core.js"></script>
+        <script type="text/javascript" src="js/brz/modelsHook.js"></script>
         <script type="text/javascript" src="js/brz/webchat/core.js"></script>
         <script type="text/javascript" src="js/brz/sampServerNotifications.js"></script>
 
