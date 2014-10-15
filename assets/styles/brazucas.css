@@ -239,27 +239,20 @@
     padding: 2px;
 }
 
-.realtime .publicMatch .player img:hover {
-    padding: 0px;
-    border: 2px solid #0b97c4;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -khtml-border-radius: 3px;
-    border-radius: 3px;
-}
-
 .realtime .publicMatch .versus {
     font-size: 30px;
     color: #868686;
     float: left;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .realtime .publicMatch .playButton {
     position: absolute;
-    float: right;
     vertical-align: middle;
     margin-top: 3px;
     display: none;
+    left: calc(50% - 35.5px);
 }
 
 .gitHubCommits {

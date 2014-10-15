@@ -8,10 +8,26 @@
             $('.publicMatch').hover(function(handlerInOut) {
                 if(handlerInOut.type == 'mouseenter') {
                     $(this).find('.playButton').css('display', 'inline-block');
+                    $(this).css('background', 'rgba(255,255,255,0.3)');
+                    $(this).find('.player').css('opacity','0.3');
+                    $(this).find('.player').addClass('shadowed');
+                    $(this).addClass('shadowed');
                 } else {
                     $(this).find('.playButton').hide();
+                    $(this).css('background', 'rgba(255,255,255,1.0)');
+                    $(this).find('.player').css('opacity','1');
+                    $(this).find('.player').removeClass('shadowed');
+                    $(this).removeClass('shadowed');
                 }
             });
+
+            $('.realtime .publicMatch .player').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    $(this).css('opacity', '1');
+                } else {
+                    $(this).css('opacity', '0.3');
+                }
+            })
 
             $('.gitHubCommits .commit').hover(function(handlerInOut) {
                 if(handlerInOut.type == 'mouseenter') {
