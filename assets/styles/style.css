@@ -237,7 +237,7 @@ div.menu > ul.menu li#menu-servidor { border-bottom: 2px solid #E1B500; }
 div.menu > ul.menu li#menu-ranking { border-bottom: 2px solid #008BE8; }
 div.menu > ul.menu li#menu-faq { border-bottom: 2px solid #FFF; }
 div.menu > ul.menu li#menu-forum { border-bottom: 2px solid #008BE8; }
-div.menu > ul.menu li#menu-ucp { border-bottom: 2px solid #E1B500; }
+div.menu > ul.menu li#menu-competitivo { border-bottom: 2px solid #dc322f;  }
 
 div.menu > div.server-widget, div.menu > div.social { height: 62px; padding: 4px 10px; }
 

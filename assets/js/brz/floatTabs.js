@@ -110,7 +110,6 @@ function FloatTab(tabName, title, width) {
       .addClass('floatTab')
       .click(function () {
         parent.hideNotifications();
-        FloatTabs.adjustTabs();
       })
       .attr({id: this.getId()})
       .css({width: (width) ? width : 'auto'})
@@ -123,16 +122,7 @@ function FloatTab(tabName, title, width) {
               .append('0')
           )
           .click(function () {
-            var floatTab = $(this).parent('div');
-            var tabContent = parent.getTabElement().find('.tabContent');
-
-            if (tabContent.is(':hidden')) {
-              parent.hideNotifications();
-              tabContent.show();
-            } else {
-              parent.showNotifications();
-              tabContent.hide();
-            }
+            parent.toggle();
           })
           .append(' ' + title)
       )
@@ -240,6 +230,20 @@ FloatTab.prototype = {
   },
   show: function() {
     this.getTabElement().show();
+    FloatTabs.adjustTabs();
+  },
+  toggle: function() {
+    var floatTab = $(this).parent('div');
+    var tabContent = this.getTabElement().find('.tabContent');
+
+    if (tabContent.is(':hidden')) {
+      this.hideNotifications();
+      tabContent.show();
+    } else {
+      this.showNotifications();
+      tabContent.hide();
+    }
+
     FloatTabs.adjustTabs();
   }
 }

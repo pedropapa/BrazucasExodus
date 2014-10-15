@@ -285,3 +285,12 @@
     padding-left: 7px;
     display: none;
 }
+
+.f-nav{ z-index: 9999; position: fixed; top: 0; width: 100%;} /* this make our menu fixed top */
+
+.nav { height: 42px;}
+.nav ul { list-style: none; }
+.nav ul li{float: left; margin-top: 6px; padding: 6px; border-right: 1px solid #ACACAC;}
+.nav ul li:first-child{ padding-left: 0;}
+.nav ul li a { }
+.nav ul li a:hover{ text-decoration: underline;}

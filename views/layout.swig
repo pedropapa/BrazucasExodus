@@ -8,14 +8,14 @@
             </div>
         </div>
         {% block menu_principal %}
-            <div class="rounded shadowed menu container-fluid">
-                <ul class="menu">
+            <div class="rounded shadowed menu container-fluid main-menu">
+                <ul class="menu nav">
                     <a href="/"><li class="active" id="menu-home">HOME</li></a>
-                    <a href="/servidor.php"><li id="menu-servidor">SERVIDOR</li></a>
-                    <a href="/ranking.php"><li id="menu-ranking">RANKING</li></a>
-                    <a href="/faq.php"><li id="menu-faq">F.A.Q.</li></a>
-                    <a href="/forum"><li id="menu-forum">FÓRUM</li></a>
-                    <a href="/ucp"><li id="menu-ucp">UCP</li></a>
+                    <a href="/servidor.php"><li id="menu-servidor">RANKING</li></a>
+                    <a href="/ranking.php"><li id="menu-ranking">F.A.Q.</li></a>
+                    <a href="/faq.php"><li id="menu-faq">FÓRUM</li></a>
+                    <a href="/forum"><li id="menu-forum">UCP</li></a>
+                    <a href="/competitivo"><li id="menu-competitivo" style="width: 140px;">COMPETITIVO</li></a>
                 </ul>
                 <div class="server-widget">
                     <h1 class="title">[:.:.Brazuca’s Server (Nova versão a caminho!) .:.:]</h1>

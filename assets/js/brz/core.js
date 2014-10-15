@@ -19,6 +19,16 @@ $(document).ready(function() {
       window.open('samp://'+ $(this).prop('ip'));
     }
   });
+
+  var nav = $('.main-menu');
+
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 130) {
+      nav.addClass("f-nav");
+    } else {
+      nav.removeClass("f-nav");
+    }
+  });
 });
 
 function launchTaskManagerTab() {
@@ -45,8 +55,12 @@ function launchFeedbackTab() {
     '</a>'+
     '</div>'+
     '<br /><br />' +
-    '<input type="submit" class="btn btn-primary center-block" value="Enviar"/>'+
-    '</div>'
+    '<div class="container-fluid">'+
+    '<div class="col-md-6 text-left" style="padding: 0px;"><input type="submit" class="btn btn-danger" onclick="feedback_tab.toggle()" value="Cancelar"></div>'+
+    '<div class="col-md-6 text-right" style="padding: 0px;"><input type="submit" class="btn btn-primary" value="Enviar"></div>'+
+    '</div>'+
+    '</div>'+
+    '<br />'
   );
 
   feedback_tab.applyEvent('click', '.tabTitle', function() {
