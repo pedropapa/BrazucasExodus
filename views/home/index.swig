@@ -36,6 +36,42 @@
                     $(this).find('.commitUrl').hide();
                 }
             });
+
+            $('.server-widget').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    $(this).find('.playRpgMinigames').show();
+                    $(this).find('h1,table').css('opacity','0.3');
+                } else {
+                    $(this).find('.playRpgMinigames').hide();
+                    $(this).find('h1,table').css('opacity','1');
+                }
+            });
+
+            $('.social').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    $(this).find('img').css('opacity','0.3');
+                } else {
+                    $(this).find('img').css('opacity','1');
+                }
+            });
+
+            $('.social img').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    $(this).addClass('shadowed');
+                    $(this).css('opacity','1');
+                } else {
+                    $(this).removeClass('shadowed');
+                    $(this).css('opacity','0.3');
+                }
+            });
+
+            $('.gitHubCommits .commit').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    $(this).addClass('shadowed');
+                } else {
+                    $(this).removeClass('shadowed');
+                }
+            });
         });
     </script>
 {% endblock %}

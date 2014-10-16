@@ -29,6 +29,8 @@
                             <td class="map"><span id="map">-</span></td>
                         </tr>
                     </table>
+
+                    <button class="playRpgMinigames btn btn-primary">Jogar RPG/Minigames</button>
                 </div>
                 <div class="auto-fill social">
                     <div class="networks">
