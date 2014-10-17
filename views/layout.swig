@@ -10,12 +10,40 @@
         {% block menu_principal %}
             <div class="rounded shadowed menu container-fluid main-menu">
                 <ul class="menu nav">
-                    <a href="/"><li class="active" id="menu-home">HOME</li></a>
-                    <a href="/servidor.php"><li id="menu-servidor">RANKING</li></a>
-                    <a href="/ranking.php"><li id="menu-ranking">F.A.Q.</li></a>
-                    <a href="/faq.php"><li id="menu-faq">FÓRUM</li></a>
-                    <a href="/forum"><li id="menu-forum">UCP</li></a>
-                    <a href="/competitivo"><li id="menu-competitivo" style="width: 140px;">COMPETITIVO</li></a>
+                    <span id="menu-home">
+                        <a href="/"><li class="active">HOME</li></a>
+                        <div class="menuItem rounded shadowed"></div>
+                    </span>
+                    <span id="menu-servidor">
+                        <a href="/servidor.php"><li>RANKING</li></a>
+                        <div class="menuItem rounded shadowed"></div>
+                    </span>
+                    <span id="menu-ranking">
+                        <a href="/ranking.php"><li>F.A.Q.</li></a>
+
+                        <div class="menuItem rounded shadowed"></div>
+                    </span>
+                    <span id="menu-faq">
+                        <a href="/faq.php"><li>FÓRUM</li></a>
+
+                        <div class="menuItem rounded shadowed"></div>
+                    </span>
+                    <span id="menu-forum">
+                        <a href="/forum"><li>UCP</li></a>
+
+                        <div class="menuItem rounded shadowed" style="width: 350px;">
+                            <a href="#" class="col-md-4 text-center">Minha conta</a>
+                            <a href="#" class="col-md-4 text-center">Torneios</a>
+                            <a href="#" class="col-md-4 text-center">Objetos SA-MP</a>
+                            <a href="#" class="col-md-4 text-center">Mapa do Servidor</a>
+                            <a href="#" class="col-md-4 text-center">Loja Virtual</a>
+                        </div>
+                    </span>
+                    <span id="menu-competitivo">
+                        <a href="/competitivo"><li style="width: 140px;">COMPETITIVO</li></a>
+
+                        <div class="menuItem rounded shadowed"></div>
+                    </span>
                 </ul>
                 <div class="server-widget">
                     <h1 class="title">[:.:.Brazuca’s Server (Nova versão a caminho!) .:.:]</h1>

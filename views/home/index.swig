@@ -72,6 +72,23 @@
                     $(this).removeClass('shadowed');
                 }
             });
+
+
+            $('.main-menu span').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    if($(this).find('.menuItem').html().length > 0) {
+                        $(this).find('.menuItem').show();
+
+                        var menuItemMarginLeft = (parseInt($(this).css('width')) - parseInt($(this).find('.menuItem').css('width')))/2;
+
+                        if(menuItemMarginLeft < 0) {
+                            $(this).find('.menuItem').css('margin-left', menuItemMarginLeft);
+                        }
+                    }
+                } else {
+                    $(this).find('.menuItem').hide();
+                }
+            });
         });
     </script>
 {% endblock %}

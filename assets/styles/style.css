@@ -232,12 +232,26 @@ div.menu > ul.menu li {
 	width: 104px;
 }
 div.menu > ul.menu li.active, div.menu > ul.menu li:hover { background: #DDD; }
-div.menu > ul.menu li#menu-home { border-bottom: 2px solid #669900; border-radius: 7px 0 0 7px; }
-div.menu > ul.menu li#menu-servidor { border-bottom: 2px solid #E1B500; }
-div.menu > ul.menu li#menu-ranking { border-bottom: 2px solid #008BE8; }
-div.menu > ul.menu li#menu-faq { border-bottom: 2px solid #FFF; }
-div.menu > ul.menu li#menu-forum { border-bottom: 2px solid #008BE8; }
-div.menu > ul.menu li#menu-competitivo { border-bottom: 2px solid #dc322f;  }
+
+div.menu > ul.menu span { position: relative; }
+
+div.menu > ul.menu #menu-home a li { border-bottom: 2px solid #669900; border-radius: 7px 0 0 7px; }
+div.menu > ul.menu #menu-home .menuItem {border: 2px solid #669900;}
+
+div.menu > ul.menu #menu-servidor a li { border-bottom: 2px solid #E1B500; }
+div.menu > ul.menu #menu-servidor .menuItem {border: 2px solid #E1B500;}
+
+div.menu > ul.menu #menu-ranking a li { border-bottom: 2px solid #008BE8; }
+div.menu > ul.menu #menu-ranking .menuItem {border: 2px solid #008BE8;}
+
+div.menu > ul.menu #menu-faq a li{ border-bottom: 2px solid #FFF; }
+div.menu > ul.menu #menu-faq .menuItem {border: 2px solid #FFF;}
+
+div.menu > ul.menu #menu-forum a li { border-bottom: 2px solid #008BE8; }
+div.menu > ul.menu #menu-forum .menuItem {border: 2px solid #008BE8;}
+
+div.menu > ul.menu #menu-competitivo a li { border-bottom: 2px solid #dc322f;  }
+div.menu > ul.menu #menu-competitivo .menuItem {border: 2px solid #dc322f;}
 
 div.menu > div.server-widget, div.menu > div.social { height: 62px; padding: 4px 10px; }
 
