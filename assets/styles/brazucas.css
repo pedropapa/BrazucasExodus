@@ -311,6 +311,34 @@
     z-index: 1000;
 }
 
+.social .ajaxWait {
+    position: absolute;
+    display: none;
+    width: 100%;
+    z-index: 1000;
+    height: 100%;
+}
+
+.social .ajaxWait div {
+    color: #008BE8;
+    position: absolute;
+    vertical-align: middle;
+    top: calc(50% - 23px);
+    left: calc(50% - 74px);
+    margin-left: 0px;
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.no-copy {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .f-nav{ z-index: 9999; position: fixed; top: 0; width: 100%;} /* this make our menu fixed top */
 
 .nav { height: 42px;}

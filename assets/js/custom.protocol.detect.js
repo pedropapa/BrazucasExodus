@@ -1,6 +1,7 @@
 //Default State
 var isSupported = false;
 var protocol = null;
+verification_callback = null;
 
 //Helper Methods
 function getProtocol(){
@@ -11,8 +12,9 @@ function getUrl(){
   return getProtocol()+"://"+"localhost";
 }
 
-function isProtocolSupported(protocol_name){
+function isProtocolSupported(protocol_name, callback){
   protocol = protocol_name;
+  verification_callback = callback;
 
   if($.browser.mozilla){
     launchMozilla();
@@ -24,17 +26,7 @@ function isProtocolSupported(protocol_name){
 }
 
 function onProtocolSupportVerificationFinish() {
-  switch(getProtocol()) {
-    case 'samp':
-      if(isSupported) {
-
-      } else {
-
-      }
-      break;
-  }
-
-  alert(isSupported);
+  verification_callback(getProtocol(), isSupported);
 }
 
 //Handle IE

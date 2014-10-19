@@ -23,5 +23,9 @@ module.exports = {
         sails.log.info('Novo usuário criado: '+objUsuario.username);
       }
     });
+  },
+
+  updateServerBasicStats: function() {
+    SampSocketService.send('a=getServerBasicStats');
   }
 }

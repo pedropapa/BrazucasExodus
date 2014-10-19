@@ -38,6 +38,12 @@ module.exports = {
         }
       });
     }
+
+    // Envia informações básicas para o jogador.
+    var objectToBlast = SampSocketService.serverBasicStats;
+    objectToBlast.sampAction = "updateServerBasicStats";
+
+    sails.sockets.emit(socket.id, objectToBlast);
   },
 
   /**

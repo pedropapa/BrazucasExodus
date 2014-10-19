@@ -37,56 +37,11 @@
                 }
             });
 
-            $('.server-widget').hover(function(handlerInOut) {
-                if(handlerInOut.type == 'mouseenter') {
-                    $(this).find('.playRpgMinigames').show();
-                    $(this).find('h1,table').css('opacity','0.3');
-                } else {
-                    $(this).find('.playRpgMinigames').hide();
-                    $(this).find('h1,table').css('opacity','1');
-                }
-            });
-
-            $('.social').hover(function(handlerInOut) {
-                if(handlerInOut.type == 'mouseenter') {
-                    $(this).find('img').css('opacity','0.3');
-                } else {
-                    $(this).find('img').css('opacity','1');
-                }
-            });
-
-            $('.social img').hover(function(handlerInOut) {
-                if(handlerInOut.type == 'mouseenter') {
-                    $(this).addClass('shadowed');
-                    $(this).css('opacity','1');
-                } else {
-                    $(this).removeClass('shadowed');
-                    $(this).css('opacity','0.3');
-                }
-            });
-
             $('.gitHubCommits .commit').hover(function(handlerInOut) {
                 if(handlerInOut.type == 'mouseenter') {
                     $(this).addClass('shadowed');
                 } else {
                     $(this).removeClass('shadowed');
-                }
-            });
-
-
-            $('.main-menu span').hover(function(handlerInOut) {
-                if(handlerInOut.type == 'mouseenter') {
-                    if($(this).find('.menuItem').html().length > 0) {
-                        $(this).find('.menuItem').show();
-
-                        var menuItemMarginLeft = (parseInt($(this).css('width')) - parseInt($(this).find('.menuItem').css('width')))/2;
-
-                        if(menuItemMarginLeft < 0) {
-                            $(this).find('.menuItem').css('margin-left', menuItemMarginLeft);
-                        }
-                    }
-                } else {
-                    $(this).find('.menuItem').hide();
                 }
             });
         });
@@ -96,7 +51,7 @@
 {% block conteudo %}
     <div id="banner" class="rounded shadowed content introduction container-fluid realtime">
         <div class="col-md-7">
-            <div class="title text-center">ASSISTA AGORA</div>
+            <div class="title text-center" style="color: #008BE8; letter">ASSISTA AGORA</div>
             <div class="text-center publicMatch rounded">
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/513078971802853376/gg13cJ66_bigger.jpeg"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/485246365027414016/hilpnRUD_bigger.jpeg"></div>

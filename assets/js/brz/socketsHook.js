@@ -19,6 +19,12 @@ $(document).ready(function() {
         case 'particularMessage':
           webchat.othersMessage.create(data);
           break;
+        case 'updateServerBasicStats':
+          $('.server-widget #mode').html(data.hostname);
+          $('.server-widget #players').html(data.onlinePlayers);
+          $('.server-widget #maxplayers').html(data.maxPlayers);
+          $('.server-widget #map').html(data.mapname);
+          break;
       }
     }
   });

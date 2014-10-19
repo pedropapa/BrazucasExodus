@@ -5,6 +5,7 @@
  */
 module.exports = {
   sampSocket: null,
+  serverBasicStats: {},
 
   init: function() {
     var net = require('net');
@@ -24,6 +25,9 @@ module.exports = {
 
       if(typeof sampData['a'] == undefined) sails.log.warn('Comando '+sampData['a']+' não reconhecido.');
       else {
+        for(variable in sampData) {
+          sampData[variable] = sampData[variable].replace(/\+/g, ' ');
+        }
         SampSocketService.on[sampData['a']](sampData);
       }
     });
@@ -91,6 +95,19 @@ module.exports = {
           }
         });
       }
+    },
+    updateServerBasicStats: function(sampData) {
+      var onlinePlayers = parseInt(sampData['onlinePlayers']);
+      var maxPlayers    = parseInt(sampData['maxPlayers']);
+      var mapname       = sampData['mapname'];
+      var hostname      = sampData['hostname'];
+
+      SampSocketService.serverBasicStats = { onlinePlayers: onlinePlayers, maxPlayers: maxPlayers, mapname: mapname, hostname: hostname };
+
+      objectToBlast = SampSocketService.serverBasicStats;
+      objectToBlast.sampAction = "updateServerBasicStats";
+
+      sails.sockets.blast(objectToBlast);
     }
   },
 
