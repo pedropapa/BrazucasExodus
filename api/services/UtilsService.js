@@ -12,5 +12,13 @@ module.exports = {
     var md5 = require('MD5');
 
     return md5(sails.config.brazucasConfig.hashSalt + string);
+  },
+
+  isValidNickname: function(nickname) {
+    return nickname.toString().replace(/ /g, '').match(/^\w[\w,_,\d]+$/);
+  },
+
+  isValidPassword: function(nickname) {
+    return nickname.toString().replace(/ /g, '').match(/^\w[\w,\d]+$/);
   }
 }

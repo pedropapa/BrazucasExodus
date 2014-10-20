@@ -10,6 +10,8 @@ module.exports = {
   connection: 'sampDb',
   migrate: 'safe',
   autoPK: false,
+  autoCreatedAt: false,
+  autoUpdatedAt: false,
 
   attributes: {
     ID: {
@@ -268,10 +270,6 @@ module.exports = {
     },
     DPergunta: {
       type: 'string',
-      required: false
-    },
-    Moderador: {
-      type: 'integer',
       required: false
     }
   }

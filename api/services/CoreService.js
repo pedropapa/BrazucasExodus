@@ -27,5 +27,25 @@ module.exports = {
 
   updateServerBasicStats: function() {
     SampSocketService.send('a=getServerBasicStats');
+  },
+
+  minigamesLogin: function(nick, passwd, finishObject, callback) {
+    contas_mgs.findOne({NOME: nick, Senha: passwd}).exec(function(error, conta_mg) {
+      if(conta_mg && !error !== null) {
+        finishObject.conta_mg = conta_mg;
+      }
+
+      callback();
+    });
+  },
+
+  rpgLogin: function(nick, passwd, finishObject, callback) {
+    contas_rpg.findOne({NICK: nick, Senha: passwd}).exec(function(error, conta_rpg) {
+      if(conta_rpg && !error) {
+        finishObject.conta_rpg = conta_rpg;
+      }
+
+      callback();
+    });
   }
 }

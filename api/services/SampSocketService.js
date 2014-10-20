@@ -136,7 +136,7 @@ module.exports = {
   },
 
   send: function(data) {
-    if(this.sampSocket !== null) {
+    if(this.sampSocket !== null && this.sampSocket.readable) {
       this.sampSocket.write(data, function(e) {
         sails.log.info(data + ' ' + e);
       });

@@ -60,6 +60,11 @@ module.exports.routes = {
   'post /socket/openParticularChat': {
     controller: 'SocketController',
     action: 'openParticularChat'
+  },
+
+  'post /login': {
+    controller: 'CoreController',
+    action: 'login'
   }
 
   /*

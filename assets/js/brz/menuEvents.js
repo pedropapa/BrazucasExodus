@@ -53,7 +53,9 @@ $(document).ready(function() {
 
   $('.social #login').click(function() {
     $.ajax({
-      url: '/ucp',
+      url: '/login',
+      type: 'POST',
+      data: {nick: $('#loginForm #nick').val(), senha: $('#loginForm #senha').val()},
       beforeSend: function(xhr) {
         $('.social').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '0.5');
         $('.social .ajaxWait').show();
@@ -69,7 +71,7 @@ $(document).ready(function() {
           notyText = 'Tempo limite atingido, tente novamente.';
           break;
         case 'error':
-          notyText = 'URL não encontrada!';
+          notyText = 'Um erro interno de servidor ocorreu!';
           break;
         case 'abort':
           notyText = 'Requisição abortada! tente novamente.';
@@ -84,9 +86,23 @@ $(document).ready(function() {
 
       $('.social .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
     }).success(function(data) {
-        $('#loginForm').fadeOut('fast', function() {
-          $('#loggedUserInfo').fadeIn();
-        });
+        if(data.error) {
+          $('.social .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+        } else if(data.success) {
+          var kills   = data.infos.kills;
+          var deaths  = data.infos.deaths;
+          var assists = data.infos.assists;
+
+          $('#loggedUserInfo #kills').html(kills);
+          $('#loggedUserInfo #deaths').html(deaths);
+          $('#loggedUserInfo #assists').html(assists);
+
+          $('#loginForm').fadeOut('fast', function() {
+            $('#loggedUserInfo').fadeIn();
+          });
+        } else {
+          $('.social .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+        }
       }).always(function() {
         $('.social').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
         $('.social .ajaxWait').hide();

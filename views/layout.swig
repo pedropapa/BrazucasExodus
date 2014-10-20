@@ -90,9 +90,9 @@
                 </div>
 
                 <div class="auto-fill social" style="padding-left: 0px; position: relative; display: none;" id="loggedUserInfo">
-                    <div class="col-md-8"><b>Olá</b>, Mandrakke_Army.</div>
+                    <div class="col-md-8"><b>Olá</b>, <span id="nickname">Mandrakke_Army</span>.</div>
                     <div class="col-md-4 text-right"><a href="#"><button style="padding: 4px; font-size: 10px;" class="btn btn-primary">Sair</button></a></div>
-                    <div class="col-md-6 text-left" style="margin-top: 10px; font-size:15px">#33 <span style="font-size:15px; color: #006600">99</span>/<span style="font-size: 15px; color: #aaaa00">99</span>/<span style="font-size: 15px; color: #cc0000">99</span></div>
+                    <div class="col-md-6 text-left" style="margin-top: 10px; font-size:15px">#33 <span style="font-size:15px; color: #006600" id="kills">99</span>/<span style="font-size: 15px; color: #aaaa00" id="deaths">99</span>/<span style="font-size: 15px; color: #cc0000" id="assists">99</span></div>
                     <div class="col-md-6 text-right" style="margin-top: 13px;"><a href="#"></a><a href="#"></a><a href="#">Minha Conta</a></div>
                 </div>
             </div>
