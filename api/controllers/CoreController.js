@@ -47,10 +47,10 @@ module.exports = {
         }
       }
 
-      async.parallel([
-        function(callback) {CoreService.minigamesLogin(nick, passwd, finishObject, callback)},
-        function(callback) {CoreService.rpgLogin(nick, passwd, finishObject, callback)}
-      ], function(err, results) {
+      async.each([
+        CoreService.minigamesLogin,
+        CoreService.rpgLogin
+      ], function(func, callback) {func(nick, passwd, finishObject, callback)}, function(err, results) {
           finishRequest(finishObject);
       });
 
