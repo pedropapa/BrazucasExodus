@@ -60,27 +60,29 @@
 
                     <button class="playRpgMinigames btn btn-primary">Jogar RPG/Minigames</button>
                 </div>
-                <div class="auto-fill social" id="loginForm" style="padding-left: 0px; position: relative;">
+                <div class="auto-fill social" id="loginForm" style="padding-left: 0px; position: relative; {% if req.session.loginInfo !== null %}display: none;{% endif %}">
                     <div class="noty-container no-opacity" style="position: absolute;width: 90%; left: 5%; z-index:2000;"></div>
                     <div class="ajaxWait"><div class="no-copy">Aguarde...</div></div>
 
-                    <div class="container-fluid col-md-7" style="padding-left: 0px; padding-right: 0px;">
-                        <div class="col-md-12" style="margin-bottom: 3px;">
-                            <input type="text" placeholder="Nick" id="nick" style="height: 27px;" class="form-control col-md-12"/>
+                    <form method="POST" action="/login" class="ajaxForm" style="width: 100%; height: 100%; display: block;">
+                        <div class="container-fluid col-md-7" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="col-md-12" style="margin-bottom: 3px;">
+                                <input type="text" placeholder="Nick" id="nick" style="height: 27px;" class="form-control col-md-12"/>
+                            </div>
+
+                            <div class="col-md-12">
+                                <input type="password" placeholder="Senha" id="senha" style="height: 27px;" class="form-control col-md-12"/>
+                            </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <input type="text" placeholder="Senha" id="senha" style="height: 27px;" class="form-control col-md-12"/>
+                        <div class="col-md-5 text-center" style="padding: 0px; margin: 0px; position: relative; height: 100%">
+                            <button id="login" class="btn btn-primary" type="submit">Login</button>
+                            <br />
+                            <div style="position: absolute; text-align: center; bottom: 0;">
+                                <a href="#"><small><small>Esqueci minha senha</small></small></a>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-5 text-center" style="padding: 0px; margin: 0px; position: relative; height: 100%">
-                        <button id="login" class="btn btn-primary">Login</button>
-                        <br />
-                        <div style="position: absolute; text-align: center; bottom: 0;">
-                            <a href="#"><small><small>Esqueci minha senha</small></small></a>
-                        </div>
-                    </div>
+                    </form>
                     {#<div class="networks">#}
                         {#<a href="http://www.facebook.com/BrazucasServer"><img src="images/social-facebook-icon.png" alt="Facebook" /></a>#}
                         {#<a href=""><img src="images/social-gplus-icon.png" alt="G+" /></a>#}
@@ -89,10 +91,13 @@
                     {#</div>#}
                 </div>
 
-                <div class="auto-fill social" style="padding-left: 0px; position: relative; display: none;" id="loggedUserInfo">
-                    <div class="col-md-8"><b>Olá</b>, <span id="nickname">Mandrakke_Army</span>.</div>
-                    <div class="col-md-4 text-right"><a href="#"><button style="padding: 4px; font-size: 10px;" class="btn btn-primary">Sair</button></a></div>
-                    <div class="col-md-6 text-left" style="margin-top: 10px; font-size:15px">#33 <span style="font-size:15px; color: #006600" id="kills">99</span>/<span style="font-size: 15px; color: #aaaa00" id="deaths">99</span>/<span style="font-size: 15px; color: #cc0000" id="assists">99</span></div>
+                <div class="auto-fill social" style="padding-left: 0px; position: relative; {% if req.session.loginInfo == null %}display: none;{% endif %}" id="loggedUserInfo">
+                    <div class="noty-container no-opacity" style="position: absolute;width: 90%; left: 5%; z-index:2000;"></div>
+                    <div class="ajaxWait"><div class="no-copy">Aguarde...</div></div>
+
+                    <div class="col-md-8"><b>Olá</b>, <span id="nickname">{{ req.session.loginInfo.nick }}</span>.</div>
+                    <div class="col-md-4 text-right"><a href="#"><button style="padding: 4px; font-size: 10px;" class="btn btn-primary" id="sair">Sair</button></a></div>
+                    <div class="col-md-6 text-left" style="margin-top: 10px; font-size:15px">#33 <span style="font-size:15px; color: #006600" id="kills">{{ req.session.loginInfo.kills }}</span>/<span style="font-size: 15px; color: #aaaa00" id="deaths">{{ req.session.loginInfo.assists }}</span>/<span style="font-size: 15px; color: #cc0000" id="assists">{{ req.session.loginInfo.deaths }}</span></div>
                     <div class="col-md-6 text-right" style="margin-top: 13px;"><a href="#"></a><a href="#"></a><a href="#">Minha Conta</a></div>
                 </div>
             </div>

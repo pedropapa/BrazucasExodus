@@ -20,7 +20,7 @@ module.exports = {
   /**
    * Action login
    *
-   * Responsável por tratar as tentativas de login recebidas pelo UCP.
+   * Responsável por tratar as tentativas de login recebidas pela aplicação.
    *
    * @param req
    * @param res
@@ -38,12 +38,17 @@ module.exports = {
         if(!finishObject.conta_mg && !finishObject.conta_rpg) {
           res.json({error: true, message: 'Login e/ou senha incorretos.'});
         } else {
-          var info_nickname = (finishObject.conta_mg.NOME)?finishObject.conta_mg.NOME:finishObject.conta_rpg.NICK;
-          var info_matou    = finishObject.conta_mg.Matou;
-          var info_morreu   = finishObject.conta_mg.Morreu;
-          var info_assists  = finishObject.conta_mg.Assistencias;
+          var info_nickname = (finishObject.conta_mg)?finishObject.conta_mg.NOME:finishObject.conta_rpg.NICK;
 
-          res.json({success: true, infos: {nick: info_nickname, kills: info_matou, deaths: info_morreu, assists: info_assists}});
+          var info_matou    = (finishObject.conta_mg)?finishObject.conta_mg.Matou:0;
+          var info_morreu   = (finishObject.conta_mg)?finishObject.conta_mg.Morreu:0;
+          var info_assists  = (finishObject.conta_mg)?finishObject.conta_mg.Assistencias:0;
+
+          var loginInfo = {nick: info_nickname, kills: info_matou, deaths: info_morreu, assists: info_assists, conta_mg: (finishObject.conta_mg)?true:false, conta_rpg: (finishObject.conta_rpg)?true:false };
+
+          req.session.loginInfo = loginInfo;
+
+          res.json({success: true, infos: loginInfo});
         }
       }
 
@@ -57,6 +62,20 @@ module.exports = {
     } else {
       res.json({error: true, message: 'Login e/ou senha mal formatados.'});
     }
+  },
+
+  /**
+   * Action logout
+   *
+   * Responsável por receber as requisições de logout da aplicação.
+   *
+   * @param req
+   * @param res
+   */
+  logout: function(req, res) {
+    req.session.loginInfo = null;
+
+    res.json({success: true});
   },
 
   /**

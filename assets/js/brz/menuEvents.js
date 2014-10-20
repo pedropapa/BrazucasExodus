@@ -51,19 +51,16 @@ $(document).ready(function() {
     }
   });
 
-  $('.social #login').click(function() {
+  $('#loginForm form').submit(function() {
     $.ajax({
       url: '/login',
       type: 'POST',
       data: {nick: $('#loginForm #nick').val(), senha: $('#loginForm #senha').val()},
       beforeSend: function(xhr) {
-        $('.social').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '0.5');
-        $('.social .ajaxWait').show();
+        $('#loginForm').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '0.5');
+        $('#loginForm .ajaxWait').show();
       },
-      timeout: 8000,
-      complete: function() {
-        $('.social').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
-      }
+      timeout: 8000
     }).error(function(jqXHR, textStatus, errorThrown) {
       var notyText = null;
       switch(textStatus) {
@@ -84,15 +81,17 @@ $(document).ready(function() {
           break;
       }
 
-      $('.social .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+      $('#loginForm .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
     }).success(function(data) {
         if(data.error) {
-          $('.social .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+          $('#loginForm .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
         } else if(data.success) {
           var kills   = data.infos.kills;
           var deaths  = data.infos.deaths;
           var assists = data.infos.assists;
+          var nick    = data.infos.nick;
 
+          $('#loggedUserInfo #nickname').html(nick);
           $('#loggedUserInfo #kills').html(kills);
           $('#loggedUserInfo #deaths').html(deaths);
           $('#loggedUserInfo #assists').html(assists);
@@ -101,12 +100,59 @@ $(document).ready(function() {
             $('#loggedUserInfo').fadeIn();
           });
         } else {
-          $('.social .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+          $('#loginForm .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
         }
       }).always(function() {
-        $('.social').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
-        $('.social .ajaxWait').hide();
+        $('#loginForm').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
+        $('#loginForm .ajaxWait').hide();
     });
 
+    return false;
   });
+
+  $("#loggedUserInfo #sair").click(function() {
+    $.ajax({
+      url: '/logout',
+      type: 'POST',
+      beforeSend: function(xhr) {
+        $('#loggedUserInfo').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '0.5');
+        $('#loggedUserInfo .ajaxWait').show();
+      },
+      timeout: 8000
+    }).error(function(jqXHR, textStatus, errorThrown) {
+        var notyText = null;
+        switch(textStatus) {
+          case 'timeout':
+            notyText = 'Tempo limite atingido, tente novamente.';
+            break;
+          case 'error':
+            notyText = 'Um erro interno de servidor ocorreu!';
+            break;
+          case 'abort':
+            notyText = 'Requisição abortada! tente novamente.';
+            break;
+          case 'parsererror':
+            notyText = 'Requisição mal formatada, tente novamente.';
+            break;
+          default:
+            notyText = 'Um erro desconhecido ocorreu, tente novamente.';
+            break;
+        }
+
+        $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+      }).success(function(data) {
+        if(data.error) {
+          $('#loggedUserInfo .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+        } else if(data.success) {
+          $('#loggedUserInfo').fadeOut('fast', function() {
+            $('#loginForm').fadeIn();
+          });
+        } else {
+          $('#loggedUserInfo .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+        }
+      }).always(function() {
+        $('#loggedUserInfo').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
+        $('#loggedUserInfo .ajaxWait').hide();
+      });
+  })
 });

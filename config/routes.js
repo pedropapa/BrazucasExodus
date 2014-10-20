@@ -65,6 +65,11 @@ module.exports.routes = {
   'post /login': {
     controller: 'CoreController',
     action: 'login'
+  },
+
+  'post /logout': {
+    controller: 'CoreController',
+    action: 'logout'
   }
 
   /*
