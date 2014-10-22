@@ -1,4 +1,4 @@
-// Objeto respons·vel pelo gerenciamento do webchat.
+// Objeto respons√°vel pelo gerenciamento do webchat.
 var webchat = {
   messagesContainer: function() {return $('#'+webchat_tab.getId()+' .panel .messages')},
   usersContainer: function() {return $('#'+webchat_tab.getId()+' .loggedUsers')},
@@ -9,6 +9,7 @@ var webchat = {
       var targetContainer;
       var targetDiv;
       var private_room;
+      var tab_obj;
 
       if(data.socketId == session.socketId) {
         messageClass = 'userMessage';
@@ -22,14 +23,21 @@ var webchat = {
         if(!private_room) {
           socket.post('/socket/openParticularChat', {targetUsername: data.username}, function(_data) {
             createParticularChat(data.username, data.extra.salaId);
+            webchat.othersMessage.create(data);
           });
+
+          return true;
         }
 
         targetContainer = private_room.getTabElement().find('.panel .messages');
         targetDiv = private_room.getTabElement();
+
+        private_room.setNotifications(private_room.getNotifications() + 1);
       } else {
         targetContainer = webchat.messagesContainer();
         targetDiv = $('#'+webchat_tab.getId());
+
+        webchat_tab.setNotifications(webchat_tab.getNotifications() + 1);
       }
 
       var newMessageDiv = $('<div></div>')
@@ -113,8 +121,6 @@ var webchat = {
       container = $('#'+webchat_tab.getId());
     }
 
-    setCoreTabNotifications(container, getTabNotifications(container) + 1);
-
-    container.scrollTop(this.messagesContainer().get(0).scrollHeight);
+    container.scrollTop(container.get(0).scrollHeight);
   }
 }

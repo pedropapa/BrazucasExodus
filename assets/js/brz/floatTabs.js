@@ -138,7 +138,7 @@ function FloatTab(tabName, title, width) {
     this.applyDefaultEvents();
     FloatTabs.adjustTabs();
   } else {
-    console.log('O nome da aba é obrigatório');
+    console.log('O nome da aba Ã© obrigatÃ³rio');
   }
 }
 

@@ -121,7 +121,7 @@ function launchWebChat() {
 
 function createParticularChat(username, salaId) {
   if(!particular_windows_tab[salaId]) {
-    particular_windows_tab[salaId] = new FloatTab('pvt_'+salaId, username);
+    particular_windows_tab[salaId] = new FloatTab('pvt_'+salaId, username, 150);
 
     particular_windows_tab[salaId].setContent('' +
       '<form id="particularChatForm" class="row container-fluid">'+

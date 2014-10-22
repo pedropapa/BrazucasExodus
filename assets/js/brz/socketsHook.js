@@ -64,6 +64,13 @@ var modelsHook = {
         webchatUser.html(webchatUser.html().replace(data.oldUsername, data.username));
         webchatUser.find('#targetName').val(data.username);
 
+        $('#particularChatForm').find('#userName').each(function(index, obj) {
+          if($(obj).val() == data.oldUsername) {
+            $(obj).parents('div').parents('div').eq(0).find('.tabTitle').html($(obj).parents('div').parents('div').eq(0).find('.tabTitle').html().replace(data.oldUsername, data.username));
+            $(obj).val(data.username);
+          }
+        });
+
         webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.' );
       }
     },

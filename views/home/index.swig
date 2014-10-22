@@ -51,7 +51,7 @@
 {% block conteudo %}
     <div id="banner" class="rounded shadowed content introduction container-fluid realtime">
         <div class="col-md-7">
-            <div class="title text-center" style="color: #008BE8; letter">ASSISTA AGORA</div>
+            <div class="title text-center" style="color: #008BE8;">ASSISTA AGORA</div>
             <div class="text-center publicMatch rounded">
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/513078971802853376/gg13cJ66_bigger.jpeg"></div>
                 <div class="player"><img width="40px" height="40px" src="https://pbs.twimg.com/profile_images/485246365027414016/hilpnRUD_bigger.jpeg"></div>
@@ -134,7 +134,7 @@
         </div>
 
         <div class="col-md-5">
-            <div class="title text-center">ATUALIZAÇÕES</div>
+            <div class="title text-center" style="color: #008BE8;">ATUALIZAÇÕES</div>
             <div class="gitHubCommits">
                 {% for lastCommit in GitHubAPI.lastCommits %}
                     {% if loop.index <= 6 %}

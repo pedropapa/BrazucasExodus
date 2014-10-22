@@ -12,7 +12,7 @@ module.exports = {
   criarUsuario: function(session, socket) {
     var varsObj = {};
 
-    if(session.usuario.isPlayer) {
+    if(session.usuario && session.usuario.isPlayer) {
       varsObj = {username: session.usuario.username, socketId: socket.id, source: session.usuario.source, isPlayer: true};
     } else {
       varsObj = {username: UtilsService.generateTemporaryUsername(), socketId: socket.id, source: Local.ucp};

@@ -1,6 +1,6 @@
-// Objeto responsável pelas notificações do servidor dentro do UCP.
+// Objeto responsÃ¡vel pelas notificaÃ§Ãµes do servidor dentro do UCP.
 var sampServerNotifications = {
-  // Notificações de mortes do servidor.
+  // NotificaÃ§Ãµes de mortes do servidor.
   killEvent: function(killerName, playerName, weapon, timestamp, gamemodeOrMinigameName) {
     var dateObject = new Date(timestamp);
     noty({
@@ -31,7 +31,7 @@ var sampServerNotifications = {
     noty({
       text: '' +
         '<div class="container-fluid text-center">' +
-        'Você foi citado no servidor!' +
+        'VocÃª foi citado no servidor!' +
         '</div>' +
 
         '<hr style="margin: 3px"/>' +
