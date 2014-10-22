@@ -57,7 +57,15 @@ var modelsHook = {
   // Responsável por gerenciar os usuários da aplicação.
   usuario: {
     update: function(data) {
-      alert(data.toSource());
+      var webchatUser = $('#webchatUser_'+data.oldUsername);
+
+      if(webchatUser.size() > 0) {
+        webchatUser.attr('id', 'webchatUser_' + data.username);
+        webchatUser.html(webchatUser.html().replace(data.oldUsername, data.username));
+        webchatUser.find('#targetName').val(data.username);
+
+        webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.' );
+      }
     },
     create: function(data) {
       if(data.length > 0) {

@@ -20,5 +20,9 @@ module.exports = {
 
   isValidPassword: function(nickname) {
     return nickname.toString().replace(/ /g, '').match(/^\w[\w,\d]+$/);
+  },
+
+  generateTemporaryUsername: function() {
+    return 'PNA'+Math.round(Math.random()*10000);
   }
 }

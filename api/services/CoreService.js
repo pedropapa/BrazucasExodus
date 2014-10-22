@@ -10,7 +10,15 @@ module.exports = {
    * @param session - Requisição enviada pelo cliente.
    */
   criarUsuario: function(session, socket) {
-    Usuario.create({username: 'PNA'+Math.round(Math.random()*1000000000), socketId: socket.id, source: Local.ucp}).exec(function(error, objUsuario) {
+    var varsObj = {};
+
+    if(session.usuario.isPlayer) {
+      varsObj = {username: session.usuario.username, socketId: socket.id, source: session.usuario.source, isPlayer: true};
+    } else {
+      varsObj = {username: UtilsService.generateTemporaryUsername(), socketId: socket.id, source: Local.ucp};
+    }
+
+    Usuario.create(varsObj).exec(function(error, objUsuario) {
 
       if(error) {
         return {error: 500, controller: 'Socket', message: 'Não foi possível criar o usuário temporário.'};
@@ -20,7 +28,7 @@ module.exports = {
 
         Usuario.publishCreate(objUsuario);
 
-        sails.log.info('Novo usuário criado: '+objUsuario.username);
+        sails.log.info('Novo usuário criado/reconectado: '+objUsuario.username);
       }
     });
   },

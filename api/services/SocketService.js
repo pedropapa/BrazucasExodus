@@ -32,8 +32,8 @@ module.exports = {
     if(!session.usuario) {
       CoreService.criarUsuario(session, socket);
     } else {
-      Usuario.find({id: session.usuario.id }).exec(function(error, Usuario) {
-        if(Usuario.length == 0) {
+      Usuario.findOne({id: session.usuario.id }).exec(function(error, Usuario) {
+        if(Usuario == undefined) {
           CoreService.criarUsuario(session, socket);
         }
       });

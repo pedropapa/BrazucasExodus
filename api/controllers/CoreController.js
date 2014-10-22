@@ -46,7 +46,22 @@ module.exports = {
 
           var loginInfo = {nick: info_nickname, kills: info_matou, deaths: info_morreu, assists: info_assists, conta_mg: (finishObject.conta_mg)?true:false, conta_rpg: (finishObject.conta_rpg)?true:false };
 
+          // Grava/Atualiza cookies de login.
           req.session.loginInfo = loginInfo;
+
+          // Atualiza dados temporários
+          Usuario.findOne({username: req.session.usuario.username}).exec(function(error, objUsuario) {
+            if(!error && objUsuario !== undefined) {
+              Usuario.update({username: req.session.usuario.username}, {username: info_nickname, isPlayer: true}).exec(function(updateError, updatedUsuario) {
+                if(!updateError && updatedUsuario !== undefined) {
+                  req.session.usuario = updatedUsuario[0];
+                  req.session.save();
+
+                  Usuario.publishUpdate(updatedUsuario[0].id, {oldUsername: objUsuario.username, username: info_nickname});
+                }
+              });
+            }
+          });
 
           res.json({success: true, infos: loginInfo});
         }
@@ -75,7 +90,34 @@ module.exports = {
   logout: function(req, res) {
     req.session.loginInfo = null;
 
-    res.json({success: true});
+    var updateSession = function(req, callback) {
+      // Atualiza dados temporários
+      Usuario.findOne({username: req.session.usuario.username}).exec(function(error, objUsuario) {
+        if(!error && objUsuario !== undefined) {
+          console.log('logout find criteria ', req.session.usuario);
+          var newUsername = UtilsService.generateTemporaryUsername();
+
+          Usuario.update({username: req.session.usuario.username}, {username: newUsername, isPlayer: false}).exec(function(updateError, updatedUsuario) {
+            if(!updateError && updatedUsuario !== undefined) {
+              console.log('new session', updatedUsuario[0]);
+              req.session.usuario = updatedUsuario[0];
+              req.session.save();
+
+              Usuario.publishUpdate(updatedUsuario[0].id, {oldUsername: objUsuario.username, username: newUsername});
+            }
+
+            callback();
+          });
+        }
+      });
+    }
+
+    async.each([
+      updateSession
+    ], function(func, callback) {func(req, callback)}, function(err, results) {
+      console.log(req.session.usuario);
+      res.json({success: true});
+    });
   },
 
   /**
