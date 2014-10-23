@@ -149,6 +149,10 @@ function createParticularChat(username, salaId) {
 
       e.preventDefault();
     });
+
+    webchat.notifications.create('Nunca divulgue sua senha!', particular_windows_tab[salaId].getTabElement());
+
+    particular_windows_tab[salaId].toggle();
   }
 }
 

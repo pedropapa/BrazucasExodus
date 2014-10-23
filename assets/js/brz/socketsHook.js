@@ -68,6 +68,7 @@ var modelsHook = {
           if($(obj).val() == data.oldUsername) {
             $(obj).parents('div').parents('div').eq(0).find('.tabTitle').html($(obj).parents('div').parents('div').eq(0).find('.tabTitle').html().replace(data.oldUsername, data.username));
             $(obj).val(data.username);
+            webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.', $(obj).parents('form').eq(0));
           }
         });
 

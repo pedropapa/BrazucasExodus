@@ -18,20 +18,30 @@ module.exports = {
       varsObj = {username: UtilsService.generateTemporaryUsername(), socketId: socket.id, source: Local.ucp};
     }
 
-    Usuario.create(varsObj).exec(function(error, objUsuario) {
-      if(error) {
-        sails.log.error('Não foi possível criar o usuário temporário.');
-      } else {
-        session.usuario = objUsuario;
+    Usuario.findOne({username: varsObj.username}).exec(function(errorFind, findObjUsuario) {
+      if(findObjUsuario !== undefined) {
+        sails.log.info('Usuário '+varsObj.username+ ' já está autenticado na aplicação!');
+
+        session.usuario = null;
+        session.loginInfo = null;
         session.save();
+      } else {
+        Usuario.create(varsObj).exec(function(error, objUsuario) {
+          if(error) {
+            sails.log.error('Não foi possível criar o usuário temporário.');
+          } else {
+            session.usuario = objUsuario;
+            session.save();
 
-        Usuario.publishCreate(objUsuario);
+            Usuario.publishCreate(objUsuario);
 
-        sails.log.info('Novo usuário criado/reconectado: '+objUsuario.username);
+            sails.log.info('Novo usuário criado/reconectado: '+objUsuario.username);
+          }
 
-        if(callback) {
-          callback();
-        }
+          if(callback) {
+            callback();
+          }
+        });
       }
     });
   },

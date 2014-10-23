@@ -21,9 +21,9 @@ module.exports = {
           Usuario.subscribe(socket, usuarios);
 
           sails.sockets.customBroadcastTo(socket, 'usuario', 'create', usuarios);
-
-          callback();
         }
+
+        callback();
       });
     }
 
@@ -47,6 +47,8 @@ module.exports = {
           }
         });
       }
+
+      callback();
     }
 
     var finishRequest = function(err, results) {
@@ -57,7 +59,7 @@ module.exports = {
       sails.sockets.emit(socket.id, objectToBlast);
     }
 
-    async.parallel([
+    async.series([
       broadcastUsuariosInfo,
       joinRooms,
       createUser
@@ -69,11 +71,13 @@ module.exports = {
    *
    */
   onDisconnect: function(session, socket) {
-    Usuario.destroy({id: session.usuario.id }).exec(function(error) {
-      if(!error) {
-        Usuario.publishDestroy(session.usuario.id, socket, {previous: session.usuario});
-      }
-    });
+    if(session.usuario) {
+      Usuario.destroy({id: session.usuario.id }).exec(function(error) {
+        if(!error) {
+          Usuario.publishDestroy(session.usuario.id, socket, {previous: session.usuario});
+        }
+      });
+    }
   },
 
   blastMessage: function(data, room) {

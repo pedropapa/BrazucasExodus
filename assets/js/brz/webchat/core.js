@@ -68,16 +68,24 @@ var webchat = {
   },
 
   notifications: {
-    create: function(message) {
+    create: function(message, container) {
       var notificationDiv = $('<div></div>')
           .addClass('text-center')
           .addClass('notification')
           .append(message)
         ;
 
-      webchat.messagesContainer().append(notificationDiv);
+      var messagesContainer;
 
-      webchat.internalUpdateScroll();
+      if(container) {
+        messagesContainer = container.find('.messages');
+      } else {
+        messagesContainer = webchat.messagesContainer();
+      }
+
+      messagesContainer.append(notificationDiv);
+
+      webchat.internalUpdateScroll((container)?container:false);
     }
   },
 
@@ -103,6 +111,12 @@ var webchat = {
         webchat.usersContainer().append(userDiv);
 
         webchat.notifications.create('<b>' + username + '</b> entrou.' );
+
+        $('#particularChatForm').find('#userName').each(function(index, obj) {
+          if($(obj).val() == username) {
+            webchat.notifications.create('<b>' + username + '</b> está online.', $(obj).parents('form').eq(0));
+          }
+        });
       }
     },
     logout: function(username) {
@@ -112,6 +126,12 @@ var webchat = {
         user.remove();
 
         webchat.notifications.create('<b>' + username + '</b> saiu.' );
+
+        $('#particularChatForm').find('#userName').each(function(index, obj) {
+          if($(obj).val() == username) {
+            webchat.notifications.create('<b>' + username + '</b> está offline.', $(obj).parents('form').eq(0));
+          }
+        });
       }
     }
   },
