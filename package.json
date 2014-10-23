@@ -15,7 +15,8 @@
     "connect-mongo": "0.4.1",
     "sails-memory": "0.10.2",
     "MD5": "1.2.1",
-    "cron": "*"
+    "cron": "*",
+    "material-design-icons": "*"
   },
   "scripts": {
     "start": "node app.js",
