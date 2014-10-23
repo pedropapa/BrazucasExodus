@@ -9,7 +9,7 @@ module.exports = {
    *
    * @param session - Requisição enviada pelo cliente.
    */
-  criarUsuario: function(session, socket) {
+  criarUsuario: function(session, socket, callback) {
     var varsObj = {};
 
     if(session.usuario && session.usuario.isPlayer) {
@@ -19,9 +19,8 @@ module.exports = {
     }
 
     Usuario.create(varsObj).exec(function(error, objUsuario) {
-
       if(error) {
-        return {error: 500, controller: 'Socket', message: 'Não foi possível criar o usuário temporário.'};
+        sails.log.error('Não foi possível criar o usuário temporário.');
       } else {
         session.usuario = objUsuario;
         session.save();
@@ -29,6 +28,10 @@ module.exports = {
         Usuario.publishCreate(objUsuario);
 
         sails.log.info('Novo usuário criado/reconectado: '+objUsuario.username);
+
+        if(callback) {
+          callback();
+        }
       }
     });
   },

@@ -14,36 +14,54 @@ module.exports = {
     // Captura alterações dos futuros usuários adicionados ao banco.
     Usuario.watch(socket);
 
-    // Captura alterações de todos os usuários já adicionados ao banco.
-    Usuario.find().exec(function(e, usuarios) {
-      if(usuarios.length > 0) {
-        Usuario.subscribe(socket, usuarios);
+    var broadcastUsuariosInfo = function(callback) {
+      // Captura alterações de todos os usuários já adicionados ao banco.
+      Usuario.find().exec(function(e, usuarios) {
+        if(usuarios.length > 0) {
+          Usuario.subscribe(socket, usuarios);
 
-        sails.sockets.customBroadcastTo(socket, 'usuario', 'create', usuarios);
-      }
-    });
+          sails.sockets.customBroadcastTo(socket, 'usuario', 'create', usuarios);
 
-    // Sala padrão do chat geral do UCP.
-    sails.sockets.join(socket, Salas.geral);
-
-    // Sala própria do jogador (para conversas particulares)
-    sails.sockets.join(socket, socket.id);
-
-    if(!session.usuario) {
-      CoreService.criarUsuario(session, socket);
-    } else {
-      Usuario.findOne({id: session.usuario.id }).exec(function(error, Usuario) {
-        if(Usuario == undefined) {
-          CoreService.criarUsuario(session, socket);
+          callback();
         }
       });
     }
 
-    // Envia informações básicas para o jogador.
-    var objectToBlast = SampSocketService.serverBasicStats;
-    objectToBlast.sampAction = "updateServerBasicStats";
+    var joinRooms = function(callback) {
+      // Sala padrão do chat geral do UCP.
+      sails.sockets.join(socket, Salas.geral);
 
-    sails.sockets.emit(socket.id, objectToBlast);
+      // Sala própria do jogador (para conversas particulares)
+      sails.sockets.join(socket, socket.id);
+
+      callback();
+    }
+
+    var createUser = function(callback) {
+      if(!session.usuario) {
+        CoreService.criarUsuario(session, socket, callback);
+      } else {
+        Usuario.findOne({id: session.usuario.id }).exec(function(error, Usuario) {
+          if(Usuario == undefined) {
+            CoreService.criarUsuario(session, socket, callback);
+          }
+        });
+      }
+    }
+
+    var finishRequest = function(err, results) {
+      // Envia informações básicas para o jogador.
+      var objectToBlast = SampSocketService.serverBasicStats;
+      objectToBlast.sampAction = "updateServerBasicStats";
+
+      sails.sockets.emit(socket.id, objectToBlast);
+    }
+
+    async.parallel([
+      broadcastUsuariosInfo,
+      joinRooms,
+      createUser
+    ], finishRequest);
   },
 
   /**
