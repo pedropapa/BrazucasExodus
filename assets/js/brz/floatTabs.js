@@ -100,7 +100,7 @@ var FloatTabs = {
   }
 }
 
-function FloatTab(tabName, title, width) {
+function FloatTab(tabName, title, width, closable) {
   if (tabName) {
     var parent = this;
 
@@ -129,7 +129,23 @@ function FloatTab(tabName, title, width) {
       .append(
         $('<div></div>')
           .addClass('tabContent')
-      )
+      );
+
+    if(closable) {
+      ele.find('.tabTitle').append(
+        $('<a></a>').
+          attr({href: '#'})
+          .click(function() {
+            parent.destroy();
+          })
+          .append(
+            $('<img/>')
+              .addClass('closeTab')
+              .addClass('svg')
+              .attr({src: 'images/material-design-icons/content/svg/ic_clear_24px.svg'})
+          )
+      );
+    }
 
     $('.floatTabs').append(ele);
 
@@ -214,10 +230,9 @@ FloatTab.prototype = {
   },
   applyEvent: function (event, element, callback) {
     if (!element) {
-      this.getTabElement().live(event, callback);
+      this.getTabElement().bind(event, callback);
     } else {
-      var element_to_apply_event = this.getTabElement().find(element);
-      element_to_apply_event.livequery(function() {$(this).on(event, callback)});
+      this.getTabElement().delegate(element, event, callback);
     }
   },
   destroy: function() {
@@ -239,9 +254,11 @@ FloatTab.prototype = {
     if (tabContent.is(':hidden')) {
       this.hideNotifications();
       tabContent.show();
+      this.getTabElement().find('.tabTitle').addClass('active');
     } else {
       this.showNotifications();
       tabContent.hide();
+      this.getTabElement().find('.tabTitle').removeClass('active');
     }
 
     FloatTabs.adjustTabs();

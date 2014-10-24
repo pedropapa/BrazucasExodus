@@ -29,6 +29,37 @@ $(document).ready(function() {
       nav.removeClass("f-nav");
     }
   });
+
+  /*
+   * Replace all SVG images with inline SVG
+   */
+  jQuery('img.svg').livequery(function(){
+    var $img = jQuery(this);
+    var imgID = $img.attr('id');
+    var imgClass = $img.attr('class');
+    var imgURL = $img.attr('src');
+
+    jQuery.get(imgURL, function(data) {
+      // Get the SVG tag, ignore the rest
+      var $svg = jQuery(data).find('svg');
+
+      // Add replaced image's ID to the new SVG
+      if(typeof imgID !== 'undefined') {
+        $svg = $svg.attr('id', imgID);
+      }
+      // Add replaced image's classes to the new SVG
+      if(typeof imgClass !== 'undefined') {
+        $svg = $svg.attr('class', imgClass+' replaced-svg');
+      }
+
+      // Remove any invalid XML tags as per http://validator.w3.org
+      $svg = $svg.removeAttr('xmlns:a');
+
+      // Replace image with new SVG
+      $img.replaceWith($svg);
+
+    }, 'xml');
+  });
 });
 
 function launchTaskManagerTab() {
@@ -121,7 +152,7 @@ function launchWebChat() {
 
 function createParticularChat(username, salaId) {
   if(!particular_windows_tab[salaId]) {
-    particular_windows_tab[salaId] = new FloatTab('pvt_'+salaId, username, 150);
+    particular_windows_tab[salaId] = new FloatTab('pvt_'+salaId, username, 150, true);
 
     particular_windows_tab[salaId].setContent('' +
       '<form id="particularChatForm" class="row container-fluid">'+
@@ -148,6 +179,10 @@ function createParticularChat(username, salaId) {
       }
 
       e.preventDefault();
+    });
+
+    particular_windows_tab[salaId].applyEvent('destroyed', false, function(e) {
+      delete particular_windows_tab[salaId];
     });
 
     webchat.notifications.create('Nunca divulgue sua senha!', particular_windows_tab[salaId].getTabElement());

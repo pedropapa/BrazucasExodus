@@ -31,3 +31,17 @@ function flashElement(obj, duration) {
     obj.css("background-image", originalBg);
   });
 }
+
+(function( $ ) {
+  var oldClean = jQuery.cleanData;
+
+  $.cleanData = function( elems ) {
+    for ( var i = 0, elem;
+          (elem = elems[i]) !== undefined; i++ ) {
+      $(elem).triggerHandler("destroyed");
+      //$.event.remove( elem, 'destroyed' );
+    }
+    oldClean(elems);
+  };
+
+})(jQuery)
