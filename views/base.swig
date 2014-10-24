@@ -9,6 +9,7 @@
         <link type="text/css" href="/styles/style.css" rel="stylesheet" />
         <link type="text/css" href="/styles/bjqs.css" rel="Stylesheet" />
         <link type="text/css" href="/styles/brazucas.css" rel="Stylesheet" />
+        <link type="text/css" href="svg-sprite/svg-sprite-av.css" rel="stylesheet">
         {% block css_libs %}{% endblock %}
 
         <script type="text/javascript" src="js/socket.io.js"></script>
