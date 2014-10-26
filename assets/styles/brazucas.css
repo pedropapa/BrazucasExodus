@@ -365,6 +365,14 @@
     user-select: none;
 }
 
+.page-content-overlay {
+    opacity: 0.6;
+    position: absolute;
+    display: none;
+    z-index: 5000;
+    background-color: white;
+}
+
 .f-nav{ z-index: 9999; position: fixed; top: 0; width: 100%;} /* this make our menu fixed top */
 
 .nav { height: 42px;}

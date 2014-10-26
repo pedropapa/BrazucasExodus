@@ -15,6 +15,8 @@
         <script type="text/javascript" src="js/sails.io.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
 
+        <script type="text/javascript" src="js/brz/objects/serverRpgMinigames.js"></script>
+
         <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/jquery.noty.packaged.min.js"></script>
@@ -30,11 +32,11 @@
         <script type="text/javascript" src="js/brz/menuEvents.js"></script>
         <script type="text/javascript" src="js/brz/socketsHook.js"></script>
         <script type="text/javascript" src="js/brz/webchat/core.js"></script>
-        <script type="text/javascript" src="js/brz/sampServerNotifications.js"></script>
+        <script type="text/javascript" src="js/brz/sampServerEvents.js"></script>
 
         <script type="text/javascript">
             // @TODO verificar uma melhor maneira de injetar arquivos de configuração server-side no cliente.
-            var brazucasConfig = {{ sails.config.brazucasConfig | json | raw }};
+            var brazucasConfig = {{ sails.config.brazucasConfig | json }};
         </script>
 
         {% block javascript_libs %}{% endblock %}

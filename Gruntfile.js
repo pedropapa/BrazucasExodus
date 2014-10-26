@@ -74,7 +74,7 @@ module.exports = function (grunt) {
    */
 
   var templateFilesToInject = [
-    'linker/**/*.swig'
+    'linker/**/*.nunjucks'
   ];
 
 
@@ -260,8 +260,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/**/*.swig': jsFilesToInject,
-          'views/**/*.swig': jsFilesToInject,
+          '.tmp/public/**/*.nunjucks': jsFilesToInject,
+          'views/**/*.nunjucks': jsFilesToInject,
           'views/**/*.ejs': jsFilesToInject
         }
       },
@@ -274,8 +274,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/**/*.swig': ['.tmp/public/min/production.js'],
-          'views/**/*.swig': ['.tmp/public/min/production.js'],
+          '.tmp/public/**/*.nunjucks': ['.tmp/public/min/production.js'],
+          'views/**/*.nunjucks': ['.tmp/public/min/production.js'],
           'views/**/*.ejs': ['.tmp/public/min/production.js']
         }
       },
@@ -290,8 +290,8 @@ module.exports = function (grunt) {
 
         // cssFilesToInject defined up top
         files: {
-          '.tmp/public/**/*.swig': cssFilesToInject,
-          'views/**/*.swig': cssFilesToInject,
+          '.tmp/public/**/*.nunjucks': cssFilesToInject,
+          'views/**/*.nunjucks': cssFilesToInject,
           'views/**/*.ejs': cssFilesToInject
         }
       },
@@ -304,8 +304,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/index.swig': ['.tmp/public/min/production.css'],
-          'views/**/*.swig': ['.tmp/public/min/production.css'],
+          '.tmp/public/index.nunjucks': ['.tmp/public/min/production.css'],
+          'views/**/*.nunjucks': ['.tmp/public/min/production.css'],
           'views/**/*.ejs': ['.tmp/public/min/production.css']
         }
       },
@@ -319,8 +319,8 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/index.swig': ['.tmp/public/jst.js'],
-          'views/**/*.swig': ['.tmp/public/jst.js'],
+          '.tmp/public/index.nunjucks': ['.tmp/public/jst.js'],
+          'views/**/*.nunjucks': ['.tmp/public/jst.js'],
           'views/**/*.ejs': ['.tmp/public/jst.js']
         }
       },

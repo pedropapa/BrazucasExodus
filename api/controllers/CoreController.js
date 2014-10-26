@@ -6,17 +6,6 @@
  */
 
 module.exports = {
-    
-  
-  /**
-   * Action blueprints:
-   *    `/default/main`
-   */
-   ucp: function (req, res) {
-    // Send a JSON response
-    return res.view('ucp/index');
-  },
-
   /**
    * Action login
    *

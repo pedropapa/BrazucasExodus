@@ -6,6 +6,7 @@
 module.exports = {
   sampSocket: null,
   serverBasicStats: {},
+  isConnected: false,
 
   init: function() {
     var net = require('net');
@@ -13,6 +14,10 @@ module.exports = {
 
     this.sampSocket.connect(sails.config.brazucasConfig.serverSocketPort, sails.config.brazucasConfig.serverIp, function(error) {
       sails.log.info('Connectado ao servidor SA-MP. IP: '+sails.config.brazucasConfig.serverIp+', Porta: '+sails.config.brazucasConfig.serverSocketPort);
+
+      SampSocketService.isConnected = true;
+
+      sails.sockets.blast({ sampAction: 'serverRpgMinigamesConnect', ip: sails.config.brazucasConfig.serverIp, port: sails.config.brazucasConfig.serverSocketPort });
 
       if(error) {
         sails.log.error(error);
@@ -38,6 +43,12 @@ module.exports = {
       } else {
         sails.log.info('Conexão com o servidor SA-MP perdida, tentando reconectar...');
       }
+
+      if(SampSocketService.isConnected) {
+        sails.sockets.blast({ sampAction: 'serverRpgMinigamesDisconnect' });
+      }
+
+      SampSocketService.isConnected = false;
 
       SampSocketService.reconnect();
 

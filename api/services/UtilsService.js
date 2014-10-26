@@ -24,5 +24,13 @@ module.exports = {
 
   generateTemporaryUsername: function() {
     return 'PNA'+Math.round(Math.random()*10000);
+  },
+
+  getViewLayout: function(req) {
+    if(req.xhr) {
+      return 'views/no-layout.nunjucks';
+    } else {
+      return 'views/layout.nunjucks';
+    }
   }
 }

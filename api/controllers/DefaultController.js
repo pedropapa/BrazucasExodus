@@ -16,19 +16,18 @@
  */
 
 module.exports = {
-    
-  
+
   /**
    * Action blueprints:
    *    `/default/main`
    */
    main: function (req, res) {
-    // Send a JSON response
-    res.view('home/index');
+    res.view('home/index', { GitHubLastCommits: GitHubAPI.lastCommits, 'view_layout': UtilsService.getViewLayout(req) });
   },
 
-
-
+  competitivo: function(req, res) {
+    res.view('competitivo/index', {'view_layout': UtilsService.getViewLayout(req)});
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`

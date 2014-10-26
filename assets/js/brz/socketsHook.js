@@ -10,21 +10,8 @@ $(document).ready(function() {
     }
 
     if(data.sampAction) {
-      switch(data.sampAction) {
-        // Evento de morte no servidor
-        case 'sampServerKill':
-          sampServerNotifications.killEvent(data.killerName, data.deadName, data.reason, (new Date()).getTime(), 'TODO');
-          break;
-        case 'chatMessage':
-        case 'particularMessage':
-          webchat.othersMessage.create(data);
-          break;
-        case 'updateServerBasicStats':
-          $('.server-widget #mode').html(data.hostname);
-          $('.server-widget #players').html(data.onlinePlayers);
-          $('.server-widget #maxplayers').html(data.maxPlayers);
-          $('.server-widget #map').html(data.mapname);
-          break;
+      if(typeof sampServerEvents[data.sampAction] == 'function') {
+        sampServerEvents[data.sampAction](data);
       }
     }
   });

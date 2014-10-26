@@ -8,7 +8,6 @@
     "handlebars": "*",
     "optimist": "0.3.4",
     "sails-disk": "~0.9.0",
-    "swig": "^1.4.1",
     "sails": "*",
     "socket.io": "0.9.17",
     "sails-mysql": "0.10.5",
@@ -16,7 +15,9 @@
     "sails-memory": "0.10.2",
     "MD5": "1.2.1",
     "cron": "*",
-    "material-design-icons": "*"
+    "material-design-icons": "*",
+    "nunjucks": "*",
+    "dateformatter": "*"
   },
   "scripts": {
     "start": "node app.js",

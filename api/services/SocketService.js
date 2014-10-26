@@ -47,16 +47,21 @@ module.exports = {
           }
         });
       }
-
-      callback();
     }
 
     var finishRequest = function(err, results) {
-      // Envia informações básicas para o jogador.
+
+      // Envia informações básicas do servidor RPG/Minigames para o jogador.
       var objectToBlast = SampSocketService.serverBasicStats;
       objectToBlast.sampAction = "updateServerBasicStats";
-
       sails.sockets.emit(socket.id, objectToBlast);
+
+      // Envia para o jogador se o servidor RPG/Minigames está ou não online.
+      if(SampSocketService.isConnected) {
+        sails.sockets.emit(socket.id, { sampAction: 'serverRpgMinigamesConnect', ip: sails.config.brazucasConfig.serverIp, port: sails.config.brazucasConfig.serverSocketPort });
+      } else {
+        sails.sockets.emit(socket.id, { sampAction: 'serverRpgMinigamesDisconnect' });
+      }
     }
 
     async.series([

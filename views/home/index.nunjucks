@@ -1,6 +1,6 @@
-{% extends '../layout.swig' %}
+{% extends view_layout %}
 
-{% block titulo %}Início{% endblock titulo %}
+{% block titulo %}Início{% endblock %}
 
 {% block javascript_libs %}
     <script type="text/javascript">
@@ -136,16 +136,18 @@
         <div class="col-md-5">
             <div class="title text-center">ATUALIZAÇÕES</div>
             <div class="gitHubCommits">
-                {% for lastCommit in GitHubAPI.lastCommits %}
+                {% for lastCommit in GitHubLastCommits %}
                     {% if loop.index <= 6 %}
-                        <div class="commit rounded">
-                            <span class="date">{{ lastCommit.commit.author.date | date('d/m/Y') }}</span>
-                            {% if lastCommit.commit.message.length > 115 %}
-                                {{ lastCommit.commit.message.substr(0,115) }}...
-                            {% else %}
-                                {{ lastCommit.commit.message }}
-                            {% endif %}
-                            <a href="{{ lastCommit.html_url }}" target="_blank" class="commitUrl">ver commit</a>
+                        <div class="col-md-12">
+                            <div class="commit rounded">
+                                <span class="date">{{ lastCommit.commit.author.date | date('d/m/Y') }}</span>
+                                {% if lastCommit.commit.message.length > 115 %}
+                                    {{ lastCommit.commit.message.substr(0,115) }}...
+                                {% else %}
+                                    {{ lastCommit.commit.message }}
+                                {% endif %}
+                                <a href="{{ lastCommit.html_url }}" target="_blank" class="commitUrl">ver commit</a>
+                            </div>
                         </div>
                     {% endif %}
                 {% endfor %}

@@ -1,0 +1,7 @@
+{% extends view_layout %}
+
+{% block titulo %}Login{% endblock %}
+
+{% block conteudo %}
+teste
+{% endblock %}

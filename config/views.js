@@ -26,13 +26,21 @@ module.exports.views = {
   // https://github.com/balderdashy/sails-wiki/blob/0.9/config.views.md#engine
 
     engine: {
-        ext: 'swig', // Or `html`, whatever you are using
+        ext: 'nunjucks', // Or `html`, whatever you are using
         fn: function (pathName, locals, cb) {
-            var swig = require('swig');
-//            swig.setDefaults({tagControls: ['{?', '?}']});
-            return swig.renderFile(pathName, locals, cb);
+            var nunjucks = require('nunjucks');
+            dateFormatter = require('dateformatter').format;
+
+            var nunjucksEnv = nunjucks.configure(false, {watch: false});
+
+            nunjucksEnv.addFilter('json', function(str) {return JSON.stringify(str)});
+            nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {
+              return dateFormatter(format, input);
+            });
+
+            return nunjucks.render(pathName, locals, cb);
         }
-    },
+    }
 
 
 

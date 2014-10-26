@@ -1,11 +1,17 @@
+var serverWidgetNotyContainer = null;
+
 $(document).ready(function() {
+  serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Sem conexão com o servidor RPG/Minigames.', type: 'error', killer: false, closeWith: []});
+
   $('.server-widget').hover(function(handlerInOut) {
-    if(handlerInOut.type == 'mouseenter') {
-      $(this).find('.playRpgMinigames').show();
-      $(this).find('h1,table').css('opacity','0.3');
-    } else {
-      $(this).find('.playRpgMinigames').hide();
-      $(this).find('h1,table').css('opacity','1');
+    if(serverRpgMinigames.getIsOnline()) {
+      if(handlerInOut.type == 'mouseenter') {
+        $(this).find('.playRpgMinigames').show();
+        $(this).find('h1,table').css('opacity','0.3');
+      } else {
+        $(this).find('.playRpgMinigames').hide();
+        $(this).find('h1,table').css('opacity','1');
+      }
     }
   });
 
@@ -154,5 +160,65 @@ $(document).ready(function() {
         $('#loggedUserInfo').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
         $('#loggedUserInfo .ajaxWait').hide();
       });
+  });
+
+  $('.main-menu a').click(function() {
+    var parent = this;
+    var iframeLoadInterval = null;
+
+    $.ajax({
+      url: $(parent).attr('href'),
+      type: 'GET',
+      beforeSend: function(xhr) {
+        $('.page-content-overlay').css('width', $('.page-content').css('width'));
+        $('.page-content-overlay').css('height', $('.page-content').css('height'));
+
+        $('.page-content-overlay').show();
+        iframeLoadInterval = setInterval(function() {$('#hiddenIframe').attr('src', 'data:text/html')}, 1);
+      },
+      timeout: 8000
+    }).error(function(jqXHR, textStatus, errorThrown) {
+        var notyText = null;
+        switch(textStatus) {
+          case 'timeout':
+            notyText = 'Tempo limite atingido, tente novamente.';
+            break;
+          case 'error':
+            notyText = 'Um erro interno de servidor ocorreu!';
+            break;
+          case 'abort':
+            notyText = 'Requisição abortada! tente novamente.';
+            break;
+          case 'parsererror':
+            notyText = 'Requisição mal formatada, tente novamente.';
+            break;
+          default:
+            notyText = 'Um erro desconhecido ocorreu, tente novamente.';
+            break;
+        }
+
+        $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+      }).success(function(data) {
+        var elements = $.parseHTML(data);
+
+        $.each(elements, function(i, el) {
+          switch($(el).attr('id')) {
+            case '_call_ajax_page_title':
+              document.title = $(el).val();
+              break;
+            case '_call_ajax_page_libs':
+
+              break;
+            case '_call_ajax_page_body':
+              $('.page-content').html($(el).html());
+              break;
+          }
+        });
+      }).always(function() {
+        clearInterval(iframeLoadInterval);
+        $('.page-content-overlay').hide();
+      });
+
+    return false;
   })
 });
