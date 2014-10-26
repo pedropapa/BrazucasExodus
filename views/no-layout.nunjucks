@@ -1,0 +1,9 @@
+<input type="hidden" id="_call_ajax_page_title" value="{% block titulo %}{% endblock %}" />
+
+<div id="_call_ajax_page_libs">
+    {% block javascript_libs %}{% endblock %}
+</div>
+
+<div id="_call_ajax_page_body">
+    {% block conteudo %}{% endblock %}
+</div>
