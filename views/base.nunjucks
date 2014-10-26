@@ -23,6 +23,7 @@
         <script type="text/javascript" src="js/html2canvas.js"></script>
         <script type="text/javascript" src="js/jquery.livequery.js"></script>
 
+        <script type="text/javascript" src="js/jquery.history.js"></script>
         <script type="text/javascript" src="js/jquery.browser.js"></script>
         <script type="text/javascript" src="js/brz/floatTabs.js"></script>
         <script type="text/javascript" src="js/custom.protocol.detect.js"></script>

@@ -200,11 +200,12 @@ $(document).ready(function() {
         $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
       }).success(function(data) {
         var elements = $.parseHTML(data);
+        var windowTitle = null;
 
         $.each(elements, function(i, el) {
           switch($(el).attr('id')) {
             case '_call_ajax_page_title':
-              document.title = $(el).val();
+              windowTitle = $(el).val();
               break;
             case '_call_ajax_page_libs':
 
@@ -214,6 +215,8 @@ $(document).ready(function() {
               break;
           }
         });
+
+        History.pushState({state: 3,rand:Math.random()}, windowTitle, $(parent).attr('href'));
       }).always(function() {
         clearInterval(iframeLoadInterval);
         $('.page-content-overlay').hide();
