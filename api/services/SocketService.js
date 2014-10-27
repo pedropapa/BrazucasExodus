@@ -85,14 +85,16 @@ module.exports = {
     }
   },
 
-  blastMessage: function(data, room) {
+  blastMessage: function(data, room, sendToSamp) {
     if(room) {
       // Transmite a mensagem para uma determinada sala.
       sails.sockets.broadcast(room, {sampAction: data.action, socketId: (data.req)?data.req.socket.id:false, username: data.username, message: data.message, source: data.source, extra: data.extra});
     } else {
       // Transmite a mensagem para todos os usuários do UCP.
       sails.sockets.blast({ sampAction: data.action, socketId: (data.req)?data.req.socket.id:false, username: data.username, message: data.message, source: data.source});
+    }
 
+    if(sendToSamp) {
       SampSocketService.send('action='+data.action+'&username='+data.username+'&message='+data.message+'&source='+data.source+'&room='+room);
     }
   }

@@ -207,14 +207,10 @@ $(document).ready(function() {
             case '_call_ajax_page_title':
               windowTitle = $(el).val();
               break;
-            case '_call_ajax_page_libs':
-
-              break;
-            case '_call_ajax_page_body':
-              $('.page-content').html($(el).html());
-              break;
           }
         });
+
+        $('.page-content').html(data);
 
         History.pushState({state: 3,rand:Math.random()}, windowTitle, $(parent).attr('href'));
       }).always(function() {

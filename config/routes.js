@@ -32,9 +32,9 @@ module.exports.routes = {
   // located at `views/home/index.ejs`
   // 
   // (This would also work if you had a file at: `/views/home.ejs`)
-  'get /': ['DefaultController.ajaxLayout', 'DefaultController.main'],
+  'get /': ['DefaultController.main'],
 
-  'get /competitivo': ['DefaultController.ajaxLayout', 'DefaultController.competitivo'],
+  'get /competitivo': ['DefaultController.competitivo'],
 
   'get /socket/go': {
       controller: 'SocketController',

@@ -3,7 +3,7 @@
 {% block titulo %}Início{% endblock %}
 
 {% block javascript_libs %}
-    <script type="text/javascript">
+    <script type="text/javascript" id="page-scripts">
         $(document).ready(function() {
             $('.publicMatch').hover(function(handlerInOut) {
                 if(handlerInOut.type == 'mouseenter') {

@@ -26,7 +26,7 @@ module.exports = {
    */
   chatMessage: function (req, res) {
     if(req.param('message').length <= sails.config.brazucasConfig.maxChatMessageLength) {
-      SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: Local.ucp, action: 'chatMessage'}, Salas.geral);
+      SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: Local.ucp, action: 'chatMessage'}, Salas.geral, true);
     }
 
     res.json({message: 'success'}, 200);

@@ -69,7 +69,7 @@ module.exports = {
     },
     msg: function(sampData) {
       if(sampData['msg'].length <= sails.config.brazucasConfig.maxChatMessageLength) {
-        SocketService.blastMessage(sampData['nick'], sampData['msg'], Salas.geral, false, 'servidor');
+        SocketService.blastMessage({username: sampData['nick'], message: sampData['msg'], req: false, source: Local.servidor, action: 'chatMessage'}, Salas.geral);
       }
     },
     playerConnect: function(sampData) {
