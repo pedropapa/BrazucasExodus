@@ -162,7 +162,7 @@ $(document).ready(function() {
       });
   });
 
-  $('.main-menu a').click(function() {
+  $('.main-menu a').click(function(e) {
     var parent = this;
     var iframeLoadInterval = null;
 
@@ -218,6 +218,7 @@ $(document).ready(function() {
         $('.page-content-overlay').hide();
       });
 
+    e.preventDefault();
     return false;
   })
 });
