@@ -8,10 +8,14 @@ module.exports = {
   serverBasicStats: {},
   isConnected: false,
 
+  /**
+   * Inicializa a conexão entre a aplicação e o servidor SA-MP.
+   */
   init: function() {
     var net = require('net');
     this.sampSocket = new net.Socket();
 
+    // Tenta fazer a conexão com o SA-MP através de sockets, caso não seja possível a aplicação tenta fazer a reconexão automaticamente.
     this.sampSocket.connect(sails.config.brazucasConfig.serverSocketPort, sails.config.brazucasConfig.serverIp, function(error) {
       sails.log.info('Connectado ao servidor SA-MP. IP: '+sails.config.brazucasConfig.serverIp+', Porta: '+sails.config.brazucasConfig.serverSocketPort);
 
@@ -24,6 +28,7 @@ module.exports = {
       }
     });
 
+    // Filtra os dados recebidos do servidor SA-MP e passa para as callbacks (método 'on').
     this.sampSocket.on('data', function(data) {
       sails.log.info(data.toString());
       sampData = SampSocketService.filterData(data.toString());
@@ -37,6 +42,9 @@ module.exports = {
       }
     });
 
+    /**
+     * Quando a conexão com o servidor SA-MP é perdida, tentamos fazer a reconexão automaticamente.
+     */
     this.sampSocket.on('error', function(data) {
       if(data.syscall == 'connect') { // Quando há um erro na conexão com o socket do servidor.
         sails.log.error('Ocorreu um erro ao estabelecer a conexão com o socket do servidor SA-MP.');
@@ -122,6 +130,12 @@ module.exports = {
     }
   },
 
+  /**
+   * Método que filtra os dados recebidos pelo servidor SA-MP.
+   *
+   * @param data
+   * @returns {Array|*}
+   */
   filterData: function(data) {
     variables = data.split('&');
     returnData = [];
@@ -138,6 +152,9 @@ module.exports = {
     return returnData;
   },
 
+  /**
+   * Método que tenta fazer a reconexão com o servidor SA-MP após uma queda de conexão.
+   */
   reconnect: function() {
     // Reconexão automática.
     setTimeout(function() {SampSocketService.init()}, 4000);
@@ -146,6 +163,11 @@ module.exports = {
     this.sampSocket = null;
   },
 
+  /**
+   * Método que envia informações para o servidor SA-MP.
+   *
+   * @param data
+   */
   send: function(data) {
     if(this.sampSocket !== null && this.sampSocket.readable) {
       this.sampSocket.write(data, function(e) {

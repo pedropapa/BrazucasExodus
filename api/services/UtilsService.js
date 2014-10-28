@@ -14,18 +14,45 @@ module.exports = {
     return md5(sails.config.brazucasConfig.hashSalt + string);
   },
 
+  /**
+   * Verifica se um nickname é válido.
+   *
+   * Nicknames devem começar com uma letra e devem ter apenas letras, números e underline.
+   *
+   * @param nickname
+   * @returns {Array|{index: number, input: string}}
+   */
   isValidNickname: function(nickname) {
     return nickname.toString().replace(/ /g, '').match(/^\w[\w,_,\d]+$/);
   },
 
+  /**
+   * Verifica se uma senha é válida.
+   *
+   * Senhas devem começar com uma letra e devem ter apenas letras e números.
+   *
+   * @param nickname
+   * @returns {Array|{index: number, input: string}}
+   */
   isValidPassword: function(nickname) {
     return nickname.toString().replace(/ /g, '').match(/^\w[\w,\d]+$/);
   },
 
+  /**
+   * Gera um username temporário para o usuário que ainda não foi autenticado na aplicação.
+   *
+   * @returns {string}
+   */
   generateTemporaryUsername: function() {
     return 'PNA'+Math.round(Math.random()*10000);
   },
 
+  /**
+   * Determina o layout da página pelo tipo de requisição recebida, caso seja uma requisição ajax devemos retornar apenas o conteúdo principal da página.
+   *
+   * @param req
+   * @returns {string}
+   */
   getViewLayout: function(req) {
     if(req.xhr) {
       return 'views/no-layout.nunjucks';

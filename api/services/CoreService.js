@@ -5,7 +5,8 @@
  */
 module.exports = {
   /**
-   * Cria um usuário do UCP temporário na aplicação.
+   * Cria um usuário temporário na aplicação caso o usuário ainda não esteja autenticado.
+   * Caso já esteja autenticado, apenas cria novamente os registros de login.
    *
    * @param session - Requisição enviada pelo cliente.
    */
@@ -46,10 +47,22 @@ module.exports = {
     });
   },
 
+  /**
+   * Solicita ao servidor RPG/Minigames as informações básicas do servidor.
+   */
   updateServerBasicStats: function() {
     SampSocketService.send('a=getServerBasicStats');
   },
 
+  /**
+   * Realiza login nos minigames.
+   * É necessário executar este método utilizando a biblioteca async.
+   *
+   * @param nick
+   * @param passwd
+   * @param finishObject
+   * @param callback
+   */
   minigamesLogin: function(nick, passwd, finishObject, callback) {
     contas_mgs.findOne({NOME: nick, Senha: passwd}).exec(function(error, conta_mg) {
       if(conta_mg && !error !== null) {
@@ -60,6 +73,15 @@ module.exports = {
     });
   },
 
+  /**
+   * Realiza login no RPG.
+   * É necessário executar este método utilizando a biblioteca async.
+   *
+   * @param nick
+   * @param passwd
+   * @param finishObject
+   * @param callback
+   */
   rpgLogin: function(nick, passwd, finishObject, callback) {
     contas_rpg.findOne({NICK: nick, Senha: passwd}).exec(function(error, conta_rpg) {
       if(conta_rpg && !error) {

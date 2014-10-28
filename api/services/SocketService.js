@@ -4,7 +4,7 @@
  */
 module.exports = {
   /**
-   * Funcão chamada quando um novo socket se conecta a aplicação
+   * Funcão chamada quando um novo socket se conecta à aplicação
    *
    */
   onConnect: function(session, socket) {
@@ -95,6 +95,7 @@ module.exports = {
     }
 
     if(sendToSamp) {
+      // Propaga a informação para o servidor SA-MP.
       SampSocketService.send('action='+data.action+'&username='+data.username+'&message='+data.message+'&source='+data.source+'&room='+room);
     }
   }

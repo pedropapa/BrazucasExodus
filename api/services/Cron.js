@@ -1,10 +1,13 @@
 /**
- * Service que armazena funções de utilidades em geral dentro do sistema.
+ * Service utilizada para gerenciar as tarefas cron do sistema.
  *
  */
 module.exports = {
   lastGitHubCommitsJob: null,
 
+  /**
+   * Inicializa o serviço cron.
+   */
   init: function() {
     var CronJob = require('cron').CronJob;
 
