@@ -48,13 +48,6 @@ module.exports = {
   },
 
   /**
-   * Solicita ao servidor RPG/Minigames as informações básicas do servidor.
-   */
-  updateServerBasicStats: function() {
-    SampSocketService.send({a: 'getServerBasicStats'});
-  },
-
-  /**
    * Realiza login nos minigames.
    * É necessário executar este método utilizando a biblioteca async.
    *

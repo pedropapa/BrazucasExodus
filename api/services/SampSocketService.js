@@ -41,7 +41,7 @@ module.exports = {
         }
       }
 
-      if(typeof sampData['a'] !== undefined) {
+      if(sampData['a'] !== undefined) {
         if(SampSocketService.on[sampData['a']] == undefined) sails.log.warn('Comando '+sampData['a']+' não reconhecido.');
         else {
           for(variable in sampData) {
@@ -125,19 +125,6 @@ module.exports = {
           }
         });
       }
-    },
-    updateServerBasicStats: function(sampData) {
-      var onlinePlayers = parseInt(sampData['onlinePlayers']);
-      var maxPlayers    = parseInt(sampData['maxPlayers']);
-      var mapname       = sampData['mapname'];
-      var hostname      = sampData['hostname'];
-
-      SampSocketService.serverBasicStats = { onlinePlayers: onlinePlayers, maxPlayers: maxPlayers, mapname: mapname, hostname: hostname };
-
-      objectToBlast = SampSocketService.serverBasicStats;
-      objectToBlast.sampAction = "updateServerBasicStats";
-
-      sails.sockets.blast(objectToBlast);
     }
   },
 
@@ -172,6 +159,33 @@ module.exports = {
 
     // Resetar a variável sampSocket, para dizer aos clientes que a conexão com o servidor não está estabelecida.
     this.sampSocket = null;
+  },
+
+  /**
+   * Solicita ao servidor RPG/Minigames as informações básicas do servidor.
+   */
+  updateServerBasicStats: function() {
+    SampSocketService.send({a: 'getServerBasicStats'}, function(data, error) {
+      if(error) {
+        if(error.timedOut) {
+          sails.log.error('Não foi possível atualizar as informações básicas do servidor. (Timeout)');
+        } else {
+          sails.log.error('Não foi possível atualizar as informações básicas do servidor. (Erro Desconhecido)');
+        }
+      } else {
+        var onlinePlayers = parseInt(data['onlinePlayers']);
+        var maxPlayers    = parseInt(data['maxPlayers']);
+        var mapname       = data['mapname'];
+        var hostname      = data['hostname'];
+
+        SampSocketService.serverBasicStats = { onlinePlayers: onlinePlayers, maxPlayers: maxPlayers, mapname: mapname, hostname: hostname };
+
+        objectToBlast = SampSocketService.serverBasicStats;
+        objectToBlast.sampAction = "updateServerBasicStats";
+
+        sails.sockets.blast(objectToBlast);
+      }
+    });
   },
 
   /**

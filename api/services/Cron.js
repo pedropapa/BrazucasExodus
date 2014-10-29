@@ -22,7 +22,7 @@ module.exports = {
 
     // Tarefa que atualiza as informações básicas do servidor.
     this.lastGitHubCommitsJob = new CronJob('00 * * * * *', function() { // Executada a cada uma hora.
-        CoreService.updateServerBasicStats();
+        SampSocketService.updateServerBasicStats();
       }, function () {
         // This function is executed when the job stops
       },
@@ -31,7 +31,7 @@ module.exports = {
 
     // Chamamos as tarefa manualmente no início para não precisarmos esperar até o primeiro loop.
     GitHubAPI.updateLastCommits();
-    CoreService.updateServerBasicStats();
+    SampSocketService.updateServerBasicStats();
 
     sails.log.info('Tarefas Cron inicializadas.');
   }
