@@ -6,6 +6,7 @@ module.exports.brazucasConfig = {
   serverSocketPort: 7778,
   maxChatMessageLength: 128,
   hashSalt: 'yourgeneralhashsalt',
-  gitHubAppPath: ':username/:repository'
+  gitHubAppPath: ':username/:repository',
+  sampServerCmdTimeout: 10000
 };
 

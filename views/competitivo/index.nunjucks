@@ -1,6 +1,6 @@
 {% extends view_layout %}
 
-{% block titulo %}Login{% endblock %}
+{% block titulo %}Competitivo{% endblock %}
 
 {% block conteudo %}
 teste

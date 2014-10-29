@@ -32,6 +32,26 @@ function flashElement(obj, duration) {
   });
 }
 
+function getAjaxErrorText(textStatus) {
+  switch(textStatus) {
+    case 'timeout':
+      return 'Tempo limite atingido, tente novamente.';
+      break;
+    case 'error':
+      return 'Um erro interno de servidor ocorreu!';
+      break;
+    case 'abort':
+      return 'Requisição abortada! tente novamente.';
+      break;
+    case 'parsererror':
+      return 'Requisição mal formatada, tente novamente.';
+      break;
+    default:
+      return 'Um erro desconhecido ocorreu, tente novamente.';
+      break;
+  }
+}
+
 (function( $ ) {
   var oldClean = jQuery.cleanData;
 

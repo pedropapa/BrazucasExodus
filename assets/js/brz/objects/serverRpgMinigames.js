@@ -1,5 +1,5 @@
 var serverRpgMinigames = {
-  isOnline: true,
+  isOnline: false,
   playersOnline: 0,
   maxPlayers: 0,
   mapname: null,

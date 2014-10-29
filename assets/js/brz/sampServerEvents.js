@@ -88,8 +88,10 @@ var sampServerEvents = {
   },
 
   serverRpgMinigamesDisconnect: function(data) {
-    serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Conexão com o servidor RPG/Minigames perdida.', type: 'error', killer: true, closeWith: []});
+    if(serverRpgMinigames.getIsOnline()) {
+      serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Conexão com o servidor RPG/Minigames perdida.', type: 'error', killer: true, closeWith: []});
 
-    serverRpgMinigames.setIsOnline(false);
+      serverRpgMinigames.setIsOnline(false);
+    }
   }
 }

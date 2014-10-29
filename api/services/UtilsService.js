@@ -15,6 +15,16 @@ module.exports = {
   },
 
   /**
+   * Gera strings alpha-numéricas aleatórias.
+   *
+   * @param nickname
+   * @returns {Array|{index: number, input: string}}
+   */
+  generateString: function() {
+    return Math.random().toString(36).slice(2);
+  },
+
+  /**
    * Verifica se um nickname é válido.
    *
    * Nicknames devem começar com uma letra e devem ter apenas letras, números e underline.

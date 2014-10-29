@@ -106,8 +106,8 @@
 
         <div>
             <div class="page-content-overlay"></div>
-            <div class="page-content">
-
+            <div class="page-content" style="position: relative;">
+                <div class="noty-container" style="position: absolute; width: 90%; left: 5%; z-index:2000;"></div>
                 {% block conteudo %}
                 {% endblock %}
             </div>

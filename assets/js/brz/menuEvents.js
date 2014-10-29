@@ -126,24 +126,7 @@ $(document).ready(function() {
       },
       timeout: 8000
     }).error(function(jqXHR, textStatus, errorThrown) {
-        var notyText = null;
-        switch(textStatus) {
-          case 'timeout':
-            notyText = 'Tempo limite atingido, tente novamente.';
-            break;
-          case 'error':
-            notyText = 'Um erro interno de servidor ocorreu!';
-            break;
-          case 'abort':
-            notyText = 'Requisição abortada! tente novamente.';
-            break;
-          case 'parsererror':
-            notyText = 'Requisição mal formatada, tente novamente.';
-            break;
-          default:
-            notyText = 'Um erro desconhecido ocorreu, tente novamente.';
-            break;
-        }
+        var notyText = getAjaxErrorText(textStatus);
 
         $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
       }).success(function(data) {
@@ -178,26 +161,9 @@ $(document).ready(function() {
       },
       timeout: 8000
     }).error(function(jqXHR, textStatus, errorThrown) {
-        var notyText = null;
-        switch(textStatus) {
-          case 'timeout':
-            notyText = 'Tempo limite atingido, tente novamente.';
-            break;
-          case 'error':
-            notyText = 'Um erro interno de servidor ocorreu!';
-            break;
-          case 'abort':
-            notyText = 'Requisição abortada! tente novamente.';
-            break;
-          case 'parsererror':
-            notyText = 'Requisição mal formatada, tente novamente.';
-            break;
-          default:
-            notyText = 'Um erro desconhecido ocorreu, tente novamente.';
-            break;
-        }
+        var notyText = getAjaxErrorText(textStatus);
 
-        $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+        $('.page-content').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
       }).success(function(data) {
         var elements = $.parseHTML(data);
         var windowTitle = null;
