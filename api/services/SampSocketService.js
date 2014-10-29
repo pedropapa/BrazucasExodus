@@ -34,20 +34,22 @@ module.exports = {
       sails.log.info(data.toString());
       var sampData = SampSocketService.filterData(data.toString());
 
-      if(typeof sampData['a'] == undefined) sails.log.warn('Comando '+sampData['a']+' não reconhecido.');
-      else {
-        for(variable in sampData) {
-          sampData[variable] = sampData[variable].replace(/\+/g, ' ');
+      if(sampData['cmdId'] !== undefined && typeof SampSocketService.commandsCallback[sampData['cmdId']] == 'object') {
+        if(!SampSocketService.commandsCallback[sampData['cmdId']].executed) {
+          SampSocketService.commandsCallback[sampData['cmdId']].callback(sampData);
+          SampSocketService.commandsCallback[sampData['cmdId']].executed = true;
         }
+      }
 
-        if(sampData['cmdId'] !== undefined && typeof SampSocketService.commandsCallback[sampData['cmdId']] == 'object') {
-          if(!SampSocketService.commandsCallback[sampData['cmdId']].executed) {
-            SampSocketService.commandsCallback[sampData['cmdId']].callback(sampData);
-            SampSocketService.commandsCallback[sampData['cmdId']].executed = true;
+      if(typeof sampData['a'] !== undefined) {
+        if(SampSocketService.on[sampData['a']] == undefined) sails.log.warn('Comando '+sampData['a']+' não reconhecido.');
+        else {
+          for(variable in sampData) {
+            sampData[variable] = sampData[variable].replace(/\+/g, ' ');
           }
-        }
 
-        SampSocketService.on[sampData['a']](sampData);
+          SampSocketService.on[sampData['a']](sampData);
+        }
       }
     });
 
@@ -195,7 +197,7 @@ module.exports = {
       }
 
       this.sampSocket.write(inlineData, function(e) {
-        sails.log.info(data + ' ' + e);
+        sails.log.info(inlineData + ' ' + e);
 
         /**
          * Caso tenha sido passado uma callback, devemos chamá-la quando o comando for executado pelo servidor.
