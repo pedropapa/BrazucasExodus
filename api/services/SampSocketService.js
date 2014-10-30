@@ -22,7 +22,7 @@ module.exports = {
 
       SampSocketService.isConnected = true;
 
-      SampSocketService.desconectarTodos(Local.servidor);
+      CoreService.desconectarTodos(Local.servidor);
 
       sails.sockets.blast({ sampAction: 'serverRpgMinigamesConnect', ip: sails.config.brazucasConfig.serverIp, port: sails.config.brazucasConfig.serverSocketPort });
 
@@ -67,7 +67,7 @@ module.exports = {
 
       if(SampSocketService.isConnected) {
         sails.sockets.blast({ sampAction: 'serverRpgMinigamesDisconnect' });
-        SampSocketService.desconectarTodos(Local.servidor);
+        CoreService.desconectarTodos(Local.servidor);
       }
 
       SampSocketService.isConnected = false;
@@ -81,23 +81,6 @@ module.exports = {
       sails.log.error('Conexão perdida com o servidor SA-MP.');
 
       SampSocketService.reconnect();
-    });
-  },
-
-  desconectarTodos: function(local) {
-    /**
-     * Desconecta todos os jogadores logados no servidor.
-     */
-    Usuario.find({source: local}).exec(function(error, Usuarios) {
-      if(!error && Usuarios.length > 0) {
-        for(x in Usuarios) {
-          Usuario.destroy({id: Usuarios[x].id }).exec(function(error) {
-            if(!error) {
-              Usuario.publishDestroy(Usuarios[x].id, null, {previous: Usuarios[x]});
-            }
-          });
-        }
-      }
     });
   },
 

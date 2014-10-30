@@ -91,5 +91,24 @@ module.exports = {
 
       callback();
     });
-  }
+  },
+
+  /**
+   * Desconecta todos os jogadores logados no servidor.
+   *
+   * @param local
+   */
+  desconectarTodos: function(local) {
+    Usuario.find({source: local}).exec(function(error, Usuarios) {
+      if(!error && Usuarios.length > 0) {
+        for(x in Usuarios) {
+          Usuario.destroy({id: Usuarios[x].id }).exec(function(error) {
+            if(!error) {
+              Usuario.publishDestroy(Usuarios[x].id, null, {previous: Usuarios[x]});
+            }
+          });
+        }
+      }
+    });
+  },
 }
