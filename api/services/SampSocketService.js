@@ -22,6 +22,8 @@ module.exports = {
 
       SampSocketService.isConnected = true;
 
+      SampSocketService.desconectarTodos(Local.servidor);
+
       sails.sockets.blast({ sampAction: 'serverRpgMinigamesConnect', ip: sails.config.brazucasConfig.serverIp, port: sails.config.brazucasConfig.serverSocketPort });
 
       if(error) {
@@ -65,6 +67,7 @@ module.exports = {
 
       if(SampSocketService.isConnected) {
         sails.sockets.blast({ sampAction: 'serverRpgMinigamesDisconnect' });
+        SampSocketService.desconectarTodos(Local.servidor);
       }
 
       SampSocketService.isConnected = false;
@@ -78,6 +81,23 @@ module.exports = {
       sails.log.error('Conexão perdida com o servidor SA-MP.');
 
       SampSocketService.reconnect();
+    });
+  },
+
+  desconectarTodos: function(local) {
+    /**
+     * Desconecta todos os jogadores logados no servidor.
+     */
+    Usuario.find({source: local}).exec(function(error, Usuarios) {
+      if(!error && Usuarios.length > 0) {
+        for(x in Usuarios) {
+          Usuario.destroy({id: Usuarios[x].id }).exec(function(error) {
+            if(!error) {
+              Usuario.publishDestroy(Usuarios[x].id, null, {previous: Usuarios[x]});
+            }
+          });
+        }
+      }
     });
   },
 
@@ -99,15 +119,23 @@ module.exports = {
               Usuario.publishCreate(objUsuario);
             }
           });
+        } else if(findUsuario.source == Local.ucp) {
+          // Caso o jogador esteja conectado no UCP, apenas faz um update no banco alterando o source para ucp/servidor.
+          Usuario.update({username: sampData['nick']}, {source: Local.ambos}).exec(function(error, objUsuario) {
+            if(!error && objUsuario !== undefined) {
+              objUsuario[0].event = 'sourceChange';
+              Usuario.publishUpdate(objUsuario[0].id, objUsuario[0]);
+            }
+          });
         }
       })
     },
     playerDisconnect: function(sampData) {
-      Usuario.find({username: sampData['nick']}).exec(function(error, findUsuario) {
+      Usuario.findOne({username: sampData['nick']}).exec(function(error, findUsuario) {
         if(!error && findUsuario.length > 0) {
-          Usuario.destroy({id: findUsuario[0].id }).exec(function(error) {
+          Usuario.destroy({id: findUsuario.id }).exec(function(error) {
             if(!error) {
-              Usuario.publishDestroy(findUsuario[0].id, null, {previous: findUsuario[0]});
+              Usuario.publishDestroy(findUsuario.id, null, {previous: findUsuario});
             }
           });
         }

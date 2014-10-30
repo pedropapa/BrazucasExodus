@@ -44,22 +44,33 @@ var modelsHook = {
   // Responsável por gerenciar os usuários da aplicação.
   usuario: {
     update: function(data) {
-      var webchatUser = $('#webchatUser_'+data.oldUsername);
+      switch(data.event) {
+        case 'usernameChange':
+          var webchatUser = $('#webchatUser_'+data.oldUsername);
 
-      if(webchatUser.size() > 0) {
-        webchatUser.attr('id', 'webchatUser_' + data.username);
-        webchatUser.html(webchatUser.html().replace(data.oldUsername, data.username));
-        webchatUser.find('#targetName').val(data.username);
+          if(webchatUser.size() > 0) {
+            webchatUser.attr('id', 'webchatUser_' + data.username);
+            webchatUser.html(webchatUser.html().replace(data.oldUsername, data.username));
+            webchatUser.find('#targetName').val(data.username);
 
-        $('#particularChatForm').find('#userName').each(function(index, obj) {
-          if($(obj).val() == data.oldUsername) {
-            $(obj).parents('div').parents('div').eq(0).find('.tabTitle').html($(obj).parents('div').parents('div').eq(0).find('.tabTitle').html().replace(data.oldUsername, data.username));
-            $(obj).val(data.username);
-            webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.', $(obj).parents('form').eq(0));
+            $('#particularChatForm').find('#userName').each(function(index, obj) {
+              if($(obj).val() == data.oldUsername) {
+                $(obj).parents('div').parents('div').eq(0).find('.tabTitle').html($(obj).parents('div').parents('div').eq(0).find('.tabTitle').html().replace(data.oldUsername, data.username));
+                $(obj).val(data.username);
+                webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.', $(obj).parents('form').eq(0));
+              }
+            });
+
+            webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.' );
           }
-        });
+          break;
+        case 'sourceChange':
+          var webchatUser = $('#webchatUser_'+data.username);
 
-        webchat.notifications.create('<b>' + data.oldUsername + '</b> alterou seu nick para <b>'+data.username+'</b>.' );
+          if(webchatUser.size() > 0) {
+            webchatUser.find('.loginType').html(data.source);
+          }
+          break;
       }
     },
     create: function(data) {

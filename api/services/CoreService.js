@@ -20,12 +20,20 @@ module.exports = {
     }
 
     Usuario.findOne({username: varsObj.username}).exec(function(errorFind, findObjUsuario) {
-      if(findObjUsuario !== undefined) {
+      if(findObjUsuario !== undefined && (findObjUsuario.source == Local.ucp || findObjUsuario.source == Local.ambos)) {
         sails.log.info('Usuário '+varsObj.username+ ' já está autenticado na aplicação!');
 
         session.usuario = null;
         session.loginInfo = null;
         session.save();
+      } else if(findObjUsuario !== undefined && findObjUsuario.source == Local.servidor) {
+        // Caso o jogador esteja conectado no Servidor, apenas faz um update no banco alterando o source para ucp/servidor.
+        Usuario.update({username: varsObj.username}, {source: Local.ambos}).exec(function(error, objUsuario) {
+          if(!error && objUsuario !== undefined) {
+            objUsuario[0].event = 'sourceChange';
+            Usuario.publishUpdate(objUsuario[0].id, objUsuario[0]);
+          }
+        });
       } else {
         Usuario.create(varsObj).exec(function(error, objUsuario) {
           if(error) {

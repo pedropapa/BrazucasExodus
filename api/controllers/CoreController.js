@@ -50,7 +50,7 @@ module.exports = {
                       req.session.usuario = updatedUsuario[0];
                       req.session.save();
 
-                      Usuario.publishUpdate(updatedUsuario[0].id, {oldUsername: objUsuario.username, username: info_nickname});
+                      Usuario.publishUpdate(updatedUsuario[0].id, {event: 'usernameChange', oldUsername: objUsuario.username, username: info_nickname});
 
                       res.json({success: true, infos: loginInfo});
                     } else {
