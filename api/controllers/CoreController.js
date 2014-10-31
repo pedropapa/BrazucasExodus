@@ -66,6 +66,7 @@ module.exports = {
                     } else {
                       Usuario.update({username: req.session.usuario.username}, {username: info_nickname, isPlayer: true}).exec(function(updateError, updatedUsuario) {
                         if(!updateError && updatedUsuario !== undefined) {
+                          findUsuario = updatedUsuario[0];
                           Usuario.publishUpdate(updatedUsuario[0].id, {event: 'usernameChange', oldUsername: objUsuario.username, username: info_nickname});
 
                           callback();
@@ -82,6 +83,7 @@ module.exports = {
                       req.session.loginInfo = loginInfo;
 
                       findUsuario.isPlayer = true;
+
                       req.session.usuario = findUsuario;
                       req.session.save();
 
