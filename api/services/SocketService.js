@@ -4,7 +4,7 @@
  */
 module.exports = {
   /**
-   * Funcão chamada quando um novo socket se conecta à aplicação
+   * Função chamada quando um novo socket se conecta à  aplicação
    *
    */
   onConnect: function(session, socket) {
@@ -64,7 +64,7 @@ module.exports = {
   },
 
   /**
-   * Funcão chamada quando um novo socket se desconecta da aplicação
+   * Função chamada quando um novo socket se desconecta da aplicação
    *
    */
   onDisconnect: function(session, socket) {

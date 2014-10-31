@@ -1,5 +1,5 @@
 /**
- * Service que gerencia as requisições à API do GitHub.
+ * Service que gerencia as requisiÃ§Ãµes Ã  API do GitHub.
  *
  */
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
   },
 
   updateLastCommits: function() {
-    sails.log.info('Atualizando últimos commits da aplicação no GitHub...');
+    sails.log.info('Atualizando Ãºltimos commits da aplicaÃ§Ã£o no GitHub...');
 
     var https = require('https');
     options = this.getOptions('commits');
@@ -37,7 +37,7 @@ module.exports = {
         GitHubAPI.lastCommits = JSON.parse(json_data);
       })
     }).on('error', function(e) {
-        sails.log.error('Erro ao obter os dados dos últimos commits da aplicação no github!');
+        sails.log.error('Erro ao obter os dados dos Ãºltimos commits da aplicaÃ§Ã£o no github!');
         sails.log.error(e);
       });
   }
