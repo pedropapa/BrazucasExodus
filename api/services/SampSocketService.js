@@ -115,12 +115,21 @@ module.exports = {
     },
     playerDisconnect: function(sampData) {
       Usuario.findOne({username: sampData['nick']}).exec(function(error, findUsuario) {
-        if(!error && findUsuario.length > 0) {
-          Usuario.destroy({id: findUsuario.id }).exec(function(error) {
-            if(!error) {
-              Usuario.publishDestroy(findUsuario.id, null, {previous: findUsuario});
-            }
-          });
+        if(!error && findUsuario !== undefined) {
+          if(findUsuario.source == Local.servidor) {
+            Usuario.destroy({id: findUsuario.id }).exec(function(error) {
+              if(!error) {
+                Usuario.publishDestroy(findUsuario.id, null, {previous: findUsuario});
+              }
+            });
+          } else if(findUsuario.source == Local.ambos) {
+            Usuario.update({id: findUsuario.id }, { source: Local.ucp }).exec(function(error, updatedUsuario) {
+              if(!error) {
+                updatedUsuario[0].event = 'sourceChange';
+                Usuario.publishUpdate(updatedUsuario[0].id, updatedUsuario[0]);
+              }
+            });
+          }
         }
       });
     },

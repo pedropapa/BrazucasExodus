@@ -38,15 +38,7 @@ module.exports = {
     }
 
     var createUser = function(callback) {
-      if(!session.usuario) {
         CoreService.criarUsuario(session, socket, callback);
-      } else {
-        Usuario.findOne({id: session.usuario.id }).exec(function(error, Usuario) {
-          if(Usuario == undefined) {
-            CoreService.criarUsuario(session, socket, callback);
-          }
-        });
-      }
     }
 
     var finishRequest = function(err, results) {
@@ -77,9 +69,22 @@ module.exports = {
    */
   onDisconnect: function(session, socket) {
     if(session.usuario) {
-      Usuario.destroy({id: session.usuario.id }).exec(function(error) {
-        if(!error) {
-          Usuario.publishDestroy(session.usuario.id, socket, {previous: session.usuario});
+      Usuario.findOne({username: session.usuario.username}).exec(function(err, findUsuario) {
+        if(!err && findUsuario !== undefined) {
+          if(findUsuario.source == Local.ucp) {
+            Usuario.destroy({id: session.usuario.id }).exec(function(error) {
+              if(!error) {
+                Usuario.publishDestroy(session.usuario.id, socket, {previous: session.usuario});
+              }
+            });
+          } else {
+            Usuario.update({username: session.usuario.username }, { source: Local.servidor }).exec(function(error, updatedUsuario) {
+              if(!error) {
+                updatedUsuario[0].event = 'sourceChange';
+                Usuario.publishUpdate(updatedUsuario[0].id, updatedUsuario[0]);
+              }
+            });
+          }
         }
       });
     }

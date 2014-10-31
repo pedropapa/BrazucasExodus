@@ -48,20 +48,21 @@ module.exports = {
       Usuario.findOne({username: targetUsername}).exec(function(err, objUsuario) {
         if(!err && objUsuario !== undefined && req.param('message').length <= sails.config.brazucasConfig.maxChatMessageLength) {
           // Mensagem particular enviada para um jogador logado no servidor.
+          if(sails.sockets.subscribers(objUsuario.socketId).indexOf(req.socket.id)) {
+            sails.sockets.join(req.socket, objUsuario.socketId);
+          }
+
           if(objUsuario.source == Local.servidor || objUsuario.source == Local.ambos) {
             SampSocketService.send({a: 'particularMessage', from: req.session.usuario.username, to: targetUsername, message: req.param('message'), source: req.session.usuario.source, salaId: salaId});
 
             // Emite a mensagem para o usuário que está enviando.
             SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: objUsuario.source, action: 'particularMessage', extra: {targetUsername: targetUsername, salaId: salaId}}, req.session.usuario.socketId);
-          }
 
-          // Mensagem particular enviada para um usuário do UCP.
-          if(objUsuario.source == Local.ucp || objUsuario.source == Local.ambos) {
+//            if(objUsuario.source == Local.ambos || objUsuario.source == Local.ucp) {
+//              SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: objUsuario.source, action: 'particularMessage', extra: {targetUsername: targetUsername, salaId: salaId}}, objUsuario.socketId);
+//            }
+          } else if(objUsuario.source == Local.ucp || objUsuario.source == Local.ambos) {
             // Quando o usuário alvo se desconecta e conecta denovo na aplicação devemos conectá-lo novamente na sala particular.
-            if(sails.sockets.subscribers(objUsuario.socketId).indexOf(req.socket.id)) {
-              sails.sockets.join(req.socket, objUsuario.socketId);
-            }
-
             SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: objUsuario.source, action: 'particularMessage', extra: {targetUsername: targetUsername, salaId: salaId}}, objUsuario.socketId);
           }
         } else {

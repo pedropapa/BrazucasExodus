@@ -26,6 +26,10 @@ module.exports = {
         session.usuario = null;
         session.loginInfo = null;
         session.save();
+
+        if(callback) {
+          callback();
+        }
       } else if(findObjUsuario !== undefined && findObjUsuario.source == Local.servidor) {
         // Caso o jogador esteja conectado no Servidor, apenas faz um update no banco alterando o source para ucp/servidor.
         Usuario.update({username: varsObj.username}, {source: Local.ambos}).exec(function(error, objUsuario) {
@@ -33,8 +37,14 @@ module.exports = {
             objUsuario[0].event = 'sourceChange';
             Usuario.publishUpdate(objUsuario[0].id, objUsuario[0]);
           }
+
+          if(callback) {
+            callback();
+          }
         });
       } else {
+        varsObj.source = Local.ucp;
+
         Usuario.create(varsObj).exec(function(error, objUsuario) {
           if(error) {
             sails.log.error('Não foi possível criar o usuário temporário.');
@@ -110,5 +120,5 @@ module.exports = {
         }
       }
     });
-  },
+  }
 }

@@ -133,9 +133,7 @@ $(document).ready(function() {
         if(data.error) {
           $('#loggedUserInfo .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
         } else if(data.success) {
-          $('#loggedUserInfo').fadeOut('fast', function() {
-            $('#loginForm').fadeIn();
-          });
+          window.location.reload();
         } else {
           $('#loggedUserInfo .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
         }

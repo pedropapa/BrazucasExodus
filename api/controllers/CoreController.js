@@ -39,24 +39,59 @@ module.exports = {
           Usuario.findOne({username: req.session.usuario.username}).exec(function(error, objUsuario) {
             if(!error && objUsuario !== undefined) {
               Usuario.findOne({username: info_nickname}).exec(function(findError, findUsuario) {
-                if(!findError && findUsuario !== undefined) {
+                if(!findError && findUsuario !== undefined && (findUsuario.source == Local.ambos || findUsuario.source == Local.ucp)) {
                   res.json({error: true, message: 'Este usuário já está autenticado na aplicação!'});
                 } else {
-                  Usuario.update({username: req.session.usuario.username}, {username: info_nickname, isPlayer: true}).exec(function(updateError, updatedUsuario) {
-                    if(!updateError && updatedUsuario !== undefined) {
+                  var updateLoginInfo = function(callback) {
+                    if(!findError && findUsuario !== undefined) {
+                      Usuario.destroy({username: req.session.usuario.username}).exec(function(err) {
+                        if(!err) {
+                          Usuario.publishDestroy(objUsuario.id, null, {previous: objUsuario});
+
+                          Usuario.update({username: info_nickname}, {source: Local.ambos, isPlayer: true}).exec(function(updateError, updatedUsuario) {
+                            if(!updateError && updatedUsuario !== undefined) {
+                              findUsuario.source = Local.ambos;
+                              updatedUsuario[0].event = 'sourceChange';
+                              Usuario.publishUpdate(updatedUsuario[0].id, updatedUsuario[0]);
+
+                              callback();
+                            } else {
+                              callback('Um erro ocorreu ao atualizar as informações de local!');
+                            }
+                          });
+                        } else {
+                          callback('Um erro ocorreu ao atualizar as informações de login de um usuário já autenticado!');
+                        }
+                      });
+                    } else {
+                      Usuario.update({username: req.session.usuario.username}, {username: info_nickname, isPlayer: true}).exec(function(updateError, updatedUsuario) {
+                        if(!updateError && updatedUsuario !== undefined) {
+                          Usuario.publishUpdate(updatedUsuario[0].id, {event: 'usernameChange', oldUsername: objUsuario.username, username: info_nickname});
+
+                          callback();
+                        } else {
+                          callback('Um erro ocorreu ao atualizar as informações de login!');
+                        }
+                      });
+                    }
+                  }
+
+                  var onUpdateLoginInfoFinish = function(err) {
+                    if(!err) {
                       // Grava/Atualiza cookies de login.
                       req.session.loginInfo = loginInfo;
 
-                      req.session.usuario = updatedUsuario[0];
+                      findUsuario.isPlayer = true;
+                      req.session.usuario = findUsuario;
                       req.session.save();
-
-                      Usuario.publishUpdate(updatedUsuario[0].id, {event: 'usernameChange', oldUsername: objUsuario.username, username: info_nickname});
 
                       res.json({success: true, infos: loginInfo});
                     } else {
-                      res.json({error: true, message: 'Um erro ocorreu ao atualizar as informações de login!'});
+                      res.json({error: true, message: err});
                     }
-                  });
+                  }
+
+                  async.series([updateLoginInfo], onUpdateLoginInfoFinish);
                 }
               });
             }
@@ -91,18 +126,47 @@ module.exports = {
       // Atualiza dados temporários
       Usuario.findOne({username: req.session.usuario.username}).exec(function(error, objUsuario) {
         if(!error && objUsuario !== undefined) {
-          var newUsername = UtilsService.generateTemporaryUsername();
+          if(objUsuario.source == Local.ucp) {
+            var newUsername = UtilsService.generateTemporaryUsername();
 
-          Usuario.update({username: req.session.usuario.username}, {username: newUsername, isPlayer: false}).exec(function(updateError, updatedUsuario) {
-            if(!updateError && updatedUsuario !== undefined) {
-              req.session.usuario = updatedUsuario[0];
-              req.session.save();
+            Usuario.update({username: req.session.usuario.username}, {username: newUsername, isPlayer: false}).exec(function(updateError, updatedUsuario) {
+              if(!updateError && updatedUsuario !== undefined) {
+                req.session.usuario = updatedUsuario[0];
+                req.session.save();
 
-              Usuario.publishUpdate(updatedUsuario[0].id, {oldUsername: objUsuario.username, username: newUsername});
-            }
+                Usuario.publishUpdate(updatedUsuario[0].id, {oldUsername: objUsuario.username, username: newUsername});
+              }
 
-            callback();
-          });
+              callback();
+            });
+          } else if(objUsuario.source == Local.ambos) {
+            Usuario.update({username: objUsuario.username }, { source: Local.servidor }).exec(function(error, updatedUsuario) {
+              var updateSource = function(callback) {
+                if(!error && updatedUsuario !== undefined) {
+                  updatedUsuario[0].event = 'sourceChange';
+                  Usuario.publishUpdate(updatedUsuario[0].id, updatedUsuario[0]);
+                }
+
+                callback();
+              }
+
+              var createNewUser = function(callback) {
+                req.session.usuario = null;
+                req.session.save();
+
+                callback();
+              }
+
+              async.series([
+                updateSource,
+                createNewUser
+              ], function(err) {
+                callback();
+              });
+            });
+          }
+        } else {
+          callback();
         }
       });
     }
