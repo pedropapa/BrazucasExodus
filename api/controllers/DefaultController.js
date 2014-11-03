@@ -26,7 +26,47 @@ module.exports = {
   },
 
   competitivo: function(req, res) {
-    res.view('competitivo/index', {'view_layout': UtilsService.getViewLayout(req)});
+    var modos = {modos: null};
+    var filteredModos = [];
+
+    var finishModosRequest = function(modos, err) {
+      if(!err) {
+        if(modos.length > 0) {
+          for(modo in modos) {
+            if(modos[modo].PARENTE == null) {
+              filteredModos[modos[modo].ID] = modos[modo];
+              filteredModos[modos[modo].ID].subModos = [];
+            } else {
+              if(typeof filteredModos[modos[modo].PARENTE.ID] == 'undefined') {
+                filteredModos[modos[modo].PARENTE.ID] = modos[modo].PARENTE;
+                filteredModos[modos[modo].PARENTE.ID].subModos = [];
+              }
+
+              if(typeof filteredModos[modos[modo].PARENTE.ID].subModos[modos[modo].TP_MODO] == 'undefined') {
+                filteredModos[modos[modo].PARENTE.ID].subModos[modos[modo].TP_MODO] = [];
+              }
+
+              if(modos[modo].TP_MODO == competitivo_modo_tipo.domain.MODO_TIPO) {
+                filteredModos[modos[modo].PARENTE.ID].subModos[modos[modo].TP_MODO][modos[modo].ID] = modos[modo];
+                filteredModos[modos[modo].PARENTE.ID].subModos[modos[modo].TP_MODO][modos[modo].ID].subModos = [];
+              } else if(modos[modo].TP_MODO == competitivo_modo_tipo.domain.MODO_FORMA) {
+                filteredModos[modos[modo].PARENTE.PARENTE].subModos[modos[modo].PARENTE.TP_MODO][modos[modo].PARENTE.ID].subModos.push(modos[modo]);
+              }
+            }
+          }
+
+         console.log(filteredModos);
+        } else {
+          sails.log.error('Não há modos ativos para o competitivo!');
+        }
+      } else {
+        sails.log.error(err);
+      }
+
+      res.view('competitivo/index', {'view_layout': UtilsService.getViewLayout(req), 'modos': filteredModos});
+    }
+
+    async.each([CompetitivoService.getModos], function(func, callback) {func(modos, callback)}, function(err, returningObjects) {finishModosRequest(modos.modos, err)});
   },
 
   /**

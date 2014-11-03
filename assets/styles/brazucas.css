@@ -373,6 +373,13 @@
     background-color: white;
 }
 
+.readable-text {
+    text-align: justify;
+    font-family: "Arimo", Helvetica, Arial, sans-serif;
+    text-justify: inter-word;
+    font-size: 14px; color: #445566;
+}
+
 .f-nav{ z-index: 9999; position: fixed; top: 0; width: 100%;} /* this make our menu fixed top */
 
 .nav { height: 42px;}

@@ -2,6 +2,103 @@
 
 {% block titulo %}Competitivo{% endblock %}
 
+{% block javascript_libs %}
+    <script type="text/javascript" id="page-scripts">
+        $(document).ready(function() {
+            $('div[id=modo]').hover(function(handlerInOut) {
+                if(handlerInOut.type == 'mouseenter') {
+                    $(this).find('.hidden-text').show();
+                } else {
+                    $(this).find('.hidden-text').hide();
+                }
+            });
+
+            $('input[name=modo]').click(function() {
+                var element = $(this).filter(':checked');
+
+                $('.sub-modo').hide();
+                element.parents('div').eq(1).find('.sub-modo').show();
+            });
+
+            $('input[name=modo-tipo]').click(function() {
+                var element = $(this).filter(':checked');
+
+                $('.sub-modo-forma').hide();
+                $(this).parent('div').find('.sub-modo-forma').show();
+            });
+
+            $('input[name=modo]:checked').trigger('click');
+            $('input[name=modo-tipo]:checked').trigger('click');
+        })
+    </script>
+{% endblock %}
+
 {% block conteudo %}
-teste
+<div class="rounded shadowed content introduction container-fluid realtime">
+    <div class="col-md-8">
+        <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
+
+        <div class="col-md-6">
+            <div class="title">Modo</div>
+            {% for modo in modos %}
+                <div>
+                {% if modo != undefined %}
+                    {% if modo.TP_MODO == 1 %}
+                        <div id="modo">
+                            <input type="radio" name="modo" id="modo-{{ modo.LABEL_MODO }}">
+                            <label for="modo-{{ modo.LABEL_MODO }}" class="readable-text">{{ modo.DS_MODO }}<span class="readable-text hidden-text" style="display: none;">{{ modo.HIDDEN_TEXT }}</span></label>
+                        </div>
+                    {% endif %}
+
+                    <div style="padding-left: 50px; display: none;" class="sub-modo">
+                    {% for item in modo.subModos %}
+                        {% if item != undefined %}
+                            {% for subItem in item %}
+                                {% if subItem != undefined %}
+                                    <div>
+                                        <div>
+                                            <input type="radio" name="modo-tipo" id="modo-tipo-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}"> <label for="modo-tipo-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}" class="readable-text">{{ subItem.DS_MODO }}</label>
+                                            <div style="padding-left: 50px; display: none;" class="sub-modo-forma">
+                                            {% for forma in subItem.subModos %}
+                                                <div>
+                                                    <input type="radio" name="modo-forma" id="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}">
+                                                    <label for="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}" class="readable-text">{{ forma.DS_MODO }}</label>
+                                                </div>
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+            {% endfor %}
+
+            <br />
+
+            <button type="button" class="btn btn-warning" id="procurar-partida">Procurar Partida</button>
+        </div>
+
+        <div class="col-md-6">
+            <div class="title">Filtros</div>
+            <div>
+                <div>
+                    <input type="checkbox" name="filtro_advertencias" id="filtro_advertencias"/> <label for="filtro_advertencias" class="readable-text">Apenas jogador sem advertências.</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="filtro_ping" id="filtro_ping"/> <label for="filtro_ping" class="readable-text">Apenas jogador com ping < 150.</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="filtro_registro" id="filtro_registro"/> <label for="filtro_registro" class="readable-text">Apenas jogador registrado.</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 readable-text">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    </div>
+</div>
 {% endblock %}
