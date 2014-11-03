@@ -161,7 +161,7 @@ $(document).ready(function() {
     }).error(function(jqXHR, textStatus, errorThrown) {
         var notyText = getAjaxErrorText(textStatus);
 
-        $('.page-content').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+        $('.page-content .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
       }).success(function(data) {
         var elements = $.parseHTML(data);
         var windowTitle = null;

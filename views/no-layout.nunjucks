@@ -3,5 +3,6 @@
 {% block javascript_libs %}{% endblock %}
 
 <div id="_call_ajax_page_body">
+    <div class="noty-container" style="position: absolute; width: 90%; left: 5%; z-index:2000;"></div>
     {% block conteudo %}{% endblock %}
 </div>

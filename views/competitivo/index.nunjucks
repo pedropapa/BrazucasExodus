@@ -29,6 +29,33 @@
 
             $('input[name=modo]:checked').trigger('click');
             $('input[name=modo-tipo]:checked').trigger('click');
+
+            $("#modo-escolha").submit(function(e) {
+                var parent = this;
+
+                $.ajax({
+                    url: $(parent).attr('action'),
+                    type: $(parent).attr('method'),
+                    beforeSend: function(xhr) {
+                        $("#modo-escolha").find("input").prop('disabled', true);
+                        $("#modo-escolha #procurar-partida").prop('disabled', true);
+                        $("#modo-escolha #cancelar").show();
+                        $("#modo-escolha #noty-container").noty({text: 'Procurando Partidas...'});
+                    },
+                    timeout: 8000
+                }).error(function(jqXHR, textStatus, errorThrown) {
+                    var notyText = getAjaxErrorText(textStatus);
+
+                    $("#modo-escolha #noty-container").noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+                }).success(function(data) {
+
+                }).always(function() {
+
+                });
+
+                e.preventDefault();
+                return false;
+            });
         })
     </script>
 {% endblock %}
@@ -36,69 +63,77 @@
 {% block conteudo %}
 <div class="rounded shadowed content introduction container-fluid realtime">
     <div class="col-md-8">
-        <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
+        <form method="POST" action="" id="modo-escolha">
+            <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
 
-        <div class="col-md-6">
-            <div class="title">Modo</div>
-            {% for modo in modos %}
-                <div>
-                {% if modo != undefined %}
-                    {% if modo.TP_MODO == 1 %}
-                        <div id="modo">
-                            <input type="radio" name="modo" id="modo-{{ modo.LABEL_MODO }}">
-                            <label for="modo-{{ modo.LABEL_MODO }}" class="readable-text">{{ modo.DS_MODO }}<span class="readable-text hidden-text" style="display: none;">{{ modo.HIDDEN_TEXT }}</span></label>
-                        </div>
-                    {% endif %}
+            <div class="col-md-6">
+                <div class="title">Modo</div>
+                {% for modo in modos %}
+                    <div>
+                    {% if modo != undefined %}
+                        {% if modo.TP_MODO == 1 %}
+                            <div id="modo">
+                                <input type="radio" name="modo" id="modo-{{ modo.LABEL_MODO }}">
+                                <label for="modo-{{ modo.LABEL_MODO }}" class="readable-text">{{ modo.DS_MODO }}<span class="readable-text hidden-text" style="display: none;">{{ modo.HIDDEN_TEXT }}</span></label>
+                            </div>
+                        {% endif %}
 
-                    <div style="padding-left: 50px; display: none;" class="sub-modo">
-                    {% for item in modo.subModos %}
-                        {% if item != undefined %}
-                            {% for subItem in item %}
-                                {% if subItem != undefined %}
-                                    <div>
+                        <div style="padding-left: 50px; display: none;" class="sub-modo">
+                        {% for item in modo.subModos %}
+                            {% if item != undefined %}
+                                {% for subItem in item %}
+                                    {% if subItem != undefined %}
                                         <div>
-                                            <input type="radio" name="modo-tipo" id="modo-tipo-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}"> <label for="modo-tipo-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}" class="readable-text">{{ subItem.DS_MODO }}</label>
-                                            <div style="padding-left: 50px; display: none;" class="sub-modo-forma">
-                                            {% for forma in subItem.subModos %}
-                                                <div>
-                                                    <input type="radio" name="modo-forma" id="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}">
-                                                    <label for="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}" class="readable-text">{{ forma.DS_MODO }}</label>
+                                            <div>
+                                                <input type="radio" name="modo-tipo" id="modo-tipo-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}"> <label for="modo-tipo-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}" class="readable-text">{{ subItem.DS_MODO }}</label>
+                                                <div style="padding-left: 50px; display: none;" class="sub-modo-forma">
+                                                {% for forma in subItem.subModos %}
+                                                    <div>
+                                                        <input type="radio" name="modo-forma" id="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}">
+                                                        <label for="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}" class="readable-text">{{ forma.DS_MODO }}</label>
+                                                    </div>
+                                                {% endfor %}
                                                 </div>
-                                            {% endfor %}
                                             </div>
                                         </div>
-                                    </div>
                                     {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+                    {% endif %}
                     </div>
-                {% endif %}
-                </div>
-            {% endfor %}
+                {% endfor %}
 
-            <br />
+                <br />
 
-            <button type="button" class="btn btn-warning" id="procurar-partida">Procurar Partida</button>
-        </div>
+                <button type="submit" class="btn btn-warning" id="procurar-partida">Procurar Partida</button>
+                <button type="button" class="btn btn-danger" id="cancelar" style="display: none;">Cancelar</button>
+            </div>
 
-        <div class="col-md-6">
-            <div class="title">Filtros</div>
-            <div>
+            <div class="col-md-6">
+                <div class="title">Filtros</div>
                 <div>
-                    <input type="checkbox" name="filtro_advertencias" id="filtro_advertencias"/> <label for="filtro_advertencias" class="readable-text">Apenas jogador sem advertências.</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="filtro_ping" id="filtro_ping"/> <label for="filtro_ping" class="readable-text">Apenas jogador com ping < 150.</label>
-                </div>
-                <div>
-                    <input type="checkbox" name="filtro_registro" id="filtro_registro"/> <label for="filtro_registro" class="readable-text">Apenas jogador registrado.</label>
+                    <div>
+                        <input type="checkbox" name="filtro_advertencias" id="filtro_advertencias"/> <label for="filtro_advertencias" class="readable-text">Apenas jogador sem advertências.</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="filtro_ping" id="filtro_ping"/> <label for="filtro_ping" class="readable-text">Apenas jogador com ping < 150.</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="filtro_registro" id="filtro_registro"/> <label for="filtro_registro" class="readable-text">Apenas jogador registrado.</label>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
     <div class="col-md-4 readable-text">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        O modo competitivo do Brazuca's funciona de forma completamente independente do servidor principal, o objetivo é ranquear os jogadores de acordo com suas habilidades no jogo,
+        ou seja, o foco é na utilização de glitches do jogo como o slide e no-reload. Os mapas são diversos e há a opção de treinar contra o computador selecionando o modo "Arcade".
+        A contabilidade de pontos para o ranking só é feita através do modo Clássico Ranqueado, mas jogar nos outros modos também gera pontos para o jogador.
+        <br /><br />
+        Os filtros ao lado irão limitar os jogadores que você irá enfrentar nas partidas, porém o tempo de espera na fila pode aumentar dependendo da quantidade de jogadores
+        online no modo Competitivo.
     </div>
 </div>
 {% endblock %}
