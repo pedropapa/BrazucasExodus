@@ -90,6 +90,13 @@ module.exports = {
     }
   },
 
+  /**
+   * Dispara uma determinada mensagem para uma determinada sala da aplicação.
+   *
+   * @param data
+   * @param room
+   * @param sendToSamp
+   */
   blastMessage: function(data, room, sendToSamp) {
     if(room) {
       // Transmite a mensagem para uma determinada sala.

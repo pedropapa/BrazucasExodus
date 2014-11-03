@@ -5,6 +5,12 @@
 module.exports = {
   lastCommits: [],
 
+  /**
+   * Configurações padrão das requisições à API do GitHub.
+   *
+   * @param method
+   * @return object
+   */
   getOptions: function(method) {
     var options = {
       host: 'api.github.com',
@@ -20,6 +26,12 @@ module.exports = {
     return options;
   },
 
+  /**
+   * Atualiza a array local 'lastCommits' com os dados dos últimos commits da aplicação no GitHub.
+   *
+   * @param none
+   * @return nothing
+   */
   updateLastCommits: function() {
     sails.log.info('Atualizando últimos commits da aplicação no GitHub...');
 
@@ -34,7 +46,7 @@ module.exports = {
       });
 
       resp.on('end', function() {
-        GitHubAPI.lastCommits = JSON.parse(json_data);
+        GitHubAPIService.lastCommits = JSON.parse(json_data);
       })
     }).on('error', function(e) {
         sails.log.error('Erro ao obter os dados dos últimos commits da aplicação no github!');

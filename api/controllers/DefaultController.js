@@ -22,7 +22,7 @@ module.exports = {
    *    `/default/main`
    */
    main: function (req, res) {
-    res.view('home/index', { GitHubLastCommits: GitHubAPI.lastCommits, 'view_layout': UtilsService.getViewLayout(req) });
+    res.view('home/index', { GitHubLastCommits: GitHubAPIService.lastCommits, 'view_layout': UtilsService.getViewLayout(req) });
   },
 
   competitivo: function(req, res) {
@@ -32,6 +32,11 @@ module.exports = {
     var finishModosRequest = function(modos, err) {
       if(!err) {
         if(modos.length > 0) {
+
+          /**
+           * Devemos fazer um tratamento do resultado porque os modos possuem pais, ou seja, devem seguir uma hierarquia na hora de serem mostrados no HTML.
+           * Assim, para ficar mais fácil manipularmos a array no nunjucks, criamos uma outra array já respeitando esta hierarquia.
+           */
           for(modo in modos) {
             if(modos[modo].PARENTE == null) {
               filteredModos[modos[modo].ID] = modos[modo];
@@ -54,8 +59,6 @@ module.exports = {
               }
             }
           }
-
-         console.log(filteredModos);
         } else {
           sails.log.error('Não há modos ativos para o competitivo!');
         }
@@ -63,6 +66,7 @@ module.exports = {
         sails.log.error(err);
       }
 
+      // Buscamos todos os modos do competitivo no banco de dados
       res.view('competitivo/index', {'view_layout': UtilsService.getViewLayout(req), 'modos': filteredModos});
     }
 

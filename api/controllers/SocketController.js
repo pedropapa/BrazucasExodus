@@ -74,6 +74,12 @@ module.exports = {
     res.json({message: 'success'}, 200);
   },
 
+  /**
+   * Gera um hash da sala particular entre dois jogadores, este pode ser gerado ao se criar uma nova sala ou se, caso a sala já exista, apenas busca o hash do banco de dados.
+   *
+   * @param req
+   * @param res
+   */
   openParticularChat: function(req, res) {
     targetUsername = req.param('targetUsername');
 

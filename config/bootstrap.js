@@ -13,7 +13,7 @@ module.exports.bootstrap = function (cb) {
   SampSocketService.init();
 
   // Iniciamos a configuração das tarefas cronjobs utilizadas pela aplicação.
-  Cron.init();
+  CronService.init();
 
   sails.sockets.customBroadcastTo = function(socket, model, verb, data) {
     socketData = {};
