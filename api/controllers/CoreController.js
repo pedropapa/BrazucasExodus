@@ -192,6 +192,10 @@ module.exports = {
     });
   },
 
+  teste: function(req, res) {
+    res.json({ping: 'pong!'});
+  },
+
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to DefaultController)
