@@ -38,7 +38,7 @@ module.exports.routes = {
 
   'post /self-update': ['CoreController.selfUpdate'],
 
-  'post /teste': ['CoreController.teste'],
+  'get /teste': ['CoreController.teste'],
 
   'get /socket/go': {
       controller: 'SocketController',
