@@ -38,8 +38,6 @@ module.exports.routes = {
 
   'post /self-update': ['CoreController.selfUpdate'],
 
-  'get /teste': ['CoreController.teste'],
-
   'get /socket/go': {
       controller: 'SocketController',
       action: 'main'
@@ -49,7 +47,6 @@ module.exports.routes = {
     controller: 'SocketController',
     action: 'chatMessage'
   },
-
 
   'post /socket/particularChatMessage': {
     controller: 'SocketController',

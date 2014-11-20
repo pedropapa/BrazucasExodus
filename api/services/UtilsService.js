@@ -5,6 +5,7 @@
 module.exports = {
   nunjucks: null,
   dateformatter: null,
+  exec: null,
 
   /**
    * Gera um hash de acordo com a string recebida por parâmetro.

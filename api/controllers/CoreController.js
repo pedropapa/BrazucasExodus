@@ -184,16 +184,10 @@ module.exports = {
    * WebHooks do GitHub são recebidos através do self-update.
    */
   selfUpdate: function(req, res) {
-    var exec = require("exec");
-
-    exec(['git', 'pull'], function(err, out, code) {
+    UtilsService.exec(['git', 'pull'], function(err, out, code) {
       sails.log.info("Aplicação atualizada! "+out+ " "+code);
       res.json({success: true, out: out, code: code, err: err});
     });
-  },
-
-  teste: function(req, res) {
-    res.json({ping: 'pong!'});
   },
 
   /**
