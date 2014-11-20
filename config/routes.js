@@ -36,6 +36,8 @@ module.exports.routes = {
 
   'get /competitivo': ['DefaultController.competitivo'],
 
+  'get /self-update': ['CoreController.selfUpdate'],
+
   'get /socket/go': {
       controller: 'SocketController',
       action: 'main'

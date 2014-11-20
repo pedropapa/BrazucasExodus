@@ -181,6 +181,18 @@ module.exports = {
   },
 
   /**
+   * WebHooks do GitHub são recebidos através do self-update.
+   */
+  selfUpdate: function(req, res) {
+    var exec = require("exec");
+
+    exec(['git', 'pull'], function(err, out, code) {
+      sails.log.info("Aplicação atualizada! "+out+ " "+code);
+      res.json({success: true});
+    });
+  },
+
+  /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to DefaultController)
    */
