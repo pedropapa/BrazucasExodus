@@ -15,6 +15,10 @@ module.exports.bootstrap = function (cb) {
   // Iniciamos a configuração das tarefas cronjobs utilizadas pela aplicação.
   CronService.init();
 
+  // Configuração geral do template
+  UtilsService.template();
+
+  // Função POG para enviar informações para socket de forma privada.
   sails.sockets.customBroadcastTo = function(socket, model, verb, data) {
     socketData = {};
     socketData.model = model;

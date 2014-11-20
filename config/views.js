@@ -28,17 +28,7 @@ module.exports.views = {
     engine: {
         ext: 'nunjucks', // Or `html`, whatever you are using
         fn: function (pathName, locals, cb) {
-            var nunjucks = require('nunjucks');
-            dateFormatter = require('dateformatter').format;
-
-            var nunjucksEnv = nunjucks.configure(false, {watch: false});
-
-            nunjucksEnv.addFilter('json', function(str) {return JSON.stringify(str)});
-            nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {
-              return dateFormatter(format, input);
-            });
-
-            return nunjucks.render(pathName, locals, cb);
+            UtilsService.nunjucks.render(pathName.replace(process.cwd(), ''), locals, cb);
         }
     }
 
