@@ -188,7 +188,7 @@ module.exports = {
 
     exec(['git', 'pull'], function(err, out, code) {
       sails.log.info("Aplicação atualizada! "+out+ " "+code);
-      res.json({success: true});
+      res.json({success: true, out: out, code: code, err: err});
     });
   },
 
