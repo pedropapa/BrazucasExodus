@@ -197,6 +197,4 @@ module.exports = {
    * (specific to DefaultController)
    */
   _config: {}
-
-  
 };
