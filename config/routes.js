@@ -36,6 +36,8 @@ module.exports.routes = {
 
   'get /competitivo': ['DefaultController.competitivo'],
 
+  'post /self-update': ['CoreController.selfUpdate'],
+
   'post /competitivo': ['MatchMaking.queue'],
 
   'get /competitivo/cancelarFila': ['MatchMaking.leaveQueue'],

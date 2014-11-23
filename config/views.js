@@ -28,7 +28,7 @@ module.exports.views = {
     engine: {
         ext: 'nunjucks', // Or `html`, whatever you are using
         fn: function (pathName, locals, cb) {
-            UtilsService.nunjucks.render(pathName.replace(process.cwd(), ''), locals, cb);
+            return UtilsService.nunjucks.render(pathName.replace(process.cwd(), ''), locals, cb);
         }
     }
 

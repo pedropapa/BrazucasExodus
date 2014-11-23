@@ -18,6 +18,9 @@ module.exports.bootstrap = function (cb) {
   // Configuração geral do template
   UtilsService.template();
 
+  // Carregando módulo exec.
+  UtilsService.exec = require("exec");
+
   // Função POG para enviar informações para socket de forma privada.
   sails.sockets.customBroadcastTo = function(socket, model, verb, data) {
     socketData = {};
