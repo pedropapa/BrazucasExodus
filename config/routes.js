@@ -36,6 +36,10 @@ module.exports.routes = {
 
   'get /competitivo': ['DefaultController.competitivo'],
 
+  'post /competitivo': ['MatchMaking.queue'],
+
+  'get /competitivo/cancelarFila': ['MatchMaking.leaveQueue'],
+
   'get /socket/go': {
       controller: 'SocketController',
       action: 'main'

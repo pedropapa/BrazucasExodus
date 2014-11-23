@@ -30,15 +30,48 @@
             $('input[name=modo]:checked').trigger('click');
             $('input[name=modo-tipo]:checked').trigger('click');
 
+            $("#modo-escolha #cancelar").click(function() {
+                var noty = null;
+
+                $.ajax({
+                    url: 'competitivo/cancelarFila',
+                    type: 'GET',
+                    beforeSend: function(xhr) {
+                        $("#modo-escolha #cancelar").prop('disabled', true);
+                        noty = $("#modo-escolha #noty-container").noty({text: 'Cancelando...', killer: true});
+                    },
+                    timeout: 8000
+                }).error(function(jqXHR, textStatus, errorThrown) {
+                    var notyText = getAjaxErrorText(textStatus);
+
+                    $("#modo-escolha #noty-container").noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+                    $("#modo-escolha #cancelar").prop('disabled', false);
+                }).success(function(data) {
+                    if(data.error) {
+                        $("#modo-escolha #noty-container").noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+                    } else if(data.success) {
+                        $("#modo-escolha").find("input").prop('disabled', false);
+                        $("#modo-escolha #procurar-partida").prop('disabled', false);
+                        $("#modo-escolha #cancelar").hide();
+                    } else {
+                        $("#modo-escolha #noty-container").noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+                    }
+                }).always(function() {
+                    noty.close();
+                });
+            });
+
             $("#modo-escolha").submit(function(e) {
                 var parent = this;
 
                 $.ajax({
                     url: $(parent).attr('action'),
                     type: $(parent).attr('method'),
+                    data: $(this).serializeArray(),
                     beforeSend: function(xhr) {
                         $("#modo-escolha").find("input").prop('disabled', true);
                         $("#modo-escolha #procurar-partida").prop('disabled', true);
+                        $("#modo-escolha #cancelar").prop('disabled', false);
                         $("#modo-escolha #cancelar").show();
                         $("#modo-escolha #noty-container").noty({text: 'Procurando Partidas...'});
                     },
@@ -48,7 +81,19 @@
 
                     $("#modo-escolha #noty-container").noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
                 }).success(function(data) {
-
+                    if(data.error) {
+                        $("#modo-escolha #noty-container").noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+                    } else if(data.success) {
+                        $("#modo-escolha #noty-container").noty({text: 'Aproximado: 00:00<br />Corrente: <span id="countupQueue"></span>', closeWith: [],  killer: true,
+                            callback: {
+                                onShow: function() {
+                                    var clock = new CountClock($("#countupQueue"));
+                                }
+                            }
+                        });
+                    } else {
+                        $("#modo-escolha #noty-container").noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+                    }
                 }).always(function() {
 
                 });
@@ -63,7 +108,7 @@
 {% block conteudo %}
 <div class="rounded shadowed content introduction container-fluid realtime">
     <div class="col-md-8">
-        <form method="POST" action="" id="modo-escolha">
+        <form method="POST" action="/competitivo" id="modo-escolha">
             <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
 
             <div class="col-md-6">
@@ -89,7 +134,7 @@
                                                 <div style="padding-left: 50px; display: none;" class="sub-modo-forma">
                                                 {% for forma in subItem.subModos %}
                                                     <div>
-                                                        <input type="radio" name="modo-forma" id="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}">
+                                                        <input type="radio" value="{{ forma.ID }}" name="modo-forma" id="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}">
                                                         <label for="modo-forma-{{ subItem.LABEL_MODO }}-{{ modo.LABEL_MODO }}-{{ forma.LABEL_MODO }}" class="readable-text">{{ forma.DS_MODO }}</label>
                                                     </div>
                                                 {% endfor %}
