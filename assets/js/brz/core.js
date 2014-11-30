@@ -60,6 +60,10 @@ $(document).ready(function() {
 
     }, 'xml');
   });
+
+  $(document).mousemove(function(e) {
+    $("#weed").css({left: e.pageX + 1, top: e.pageY + 1});
+  })
 });
 
 function launchTaskManagerTab() {
