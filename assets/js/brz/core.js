@@ -5,6 +5,14 @@ var webchat_tab = null;
 var feedback_tab = null;
 var particular_windows_tab = [];
 
+$(document).ajaxStart(function () {
+  $(".defaultLoadingGif").css('display', 'inline');
+});
+
+$(document).ajaxComplete(function () {
+  $(".defaultLoadingGif").hide();
+});
+
 // Callback será chamada ao carregar todas as páginas do sistema.
 $(document).ready(function() {
   // Cria o tab do feedback.
@@ -61,9 +69,9 @@ $(document).ready(function() {
     }, 'xml');
   });
 
-  $(document).mousemove(function(e) {
-    $("#weed").css({left: e.pageX + 1, top: e.pageY + 1});
-  })
+//  $(document).mousemove(function(e) {
+//    $("#weed").css({left: e.pageX + 1, top: e.pageY + 1});
+//  });
 });
 
 function launchTaskManagerTab() {

@@ -124,6 +124,10 @@ module.exports = {
   logout: function(req, res) {
     req.session.loginInfo = null;
 
+    if(!req.session.usuario) {
+      return res.json({success: true});
+    }
+
     var updateSession = function(req, callback) {
       // Atualiza dados temporários
       Usuario.findOne({username: req.session.usuario.username}).exec(function(error, objUsuario) {

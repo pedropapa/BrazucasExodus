@@ -47,7 +47,6 @@
     <body>
         {% block corpo %}{% endblock %}
 
-        <img src="/images/smokeweed.gif" id="weed" style="position: absolute;"/>
         <div id="floatTabs" class="floatTabs"></div>
 
         {# Utilizado para detectar protocolos customizados (o protocolo do sa-mp, por exemplo). #}

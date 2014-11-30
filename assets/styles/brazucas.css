@@ -380,6 +380,15 @@
     font-size: 14px; color: #445566;
 }
 
+.defaultLoadingGif {
+    display: none;
+    z-index: 1000000;
+    opacity: 1.0;
+    float: right;
+    position: absolute;
+    top: 20px;
+}
+
 .f-nav{ z-index: 9999; position: fixed; top: 0; width: 100%;} /* this make our menu fixed top */
 
 .nav { height: 42px;}
