@@ -7,7 +7,7 @@
                 {% block logo_principal %}
                     <div>
                         <a href="/"><img src="/images/logo.png" alt="Brazuca's Server" /></a>
-                        <img src="/images/smokeweed.gif" class="defaultLoadingGif"/>
+                        <img src="/images/loading/{{ loadingGifs | getRandom }}" class="defaultLoadingGif"/>
                     </div>
                 {% endblock %}
             </div>

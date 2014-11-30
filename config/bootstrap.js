@@ -21,6 +21,23 @@ module.exports.bootstrap = function (cb) {
   // Carregando módulo exec.
   UtilsService.exec = require("exec");
 
+  // Carregando módulo glob.
+  UtilsService.glob = require("glob");
+
+  // Sorteio de gifs para ser utilizado como a gif principal para carregar informações.
+  // options is optional
+  UtilsService.glob("**/images/loading/*.gif", options, function (er, files) {
+    if(files && files.length > 0) {
+      var gifs = [];
+
+      for(file in files) {
+        gifs.push(files[file].match(/(\w+\.gif)$/)[1]);
+      }
+
+      UtilsService.nunjucksEnv.addGlobal('loadingGifs', gifs);
+    }
+  });
+
   // Função POG para enviar informações para socket de forma privada.
   sails.sockets.customBroadcastTo = function(socket, model, verb, data) {
     socketData = {};

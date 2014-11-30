@@ -17,7 +17,9 @@
     "cron": "*",
     "material-design-icons": "*",
     "nunjucks": "*",
-    "dateformatter": "*"
+    "dateformatter": "*",
+    "exec": "*",
+    "glob": "*"
   },
   "scripts": {
     "start": "node app.js",

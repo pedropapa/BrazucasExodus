@@ -6,6 +6,8 @@ module.exports = {
   nunjucks: null,
   dateformatter: null,
   exec: null,
+  glob: null,
+  nunjucksEnv: null,
 
   /**
    * Gera um hash de acordo com a string recebida por parâmetro.
@@ -81,11 +83,17 @@ module.exports = {
   template: function() {
     this.nunjucks = require('nunjucks');
     this.dateFormatter = require('dateformatter').format;
+    this.nunjucksEnv = this.nunjucks.configure(null, {watch: false});
 
-    var nunjucksEnv = this.nunjucks.configure(null, {watch: false});
-
-    nunjucksEnv.addFilter('json', function(str) {return JSON.stringify(str)});
-    nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {
+    this.nunjucksEnv.addFilter('json', function(str) {return JSON.stringify(str)});
+    this.nunjucksEnv.addFilter('getRandom', function(array) {
+      if(typeof array == 'object') {
+        return array[Math.round(Math.random(array.length))];
+      } else {
+        return false;
+      }
+    });
+    this.nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {
       return UtilsService.dateFormatter(format, input);
     });
   }
