@@ -24,6 +24,9 @@ module.exports.bootstrap = function (cb) {
   // Carregando módulo glob.
   UtilsService.glob = require("glob");
 
+  // Inicializa o listener TCP do modo Competitivo
+  CompetitivoService.waitForServers();
+
   // Sorteio de gifs para ser utilizado como a gif principal para carregar informações.
   // options is optional
   UtilsService.glob("**/images/loading/*.gif", options, function (er, files) {

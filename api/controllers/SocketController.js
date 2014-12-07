@@ -53,7 +53,7 @@ module.exports = {
           }
 
           if(objUsuario.source == Local.servidor || objUsuario.source == Local.ambos) {
-            SampSocketService.send({a: 'particularMessage', from: req.session.usuario.username, to: targetUsername, message: req.param('message'), source: req.session.usuario.source, salaId: salaId});
+            SocketService.send(SampSocketService.sampSocket, {a: 'particularMessage', from: req.session.usuario.username, to: targetUsername, message: req.param('message'), source: req.session.usuario.source, salaId: salaId});
 
             // Emite a mensagem para o usuário que está enviando.
             SocketService.blastMessage({username: req.session.usuario.username, message: req.param('message'), req: req, source: objUsuario.source, action: 'particularMessage', extra: {targetUsername: targetUsername, salaId: salaId}}, req.session.usuario.socketId);
