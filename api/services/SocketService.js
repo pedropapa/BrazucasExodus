@@ -3,6 +3,8 @@
  *
  */
 module.exports = {
+  commandsCallback: [],
+
   /**
    * Função chamada quando um novo socket se conecta à  aplicação
    *
@@ -108,7 +110,79 @@ module.exports = {
 
     if(sendToSamp) {
       // Propaga a informação para o servidor SA-MP.
-      SampSocketService.send({action: data.action, username: data.username, message: data.message, source: data.source, room: room});
+      SocketService.send(SampSocketService.sampSocket, {action: data.action, username: data.username, message: data.message, source: data.source, room: room});
+    }
+  },
+
+  /**
+   * Método que envia dados para um determinado socket.
+   *
+   * @param socket
+   * @param data
+   * @param callback
+   * @returns {boolean}
+   */
+  send: function(socket, data, callback) {
+    if(socket !== null && socket.readable) {
+      if(callback) {
+        var callbackId = UtilsService.generateString();
+        data.cmdId = callbackId;
+      }
+
+      // Devemos enviar os dados para o servidor sa-mp em forma de string, infelizmente é o único formato que o SocketPlugin aceita.
+      var inlineData = '';
+      for(key in data) {
+        inlineData += key + '=' + data[key] + '&';
+      }
+
+      if(inlineData.length == 0) {
+        return false;
+      }
+
+      socket.write(inlineData, function(e) {
+        sails.log.info(inlineData + ' ' + e);
+
+        /**
+         * Caso tenha sido passado uma callback, devemos chamá-la quando o comando for executado pelo servidor.
+         * Isso é feito registrando a callback em uma array com um ID como key, e quando o servidor responder verificamos se o ID passado é o mesmo enviado,
+         * caso seja, chamamos a callback com o primeiro argumento sendo os dados enviados pelo servidor, caso a requisição caia em timeout ou o comando não possa ser
+         * enviado, também chamamos a callback mas passando o primeiro parâmetro como false e o segundo parâmetro como um objeto do tipo 'error' com informações sobre
+         * o erro ocorrido.
+         */
+        if(callback) {
+          if(e) {
+            callback(false, e);
+          } else {
+            SocketService.commandsCallback[callbackId] = {callback: callback, executed: false};
+
+            setTimeout(function() {
+              if(typeof SocketService.commandsCallback[callbackId] == 'object') {
+                // Se o comando não for executado em até 10 segundos, fazemos um timeout e informamos para a callback que o comando não foi executado pelo servidor.
+                if(!SocketService.commandsCallback[callbackId].executed) {
+                  SocketService.commandsCallback[callbackId].callback(false, {error: true, timedOut: true, timeoutTime: sails.config.brazucasConfig.sampServerCmdTimeout});
+                  SocketService.commandsCallback[callbackId].executed = true;
+                  SocketService.commandsCallback[callbackId].timedOut = true;
+                }
+              }
+            }, sails.config.brazucasConfig.sampServerCmdTimeout);
+          }
+        }
+      });
+
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  executeCommandCallback: function(data) {
+    var sampData = SampSocketService.filterData(data.toString());
+
+    if(sampData['cmdId'] !== undefined && typeof SocketService.commandsCallback[sampData['cmdId']] == 'object') {
+      if(!SocketService.commandsCallback[sampData['cmdId']].executed) {
+        SocketService.commandsCallback[sampData['cmdId']].callback(sampData);
+        SocketService.commandsCallback[sampData['cmdId']].executed = true;
+      }
     }
   }
 }

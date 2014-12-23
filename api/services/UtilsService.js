@@ -88,7 +88,7 @@ module.exports = {
     this.nunjucksEnv.addFilter('json', function(str) {return JSON.stringify(str)});
     this.nunjucksEnv.addFilter('getRandom', function(array) {
       if(typeof array == 'object') {
-        return array[Math.round(Math.random(array.length))];
+        return array[Math.round(Math.random() * array.length)];
       } else {
         return false;
       }

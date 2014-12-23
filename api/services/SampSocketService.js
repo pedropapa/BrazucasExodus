@@ -7,7 +7,6 @@ module.exports = {
   sampSocket: null,
   serverBasicStats: {},
   isConnected: false,
-  commandsCallback: [],
 
   /**
    * Inicializa a conexão entre a aplicação e o servidor SA-MP.
@@ -15,6 +14,8 @@ module.exports = {
   init: function() {
     var net = require('net');
     this.sampSocket = new net.Socket();
+
+    this.sampSocket.setEncoding('utf8');
 
     // Tenta fazer a conexão com o SA-MP através de sockets, caso não seja possível a aplicação tenta fazer a reconexão automaticamente.
     this.sampSocket.connect(sails.config.brazucasConfig.serverSocketPort, sails.config.brazucasConfig.serverIp, function(error) {
@@ -34,14 +35,7 @@ module.exports = {
     // Filtra os dados recebidos do servidor SA-MP e passa para as callbacks (método 'on').
     this.sampSocket.on('data', function(data) {
       sails.log.info(data.toString());
-      var sampData = SampSocketService.filterData(data.toString());
-
-      if(sampData['cmdId'] !== undefined && typeof SampSocketService.commandsCallback[sampData['cmdId']] == 'object') {
-        if(!SampSocketService.commandsCallback[sampData['cmdId']].executed) {
-          SampSocketService.commandsCallback[sampData['cmdId']].callback(sampData);
-          SampSocketService.commandsCallback[sampData['cmdId']].executed = true;
-        }
-      }
+      SocketService.executeCommandCallback(data);
 
       if(sampData['a'] !== undefined) {
         if(SampSocketService.on[sampData['a']] == undefined) sails.log.warn('Comando '+sampData['a']+' não reconhecido.');
@@ -166,7 +160,7 @@ module.exports = {
       returnData[index] = value;
     }
 
-    sails.log.info(returnData);
+    sails.log.silly(returnData);
     return returnData;
   },
 
@@ -185,7 +179,7 @@ module.exports = {
    * Solicita ao servidor RPG/Minigames as informações básicas do servidor.
    */
   updateServerBasicStats: function() {
-    SampSocketService.send({a: 'getServerBasicStats'}, function(data, error) {
+    SocketService.send(SampSocketService.sampSocket, {a: 'getServerBasicStats'}, function(data, error) {
       if(error) {
         if(error.timedOut) {
           sails.log.error('Não foi possível atualizar as informações básicas do servidor. (Timeout)');
@@ -206,63 +200,5 @@ module.exports = {
         sails.sockets.blast(objectToBlast);
       }
     });
-  },
-
-  /**
-   * Método que envia informações para o servidor SA-MP.
-   *
-   * @param data
-   */
-  send: function(data, callback) {
-    if(this.sampSocket !== null && this.sampSocket.readable) {
-      if(callback) {
-        var callbackId = UtilsService.generateString();
-        data.cmdId = callbackId;
-      }
-
-      // Devemos enviar os dados para o servidor sa-mp em forma de string, infelizmente é o único formato que o SocketPlugin aceita.
-      var inlineData = '';
-      for(key in data) {
-        inlineData += key + '=' + data[key] + '&';
-      }
-
-      if(inlineData.length == 0) {
-        return false;
-      }
-
-      this.sampSocket.write(inlineData, function(e) {
-        sails.log.info(inlineData + ' ' + e);
-
-        /**
-         * Caso tenha sido passado uma callback, devemos chamá-la quando o comando for executado pelo servidor.
-         * Isso é feito registrando a callback em uma array com um ID como key, e quando o servidor responder verificamos se o ID passado é o mesmo enviado,
-         * caso seja, chamamos a callback com o primeiro argumento sendo os dados enviados pelo servidor, caso a requisição caia em timeout ou o comando não possa ser
-         * enviado, também chamamos a callback mas passando o primeiro parâmetro como false e o segundo parâmetro como um objeto do tipo 'error' com informações sobre
-         * o erro ocorrido.
-         */
-        if(callback) {
-          if(e) {
-            callback(false, e);
-          } else {
-            SampSocketService.commandsCallback[callbackId] = {callback: callback, executed: false};
-
-            setTimeout(function() {
-              if(typeof SampSocketService.commandsCallback[callbackId] == 'object') {
-                // Se o comando não for executado em até 10 segundos, fazemos um timeout e informamos para a callback que o comando não foi executado pelo servidor.
-                if(!SampSocketService.commandsCallback[callbackId].executed) {
-                  SampSocketService.commandsCallback[callbackId].callback(false, {error: true, timedOut: true, timeoutTime: sails.config.brazucasConfig.sampServerCmdTimeout});
-                  SampSocketService.commandsCallback[callbackId].executed = true;
-                  SampSocketService.commandsCallback[callbackId].timedOut = true;
-                }
-              }
-            }, sails.config.brazucasConfig.sampServerCmdTimeout);
-          }
-        }
-      });
-
-      return true;
-    } else {
-      return false;
-    }
   }
 }
