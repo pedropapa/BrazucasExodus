@@ -93,6 +93,22 @@ module.exports = {
         return false;
       }
     });
+
+    this.nunjucksEnv.addFilter('fixDirtyName', function(str) {
+      var str = str.toLowerCase();
+      var words = str.split('_');
+      var output = [];
+
+      for(word in words) {
+        words[word] = words[word].split('');
+        words[word][0] = words[word][0].toUpperCase();
+
+        output.push(words[word].join(''));
+      }
+
+      return output.join(' ');
+    });
+
     this.nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {
       return UtilsService.dateFormatter(format, input);
     });

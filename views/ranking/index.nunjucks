@@ -1,0 +1,13 @@
+{% extends view_layout %}
+
+{% block titulo %}Ranking Geral{% endblock %}
+
+{% block javascript_libs %}
+    <script type="text/javascript" id="page-scripts">
+
+    </script>
+{% endblock %}
+
+{% block conteudo %}
+    Olá Mundo!
+{% endblock %}

@@ -42,6 +42,11 @@ module.exports.routes = {
 
   'get /competitivo/cancelarFila': ['MatchMaking.leaveQueue'],
 
+  'get /ranking': ['RankingController.rankingGeral'],
+
+  'get /rankingMinigames': ['RankingController.rankingMinigames'],
+  'post /rankingMinigames/search': ['RankingController.rankingMinigamesSearch'],
+
   'get /socket/go': {
       controller: 'SocketController',
       action: 'main'

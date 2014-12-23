@@ -1,0 +1,463 @@
+{% extends view_layout %}
+
+{% block titulo %}Ranking dos Minigames{% endblock %}
+
+{% block javascript_libs %}
+    <script type="text/javascript" id="page-scripts">
+        $(document).ready(function() {
+            var activeRanking = $('.rankingType').filter(':visible');
+
+            /**
+             * Alterna entre os sub-rankings.
+             */
+            $('.minigamesRanking .rankingTypes li a').click(function(e) {
+                if($(this).attr('tpRanking')) {
+                    var parent = this;
+
+                    activeRanking.hide('fast', function() {
+                        var newActiveRanking = $('#ranking' + $(parent).attr('tpRanking'));
+
+                        $('.minigamesRanking .rankingTypes li').filter('.active').removeClass('active');
+                        $(parent).parent('li').addClass('active');
+
+                        $('#rankingType').val($(parent).attr('tpRanking'));
+
+                        newActiveRanking.show();
+                        activeRanking = newActiveRanking;
+                    });
+
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            /**
+             * Troca de páginas do ranking.
+             */
+            $('.minigamesRanking .rankingType ._pagination ul li a').click(function(e) {
+                var pageSelected = $(this).html();
+                var itensPerPage = parseInt($('#itensPerPage').val());
+                var currentRanking = $(this).parents('.rankingType');
+                var totalRecords = parseInt(currentRanking.find('#totalRecords').val());
+                var currentPage = parseInt(currentRanking.find('#currentRankingPage').val());
+
+                if($(this).hasClass('_previous') && currentPage > 1) {
+                    pageSelected = currentPage - 1;
+                } else if($(this).hasClass('_next') && currentPage < Math.ceil(totalRecords/itensPerPage)) {
+                    pageSelected = currentPage + 1;
+                } else {
+                    if(parseInt(pageSelected) == 'NaN') {
+                        pageSelected = currentPage;
+                    } else {
+                        pageSelected = parseInt(pageSelected);
+                    }
+                }
+
+                $(this).parents('ul').find('li.active').removeClass('active');
+                $(this).parents('ul').find('a:contains("'+pageSelected+'")').parent('li').addClass('active');
+
+                $('.minigamesRanking #currentPage').val(pageSelected);
+                currentRanking.find('#currentRankingPage').val(pageSelected);
+
+                $('.minigamesRanking').submit();
+
+                e.preventDefault();
+                return false;
+            });
+
+            /**
+             * Manipulação do formulário enviado para atualizar o ranking que está atualmente sendo visualizado.
+             */
+            $('.minigamesRanking').submit(function(e) {
+                var parent = this;
+                var noty = null;
+
+                $.ajax({
+                    url: $(parent).attr('action'),
+                    type: $(parent).attr('method'),
+                    data: $(this).serializeArray(),
+                    beforeSend: function(xhr) {
+                        $(".minigamesRanking").find("*").prop('disabled', true);
+                        $(".minigamesRanking").find("*").not('#noty-container').css('opacity', '0.7');
+                        noty = $(".minigamesRanking #noty-container").noty({text: 'Carregando Ranking...', closeWith: []});
+                    },
+                    timeout: 8000
+                }).error(function(jqXHR, textStatus, errorThrown) {
+                    var notyText = getAjaxErrorText(textStatus);
+
+                    $(".minigamesRanking #noty-container").noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+                }).success(function(data) {
+                    if(data.error) {
+                        $(".minigamesRanking #noty-container").noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+                    } else if(data.success) {
+                        var currentRanking = parseInt($("#rankingType").val());
+                        var currentRankingDiv = $('#ranking'+currentRanking);
+                        var currentRankingRecords = currentRankingDiv.find('table tbody');
+
+                        var result = '';
+                        var index  = 1;
+
+                        for(record in data.data) {
+                            for(field in data.data[record].records) {
+                                result += '<tr>';
+
+                                result += '<td> ' + index + '</td>';
+
+                                for(player in data.data[record].records[field]) {
+                                    result += '<td>' + data.data[record].records[field][player] + '</td>';
+                                }
+                                result += '</tr>';
+
+                                ++index;
+                            }
+                        }
+
+                        currentRankingRecords.html(result);
+                    } else {
+                        $(".minigamesRanking #noty-container").noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+                    }
+                }).always(function() {
+                    if(noty !== null) {
+                        noty.close();
+                    }
+
+                    $(".minigamesRanking").find("*").prop('disabled', false);
+                    $(".minigamesRanking").find("*").not('#noty-container').css('opacity', '1.0');
+                });
+
+                e.preventDefault();
+                return false;
+            });
+
+            /**
+             * Altera a quantidade de itens mostrados por página.
+             */
+            $('.itensPerPage a').click(function() {
+               var itensPerPage = parseInt($(this).html());
+
+                $(this).parents('ul').find('li.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+
+                $('#itensPerPage').val(itensPerPage);
+
+                $('.minigamesRanking').submit();
+            });
+        })
+    </script>
+{% endblock %}
+
+{% block conteudo %}
+    <div class="rounded shadowed content introduction container-fluid realtime">
+        <form method="POST" action="/rankingMinigames/search" class="minigamesRanking" autocomplete="off">
+            <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
+            <input type="hidden" name="filterForm" value="1"/>
+            <input type="hidden" name="itensPerPage" id="itensPerPage" value="10"/>
+            <input type="hidden" name="rankingType" id="rankingType" value="0"/>
+            <input type="hidden" name="currentPage" id="currentPage" value="1"/>
+
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a aria-expanded="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript: void(0)">Ranking <span class="caret"></span></a>
+                                <ul role="menu" class="dropdown-menu rankingTypes">
+                                    <li><a href="javascript: void(0)" tpRanking="{{ rankingMgsDomain.TDM }}">TDM</a></li>
+                                    <li><a href="javascript: void(0)" tpRanking="{{ rankingMgsDomain.DM }}">DM</a></li>
+                                    <li><a href="javascript: void(0)" tpRanking="{{ rankingMgsDomain.DERBY }}">Derby</a></li>
+                                    <li><a href="javascript: void(0)" tpRanking="{{ rankingMgsDomain.CORRIDA }}">Corridas</a></li>
+                                    <li class="divider"></li>
+                                    <li class="active"><a href="javascript: void(0)" tpRanking="0">Geral</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a aria-expanded="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript: void(0)">Versão <span class="caret"></span></a>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li class="active"><a href="javascript: void(0)">VII-2 (atual)</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a aria-expanded="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="javascript: void(0)">Itens por página <span class="caret"></span></a>
+                                <ul role="menu" class="dropdown-menu itensPerPage">
+                                    <li class="active"><a href="javascript: void(0)">10</a></li>
+                                    <li><a href="javascript: void(0)">20</a></li>
+                                    <li><a href="javascript: void(0)">30</a></li>
+                                    <li><a href="javascript: void(0)">40</a></li>
+                                    <li><a href="javascript: void(0)">50</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <div class="navbar-form navbar-right" role="search">
+                            <div class="form-group">
+                                <input type="text" name="playerName" id="playerName" class="form-control" placeholder="Pesquisar Jogador">
+                            </div>
+                            <button type="submit" class="btn btn-default">Filtrar</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="ranking0" class="rankingType">
+                <input type="hidden" id="totalRecords" value="{{ mgsRanking.total }}"/>
+                <input type="hidden" id="currentRankingPage" value="1"/>
+
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Ranking geral dos Minigames</div>
+                    <div class="panel-body">
+                        <p>O ranking geral dos Minigames é atualizado uma vez por hora e por isso pode não refletir o ranking mostrado dentro do servidor.</p>
+                        <br />
+                        Este ranking é formado a partir dos outros quatro sub-rankings dos minigames (Derbies, Corridas, TDM e DM). O Score do ranking geral é calculado
+                        pela média ponderada (MP) destes rankings.
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th title="Jogador">Jogador</th>
+                            <th title="Bate-Bate">Derbies</th>
+                            <th title="Corridas">Corridas</th>
+                            <th title="Death Match">DM</th>
+                            <th title="Team Death Match">TDM</th>
+                            <th title="Média Ponderada">MP</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in mgsRanking.records %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ player.NICK }}</td>
+                                <td>{{ player.DERBY_SCORE }}</td>
+                                <td>{{ player.RACE_SCORE }}</td>
+                                <td>{{ player.DM_SCORE }}</td>
+                                <td>{{ player.TDM_SCORE }}</td>
+                                <td>{{ player.MP | round(2) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="_pagination right">
+                    <ul class="pagination">
+                        <li><a href="javascript: void(0)" class="_previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                        {% for i in range(0, mgsRanking.pages) %}
+                            <li {% if loop.first %}class="active"{% endif %}><a href="javascript: void(0)">{{ loop.index }}</a></li>
+                        {% endfor %}
+                        <li><a href="javascript: void(0)" class="_next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="ranking{{ rankingMgsDomain.DERBY }}" class="rankingType" style="display: none;">
+                <input type="hidden" id="totalRecords" value="{{ mgsDerbyRanking.total }}"/>
+                <input type="hidden" id="currentRankingPage" value="1"/>
+
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Ranking de Derbies dos Minigames</div>
+                    <div class="panel-body">
+                        <p>O ranking de Derbies dos Minigames é atualizado uma vez por hora e por isso pode não refletir o ranking mostrado dentro do servidor.</p>
+                        <br />
+                        Atualmente os minigames de Derby do servidor são:
+                        {% for mg in mgsDerbyList %}
+                        <a href="/minigame/{{ mg.ID_MINIGAME }}" class="navbar-link"><span>{{ mg.NM_MINIGAME | fixDirtyName }}</span></a>{% if loop.last %}.{% elif loop.revindex0 == 1 %} e {% else %}, {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogador</th>
+                            <th>Partidas</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in mgsDerbyRanking.records %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ player.NICK }}</td>
+                                <td>{{ player.PARTIDAS }}</td>
+                                <td>{{ player.SCORE }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="_pagination right">
+                    <ul class="pagination">
+                        <li><a href="javascript: void(0)" class="_previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                        {% for i in range(0, mgsDerbyRanking.pages) %}
+                            <li {% if loop.first %}class="active"{% endif %}><a href="javascript: void(0)">{{ loop.index }}</a></li>
+                        {% endfor %}
+                        <li><a href="javascript: void(0)" class="_next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="ranking{{ rankingMgsDomain.CORRIDA }}" class="rankingType" style="display: none;">
+                <input type="hidden" id="totalRecords" value="{{ mgsRaceRanking.total }}"/>
+                <input type="hidden" id="currentRankingPage" value="1"/>
+
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Ranking de Corridas dos Minigames</div>
+                    <div class="panel-body">
+                        <p>O ranking de Corridas dos Minigames é atualizado uma vez por hora e por isso pode não refletir o ranking mostrado dentro do servidor.</p>
+                        <br />
+                        Atualmente os minigames de Corrida do servidor são:
+                        {% for mg in mgsRaceList %}
+                        <a href="/minigame/{{ mg.ID_MINIGAME }}" class="navbar-link"><span>{{ mg.NM_MINIGAME | fixDirtyName }}</span></a>{% if loop.last %}.{% elif loop.revindex0 == 1 %} e {% else %}, {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogador</th>
+                            <th>Partidas</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in mgsRaceRanking.records %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ player.NICK }}</td>
+                                <td>{{ player.PARTIDAS }}</td>
+                                <td>{{ player.SCORE }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="_pagination right">
+                    <ul class="pagination">
+                        <li><a href="javascript: void(0)" class="_previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                        {% for i in range(0, mgsRaceRanking.pages) %}
+                            <li {% if loop.first %}class="active"{% endif %}><a href="javascript: void(0)">{{ loop.index }}</a></li>
+                        {% endfor %}
+                        <li><a href="javascript: void(0)" class="_next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="ranking{{ rankingMgsDomain.DM }}" class="rankingType" style="display: none;">
+                <input type="hidden" id="totalRecords" value="{{ mgsDmRanking.total }}"/>
+                <input type="hidden" id="currentRankingPage" value="1"/>
+
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Ranking de DM dos Minigames</div>
+                    <div class="panel-body">
+                        <p>O ranking de Death Match dos Minigames é atualizado uma vez por hora e por isso pode não refletir o ranking mostrado dentro do servidor.</p>
+                        <br />
+                        Atualmente os minigames de Death Match do servidor são:
+                        {% for mg in mgsDmList %}
+                        <a href="/minigame/{{ mg.ID_MINIGAME }}" class="navbar-link"><span>{{ mg.NM_MINIGAME | fixDirtyName }}</span></a>{% if loop.last %}.{% elif loop.revindex0 == 1 %} e {% else %}, {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogador</th>
+                            <th>Partidas</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in mgsDmRanking.records %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ player.NICK }}</td>
+                                <td>{{ player.PARTIDAS }}</td>
+                                <td>{{ player.SCORE }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="_pagination right">
+                    <ul class="pagination">
+                        <li><a href="javascript: void(0)" class="_previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                        {% for i in range(0, mgsDmRanking.pages) %}
+                            <li {% if loop.first %}class="active"{% endif %}><a href="javascript: void(0)">{{ loop.index }}</a></li>
+                        {% endfor %}
+                        <li><a href="javascript: void(0)" class="_next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div id="ranking{{ rankingMgsDomain.TDM }}" class="rankingType" style="display: none;">
+                <input type="hidden" id="totalRecords" value="{{ mgsTdmRanking.total }}"/>
+                <input type="hidden" id="currentRankingPage" value="1"/>
+
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Ranking de TDM dos Minigames</div>
+                    <div class="panel-body">
+                        <p>O ranking de Team Death Match dos Minigames é atualizado uma vez por hora e por isso pode não refletir o ranking mostrado dentro do servidor.</p>
+                        <br />
+                        Atualmente os minigames de Team Death Match do servidor são:
+                        {% for mg in mgsTdmList %}
+                        <a href="/minigame/{{ mg.ID_MINIGAME }}" class="navbar-link"><span>{{ mg.NM_MINIGAME | fixDirtyName }}</span></a>{% if loop.last %}.{% elif loop.revindex0 == 1 %} e {% else %}, {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogador</th>
+                            <th>Partidas</th>
+                            <th>Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in mgsTdmRanking.records %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ player.NICK }}</td>
+                                <td>{{ player.PARTIDAS }}</td>
+                                <td>{{ player.SCORE }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <nav class="_pagination right">
+                    <ul class="pagination">
+                        <li><a href="javascript: void(0)" class="_previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                        {% for i in range(0, mgsTdmRanking.pages) %}
+                            <li {% if loop.first %}class="active"{% endif %}><a href="javascript: void(0)">{{ loop.index }}</a></li>
+                        {% endfor %}
+                        <li><a href="javascript: void(0)" class="_next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </form>
+    </div>
+{% endblock %}

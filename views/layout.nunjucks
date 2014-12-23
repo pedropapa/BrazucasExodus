@@ -20,8 +20,13 @@
                         <div class="menuItem rounded shadowed"></div>
                     </span>
                     <span id="menu-servidor">
-                        <a href="/servidor.php"><li>RANKING</li></a>
-                        <div class="menuItem rounded shadowed"></div>
+                        <a href="/ranking"><li>RANKING</li></a>
+
+                        <div class="menuItem rounded shadowed" style="width: 300px;">
+                            <a href="/rankingRPG" class="col-md-4 text-center">RPG</a>
+                            <a href="/rankingMinigames" class="col-md-4 text-center">Minigames</a>
+                            <a href="/rankingCompetitivo" class="col-md-4 text-center">Competitivo</a>
+                        </div>
                     </span>
                     <span id="menu-ranking">
                         <a href="/ranking.php"><li>F.A.Q.</li></a>
@@ -34,7 +39,7 @@
                         <div class="menuItem rounded shadowed"></div>
                     </span>
                     <span id="menu-forum">
-                        <a href="/forum"><li>UCP</li></a>
+                        <a href="#"><li>UCP</li></a>
 
                         <div class="menuItem rounded shadowed" style="width: 350px;">
                             <a href="#" class="col-md-4 text-center">Minha conta</a>
