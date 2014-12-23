@@ -46,7 +46,7 @@
                 } else if($(this).hasClass('_next') && currentPage < Math.ceil(totalRecords/itensPerPage)) {
                     pageSelected = currentPage + 1;
                 } else {
-                    if(parseInt(pageSelected) == 'NaN') {
+                    if(!parseInt(pageSelected)) {
                         pageSelected = currentPage;
                     } else {
                         pageSelected = parseInt(pageSelected);
