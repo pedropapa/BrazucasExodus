@@ -131,7 +131,7 @@
                 </div>
                 <div class="right">
                     <span>Copyright© 2006-2014 Brazucas-Server.com</span><br />
-                    <span>Versão atual: <font color="#990000">{{ sails.config.brazucasConfig.version }}</font></span>
+                    <span>Versão atual: <font color="#990000"><a href="{{ lastGitHubRelease.html_url | default('#') }}" class="navbar-link" target="_blank">{{ lastGitHubRelease.tag_name | default('Não disponível') }}</a></font></span>
                 </div>
             </div>
         {% endblock %}

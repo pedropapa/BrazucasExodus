@@ -24,6 +24,8 @@
 
                         $('#rankingType').val($(parent).attr('tpRanking'));
 
+                        $(this).dropdown('toggle');
+
                         newActiveRanking.show();
                         activeRanking = newActiveRanking;
                     });

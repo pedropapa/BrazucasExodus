@@ -27,6 +27,9 @@ module.exports.bootstrap = function (cb) {
   // Inicializa o listener TCP do modo Competitivo
   CompetitivoService.waitForServers();
 
+  // Obtém dados da última release da aplicação no github.
+  GitHubAPIService.getLastRelease();
+
   // Sorteio de gifs para ser utilizado como a gif principal para carregar informações.
   // options is optional
   UtilsService.glob("**/images/loading/*.gif", options, function (er, files) {
