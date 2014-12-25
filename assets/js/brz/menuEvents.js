@@ -3,6 +3,8 @@ var serverWidgetNotyContainer = null;
 $(document).ready(function() {
   serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Sem conexão com o servidor RPG/Minigames.', type: 'error', killer: false, closeWith: []});
 
+  changeMenuActivePage($('[href="'+window.location.pathname+'"]'));
+
   $('.server-widget').hover(function(handlerInOut) {
     if(serverRpgMinigames.getIsOnline()) {
       if(handlerInOut.type == 'mouseenter') {
@@ -176,6 +178,8 @@ $(document).ready(function() {
 
         $('.page-content').html(data);
 
+        changeMenuActivePage(parent);
+
         History.pushState({state: 3,rand:Math.random()}, windowTitle, $(parent).attr('href'));
       }).always(function() {
         clearInterval(iframeLoadInterval);
@@ -186,3 +190,13 @@ $(document).ready(function() {
     return false;
   })
 });
+
+function changeMenuActivePage(element) {
+  $('.main-menu').find('.active').removeClass('active');
+
+  if($(element).parent('.menuItem').size() > 0) {
+    $(element).parents('span').find('li').addClass('active');
+  } else {
+    $(element).find('li').addClass('active');
+  }
+}

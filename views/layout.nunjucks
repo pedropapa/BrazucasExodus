@@ -16,7 +16,7 @@
             <div class="rounded shadowed menu container-fluid main-menu">
                 <ul class="menu nav">
                     <span id="menu-home">
-                        <a href="/"><li class="active">HOME</li></a>
+                        <a href="/"><li>HOME</li></a>
                         <div class="menuItem rounded shadowed"></div>
                     </span>
                     <span id="menu-servidor">
