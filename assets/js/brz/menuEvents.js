@@ -87,10 +87,10 @@ $(document).ready(function() {
           break;
       }
 
-      $('#loginForm .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+      $('#loginForm .noty-container').noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
     }).success(function(data) {
         if(data.error) {
-          $('#loginForm .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+          $('#loginForm .noty-container').noty({text: data.message, type: 'error', /*killer: true,*/ timeout: 3000});
         } else if(data.success) {
           var kills   = data.infos.kills;
           var deaths  = data.infos.deaths;
@@ -106,7 +106,7 @@ $(document).ready(function() {
             $('#loggedUserInfo').fadeIn();
           });
         } else {
-          $('#loginForm .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+          $('#loginForm .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', /*killer: true,*/ timeout: 3000});
         }
       }).always(function() {
         $('#loginForm').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
@@ -128,14 +128,14 @@ $(document).ready(function() {
     }).error(function(jqXHR, textStatus, errorThrown) {
         var notyText = getAjaxErrorText(textStatus);
 
-        $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+        $('#loggedUserInfo .noty-container').noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
       }).success(function(data) {
         if(data.error) {
-          $('#loggedUserInfo .noty-container').noty({text: data.message, type: 'error', killer: true, timeout: 3000});
+          $('#loggedUserInfo .noty-container').noty({text: data.message, type: 'error', /*killer: true,*/ timeout: 3000});
         } else if(data.success) {
           window.location.reload();
         } else {
-          $('#loggedUserInfo .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
+          $('#loggedUserInfo .noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', /*killer: true,*/ timeout: 3000});
         }
       }).always(function() {
         $('#loggedUserInfo').find('div').not('.ajaxWait').not('.ajaxWait div').not('.no-opacity').css('opacity', '1');
@@ -161,7 +161,7 @@ $(document).ready(function() {
     }).error(function(jqXHR, textStatus, errorThrown) {
         var notyText = getAjaxErrorText(textStatus);
 
-        $('.page-content .noty-container').noty({text: notyText, type: 'warning', killer: true, timeout: 3000});
+        $('.page-content .noty-container').noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
       }).success(function(data) {
         var elements = $.parseHTML(data);
         var windowTitle = null;

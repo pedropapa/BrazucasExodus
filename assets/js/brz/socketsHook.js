@@ -1,6 +1,8 @@
 var socketDisconnected = false;
 
 $(document).ready(function() {
+  var notyAppConnection = null;
+
   // Responsável por receber qualquer tipo de dado enviado pela aplicação via socket.
   socket.on('message', function(data) {
     console.log(data);
@@ -21,15 +23,18 @@ $(document).ready(function() {
     // @TODO
     // Desativar o webchat, competitivo e qualquer outro módulo do ucp que tenha conectividade via socket.
     // Obrigar o usuário a atualizar a página ao reestabelecer a conexão.
-    noty({text: 'A conexão com o servidor foi perdida, tentando reconnectar...', type: 'error', killer: true, timeout: false, closeWith: []});
+    notyAppConnection = noty({text: 'A conexão com o servidor foi perdida, tentando reconnectar...', type: 'error', /*killer: true,*/ timeout: false, closeWith: []});
   });
 
   socket.on('connect', function(data) {
     // @TODO
     // Se for um reconnect, obrigar o usuário a atualizar a página.
     if(socketDisconnected) {
-      $.noty.closeAll();
-      noty({text: 'Conexão reestabelecida!', type: 'success', killer: true, timeout: 3000});
+      //$.noty.closeAll();
+      if(notyAppConnection !== null) {
+        notyAppConnection.close();
+      }
+      noty({text: 'Conexão reestabelecida!', type: 'success', /*killer: true,*/ timeout: 3000});
     }
   });
 });

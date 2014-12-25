@@ -78,7 +78,7 @@ var sampServerEvents = {
 
   serverRpgMinigamesConnect: function(data) {
     if(serverRpgMinigames.hasBeenOnline) {
-      serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Reconectado com sucesso!.', type: 'success', killer: true, timeout: 3000, closeWith: []});
+      serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Reconectado com sucesso!.', type: 'success', /*killer: true,*/ timeout: 3000, closeWith: []});
     } else {
       serverRpgMinigames.hasBeenOnline = true;
       serverWidgetNotyContainer.close();
@@ -89,7 +89,7 @@ var sampServerEvents = {
 
   serverRpgMinigamesDisconnect: function(data) {
     if(serverRpgMinigames.getIsOnline()) {
-      serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Conexão com o servidor RPG/Minigames perdida.', type: 'error', killer: true, closeWith: []});
+      serverWidgetNotyContainer = $('.server-widget #notyContainer').noty({text: 'Conexão com o servidor RPG/Minigames perdida.', type: 'error', /*killer: true,*/ closeWith: []});
 
       serverRpgMinigames.setIsOnline(false);
     }
