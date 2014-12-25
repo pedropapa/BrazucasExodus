@@ -334,7 +334,7 @@
     min-height: 68px;
     min-width: 150px;
     left: 0;
-    z-index: 1000;
+    z-index: 28000;
 }
 
 .social .ajaxWait {
@@ -389,6 +389,10 @@
     top: 20px;
     width: 64px;
     height: 64px;
+}
+
+.noty-bar {
+    z-index: 20000;
 }
 
 .f-nav{ z-index: 9999; position: fixed; top: 0; width: 100%;} /* this make our menu fixed top */

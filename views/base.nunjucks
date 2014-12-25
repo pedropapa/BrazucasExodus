@@ -9,6 +9,7 @@
         <link type="text/css" href="/styles/style.css" rel="stylesheet" />
         <link type="text/css" href="/styles/bjqs.css" rel="Stylesheet" />
         <link type="text/css" href="/styles/brazucas.css" rel="Stylesheet" />
+        <link type="text/css" href="/styles/tablesorter.theme.blue.css" rel="stylesheet" />
         {% block css_libs %}{% endblock %}
 
         <script type="text/javascript" src="js/socket.io.js"></script>
@@ -23,6 +24,7 @@
         <script type="text/javascript" src="js/html2canvas.js"></script>
         <script type="text/javascript" src="js/jquery.livequery.js"></script>
         <script type="text/javascript" src="js/brz/countclock.js"></script>
+        <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
 
         <script type="text/javascript" src="js/jquery.history.js"></script>
         <script type="text/javascript" src="js/jquery.browser.js"></script>

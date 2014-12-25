@@ -7,6 +7,8 @@
         $(document).ready(function() {
             var activeRanking = $('.rankingType').filter(':visible');
 
+            $('.tablesorter').tablesorter();
+
             /**
              * Alterna entre os sub-rankings.
              */
@@ -65,6 +67,7 @@
                 return false;
             });
 
+            var rankingAjax = null;
             /**
              * Manipulação do formulário enviado para atualizar o ranking que está atualmente sendo visualizado.
              */
@@ -72,12 +75,16 @@
                 var parent = this;
                 var noty = null;
 
-                $.ajax({
+                if(rankingAjax !== null) {
+                    rankingAjax.abort();
+                }
+
+                rankingAjax = $.ajax({
                     url: $(parent).attr('action'),
                     type: $(parent).attr('method'),
                     data: $(this).serializeArray(),
                     beforeSend: function(xhr) {
-                        $(".minigamesRanking").find("*").prop('disabled', true);
+                        $(".minigamesRanking").find("*").attr('disabled', 'disabled');
                         $(".minigamesRanking").find("*").not('#noty-container').css('opacity', '0.7');
                         noty = $(".minigamesRanking #noty-container").noty({text: 'Carregando Ranking...', closeWith: []});
                     },
@@ -113,6 +120,8 @@
                         }
 
                         currentRankingRecords.html(result);
+
+                        currentRankingRecords.parents('table').trigger('update')
                     } else {
                         $(".minigamesRanking #noty-container").noty({text: 'Um erro desconhecido ocorreu!', type: 'error', killer: true, timeout: 3000});
                     }
@@ -121,7 +130,8 @@
                         noty.close();
                     }
 
-                    $(".minigamesRanking").find("*").prop('disabled', false);
+                    rankingAjax = null;
+                    $(".minigamesRanking").find("*").removeAttr('disabled');
                     $(".minigamesRanking").find("*").not('#noty-container').css('opacity', '1.0');
                 });
 
@@ -220,7 +230,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table class="table tablesorter">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -276,7 +286,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table class="table tablesorter">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -326,7 +336,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table class="table tablesorter">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -376,7 +386,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table class="table tablesorter">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -426,7 +436,7 @@
                     </div>
 
                     <!-- Table -->
-                    <table class="table">
+                    <table class="table tablesorter">
                         <thead>
                         <tr>
                             <th>#</th>
