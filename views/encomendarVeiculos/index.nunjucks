@@ -1,0 +1,15 @@
+{% extends view_layout %}
+
+{% block titulo %}Início{% endblock %}
+
+{% block javascript_libs %}
+    <script type="text/javascript" id="page-scripts">
+
+    </script>
+{% endblock %}
+
+{% block conteudo %}
+    <div class="rounded shadowed content container-fluid">
+
+    </div>
+{% endblock %}

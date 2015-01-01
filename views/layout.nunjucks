@@ -43,10 +43,10 @@
 
                         <div class="menuItem rounded shadowed" style="width: 350px;">
                             <a href="#" class="col-md-4 text-center">Minha conta</a>
-                            <a href="#" class="col-md-4 text-center">Torneios</a>
-                            <a href="#" class="col-md-4 text-center">Objetos SA-MP</a>
                             <a href="#" class="col-md-4 text-center">Mapa do Servidor</a>
+                            <a href="/encomendarVeiculos" class="col-md-4 text-center">Encomendar Veículos</a>
                             <a href="#" class="col-md-4 text-center">Loja Virtual</a>
+                            <a href="/administracao" class="col-md-4 text-center"><span class="label label-danger rounded">Abusar</span></a>
                         </div>
                     </span>
                     <span id="menu-competitivo">

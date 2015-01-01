@@ -75,6 +75,16 @@ module.exports.routes = {
   'post /logout': {
     controller: 'CoreController',
     action: 'logout'
+  },
+
+  'get /encomendarVeiculos': {
+    controller: 'EncomendarVeiculosController',
+    action: 'index'
+  },
+
+  'get /administracao': {
+    controller: 'AdministracaoController',
+    action: 'index'
   }
 
   /*

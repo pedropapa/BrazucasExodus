@@ -165,22 +165,26 @@ $(document).ready(function() {
 
         $('.page-content .noty-container').noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
       }).success(function(data) {
-        var elements = $.parseHTML(data);
-        var windowTitle = null;
+        if(data.error) {
+          $('.page-content .noty-container').noty({text: data.message, type: 'warning', /*killer: true,*/ timeout: 3000});
+        } else {
+          var elements = $.parseHTML(data);
+          var windowTitle = null;
 
-        $.each(elements, function(i, el) {
-          switch($(el).attr('id')) {
-            case '_call_ajax_page_title':
-              windowTitle = $(el).val();
-              break;
-          }
-        });
+          $.each(elements, function(i, el) {
+            switch($(el).attr('id')) {
+              case '_call_ajax_page_title':
+                windowTitle = $(el).val();
+                break;
+            }
+          });
 
-        $('.page-content').html(data);
+          $('.page-content').html(data);
 
-        changeMenuActivePage(parent);
+          changeMenuActivePage(parent);
 
-        History.pushState({state: 3,rand:Math.random()}, windowTitle, $(parent).attr('href'));
+          History.pushState({state: 3,rand:Math.random()}, windowTitle, $(parent).attr('href'));
+        }
       }).always(function() {
         clearInterval(iframeLoadInterval);
         $('.page-content-overlay').hide();

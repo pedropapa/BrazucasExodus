@@ -18,5 +18,19 @@ module.exports = {
         }
       }
     });
+  },
+
+  getPlayerInfoByNickname: function(nickname, callback) {
+    contas_mgs.findOne({NOME: nickname}).exec(function(error, contaMg) {
+      if(!error) {
+        if(contaMg !== null) {
+          callback(null, contaMg);
+        } else {
+          callback('Jogador não encontrado.');
+        }
+      } else {
+        callback(error);
+      }
+    });
   }
 }

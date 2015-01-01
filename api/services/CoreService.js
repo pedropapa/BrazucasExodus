@@ -120,5 +120,18 @@ module.exports = {
         }
       }
     });
+  },
+
+  /**
+   * Diz se um determinado usuário está ou não autenticado na aplicação.
+   *
+   * @param req
+   */
+  isUserAuthenticated: function(req) {
+    if(req.session.loginInfo) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

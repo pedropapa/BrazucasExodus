@@ -136,21 +136,27 @@
         <div class="col-md-5">
             <div class="title text-center">ATUALIZAÇÕES</div>
             <div class="gitHubCommits">
-                {% for lastCommit in GitHubLastCommits %}
-                    {% if loop.index <= 6 %}
-                        <div class="col-md-12">
-                            <div class="commit rounded">
-                                <span class="date">{{ lastCommit.commit.author.date | date('d/m/Y') }}</span>
-                                {% if lastCommit.commit.message.length > 115 %}
-                                    {{ lastCommit.commit.message.substr(0,115) }}...
-                                {% else %}
-                                    {{ lastCommit.commit.message }}
-                                {% endif %}
-                                <a href="{{ lastCommit.html_url }}" target="_blank" class="commitUrl">ver commit</a>
+                {% if GitHubLastCommits.length > 0 %}
+                    {% for lastCommit in GitHubLastCommits %}
+                        {% if loop.index <= 6 %}
+                            <div class="col-md-12">
+                                <div class="commit rounded">
+                                    <span class="date">{{ lastCommit.commit.author.date | date('d/m/Y') }}</span>
+                                    {% if lastCommit.commit.message.length > 115 %}
+                                        {{ lastCommit.commit.message.substr(0,115) }}...
+                                    {% else %}
+                                        {{ lastCommit.commit.message }}
+                                    {% endif %}
+                                    <a href="{{ lastCommit.html_url }}" target="_blank" class="commitUrl">ver commit</a>
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-12 label center" style="color: #333;">
+                        <h4>Não há atualizações disponíveis</h4>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
