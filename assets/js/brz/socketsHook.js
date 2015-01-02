@@ -11,6 +11,7 @@ $(document).ready(function() {
       modelsHook[data.model][data.verb]((data.data)?data.data:data.previous);
     }
 
+    // Detectamos ações vindas do servidor SA-MP.
     if(data.sampAction) {
       if(typeof sampServerEvents[data.sampAction] == 'function') {
         sampServerEvents[data.sampAction](data);
@@ -22,7 +23,6 @@ $(document).ready(function() {
     socketDisconnected = true;
     // @TODO
     // Desativar o webchat, competitivo e qualquer outro módulo do ucp que tenha conectividade via socket.
-    // Obrigar o usuário a atualizar a página ao reestabelecer a conexão.
     notyAppConnection = noty({text: 'A conexão com o servidor foi perdida, tentando reconnectar...', type: 'error', /*killer: true,*/ timeout: false, closeWith: []});
   });
 
@@ -34,7 +34,13 @@ $(document).ready(function() {
       if(notyAppConnection !== null) {
         notyAppConnection.close();
       }
+
       noty({text: 'Conexão reestabelecida!', type: 'success', /*killer: true,*/ timeout: 3000});
+
+      if(confirm('A conexão com o servidor foi reestabelecida, é recomendável que se recarregue a página para que todos as informações sejam sincronizadas novamente.\n\nDeseja recarregar agora?')) {
+        window.location.reload(true);
+        socket.pause();
+      }
     }
   });
 });

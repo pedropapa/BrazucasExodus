@@ -19,16 +19,19 @@ module.exports = {
 
   index: function(req, res) {
     if(CoreService.isUserAuthenticated(req)) {
-      // @TODO obter informações de conta do jogador nos minigames e rpg e verificar se ele tem permissão para acessar a área de administração.
       var result = function(error, results) {
-
+        console.log(error, results);
+        if(typeof results == 'object' && results.length > 0) {
+          res.view('administracao/index', {'view_layout': UtilsService.getViewLayout(req)});
+        } else {
+          res.json({error: true, message: 'Você não possui privilégios suficientes para acessar esta funcionalidade.'})
+        }
       }
 
       async.series([
-        //function(callback) {MinigamesService.getPlayerInfoByNickname(req.)}
+        function(callback) {MinigamesService.hasStaffPermission(req.session.loginInfo.nick, false, false, callback)},
+        function(callback) {RPGService.hasStaffPermission(req.session.loginInfo.nick, false, false, callback)}
       ], result);
-
-      res.view('encomendarVeiculos/index', {'view_layout': UtilsService.getViewLayout(req)});
     } else {
       res.json({error: true, message: 'Você deve estar autenticado para utilizar esta funcionalidade.'})
     }
