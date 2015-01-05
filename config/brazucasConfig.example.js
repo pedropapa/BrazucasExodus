@@ -7,6 +7,7 @@ module.exports.brazucasConfig = {
   maxChatMessageLength: 128,
   hashSalt: 'yourgeneralhashsalt',
   gitHubAppPath: ':username/:repository',
-  sampServerCmdTimeout: 10000
+  sampServerCmdTimeout: 10000,
+  sampObjectsPath: 'systempathtosampobjects'
 };
 

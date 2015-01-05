@@ -144,7 +144,7 @@ module.exports = function (grunt) {
           {
           expand: true,
           cwd: './assets',
-          src: ['**/*.!(coffee)'],
+          src: ['**/*.!(coffee)', '!**/thumbnails/**'],
           dest: '.tmp/public'
         }
         ]
@@ -404,7 +404,7 @@ module.exports = function (grunt) {
       assets: {
 
         // Assets to watch:
-        files: ['assets/**/*'],
+        files: ['assets/**/*', '!**/thumbnails/**'],
 
         // When assets are changed:
         tasks: ['compileAssets', 'linkAssets']

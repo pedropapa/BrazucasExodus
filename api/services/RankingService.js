@@ -20,9 +20,9 @@ module.exports = {
       if(!error) {
         ranking_minigames.query('' +
             'select dm.NICK, dm.SCORE DM_SCORE, tdm.SCORE TDM_SCORE, race.SCORE RACE_SCORE, derby.SCORE DERBY_SCORE, ROUND(((dm.SCORE/dm.PARTIDAS) + (tdm.SCORE/tdm.PARTIDAS) + (race.SCORE/race.PARTIDAS) + derby.SCORE/derby.PARTIDAS) / 4, 2) MP from ranking_minigames dm' +
-            ' join ucp_hom.ranking_minigames tdm on tdm.NICK = dm.NICK and tdm.TP_RANKING = ' + tp_ranking_mgs.domain.TDM +
-            ' join ucp_hom.ranking_minigames race on race.NICK = tdm.NICK and race.TP_RANKING = ' + tp_ranking_mgs.domain.CORRIDA +
-            ' join ucp_hom.ranking_minigames derby on derby.NICK = race.NICK and derby.TP_RANKING = ' + tp_ranking_mgs.domain.DERBY +
+            ' join ranking_minigames tdm on tdm.NICK = dm.NICK and tdm.TP_RANKING = ' + tp_ranking_mgs.domain.TDM +
+            ' join ranking_minigames race on race.NICK = tdm.NICK and race.TP_RANKING = ' + tp_ranking_mgs.domain.CORRIDA +
+            ' join ranking_minigames derby on derby.NICK = race.NICK and derby.TP_RANKING = ' + tp_ranking_mgs.domain.DERBY +
             ' where dm.TP_RANKING = ' + tp_ranking_mgs.domain.DM +
             ' and upper(dm.NICK) like \'%'+playerName.toString().toUpperCase()+'%\'' +
             ' order by MP desc' +

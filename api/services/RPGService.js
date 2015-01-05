@@ -49,5 +49,25 @@ module.exports = {
         }
       }
     ], result);
+  },
+
+  getToOrderVehicles: function(filter, callback) {
+    vl_veiculos.find({FL_VEICULO: 1}).populateAll().exec(function(error, veiculos) {
+      if(!error) {
+        callback(null, veiculos);
+      } else {
+        callback(error);
+      }
+    })
+  },
+
+  getDistinctedVehicleLevel: function(callback) {
+    vl_veiculos.query('select distinct NV_VEICULO from vl_veiculos', function(error, niveis) {
+      if(!error) {
+        callback(null, niveis);
+      } else {
+        callback(error);
+      }
+    });
   }
 }

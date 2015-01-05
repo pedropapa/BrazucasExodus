@@ -19,7 +19,24 @@ module.exports = {
 
   index: function(req, res) {
     if(CoreService.isUserAuthenticated(req)) {
-      res.view('encomendarVeiculos/index', {'view_layout': UtilsService.getViewLayout(req)});
+      var result = function(error, results) {
+        if(!error) {
+          var toOrderVehicles = results[0];
+          var categories = results[1];
+          var levels = results[2];
+
+          res.view('encomendarVeiculos/index', {'view_layout': UtilsService.getViewLayout(req), 'toOrderVehicles': toOrderVehicles, 'categories': categories, 'levels': levels});
+        } else {
+          sails.log.error(error);
+          res.json({error: true, message: 'Um erro ocorreu ao acessar o banco de dados.'});
+        }
+      }
+
+      async.series([
+        function(callback) { RPGService.getToOrderVehicles(null, callback) },
+        function(callback) { SampService.getVehicleCategories(callback) },
+        function(callback) { RPGService.getDistinctedVehicleLevel(callback) }
+      ], result)
     } else {
       res.json({error: true, message: 'Você deve estar autenticado para utilizar esta funcionalidade.'})
     }

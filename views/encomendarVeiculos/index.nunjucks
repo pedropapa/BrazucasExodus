@@ -4,12 +4,116 @@
 
 {% block javascript_libs %}
     <script type="text/javascript" id="page-scripts">
-
+        $(document).ready(function() {
+            $('.tablesorter').tablesorter();
+        })
     </script>
 {% endblock %}
 
 {% block conteudo %}
     <div class="rounded shadowed content container-fluid">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categoria <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for categoria in categories %}
+                                    <li><a href="#">{{ categoria.NM_CAT }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="#">Todas</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Preço mínimo<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for x in range(1, 11) %}
+                                    <li><a href="#">BRZ {{ x * 10000 }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="#">Qualquer</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Preço máximo<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for x in range(1, 11) %}
+                                    <li><a href="#">BRZ {{ x * 10000 }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="#">Qualquer</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nível mínimo <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for level in levels %}
+                                    <li><a href="#">{{ level.NV_VEICULO }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="#">Qualquer</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nível máximo <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                {% for level in levels %}
+                                    <li><a href="#">{{ level.NV_VEICULO }}</a></li>
+                                {% endfor %}
+                                <li class="divider"></li>
+                                <li><a href="#">Qualquer</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="navbar-form navbar-right" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Nome do veículo">
+                        </div>
+                        <button type="submit" class="btn btn-default">Pesquisar</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
 
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-body">
+                <p>Encomenda de veículos</p>
+            </div>
+
+            <!-- Table -->
+            <table class="table tablesorter">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Veículo</th>
+                    <th>Preço</th>
+                    <th>Categoria</th>
+                    <th>Nível requerido</th>
+                    <th>Prévia</th>
+                    <th>Ação</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for veiculo in toOrderVehicles %}
+                    <tr>
+                        <td>{{ veiculo.ID_VEICULO }}</td>
+                        <td>{{ veiculo.NM_VEICULO }}</td>
+                        <td>{{ veiculo.VL_COMUM_VEICULO }}</td>
+                        <td>{{ veiculo.CT_VEICULO.NM_CAT }}</td>
+                        <td>{{ veiculo.NV_VEICULO }}</td>
+                        <td>{{ veiculo.ID_VEICULO | sampObjectThumbnail }}</td>
+                        <td align="center">
+                            <a href="#" class="glyphicon glyphicon-eye-open" style="text-decoration: none; font-size: 16px; color: #333; padding-right: 10px" title="visualizar"></a>
+                            <a href="#" class="glyphicon glyphicon-shopping-cart" style="text-decoration: none; font-size: 16px; color: #080808" title="Comprar"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
