@@ -52,7 +52,11 @@ module.exports = {
   },
 
   getToOrderVehicles: function(filter, callback) {
-    vl_veiculos.find({FL_VEICULO: 1}).populateAll().exec(function(error, veiculos) {
+    if(!filter) {
+      filter = {FL_VEICULO: 1};
+    }
+
+    vl_veiculos.find({where: filter}).populateAll().exec(function(error, veiculos) {
       if(!error) {
         callback(null, veiculos);
       } else {

@@ -23,9 +23,9 @@ module.exports = {
       if(findObjUsuario !== undefined && (findObjUsuario.source == Local.ucp || findObjUsuario.source == Local.ambos)) {
         sails.log.info('Usuário '+varsObj.username+ ' já está autenticado na aplicação!');
 
-        session.usuario = null;
-        session.loginInfo = null;
-        session.save();
+//        session.usuario = null;
+//        session.loginInfo = null;
+//        session.save();
 
         if(callback) {
           callback();

@@ -5,91 +5,225 @@
 {% block javascript_libs %}
     <script type="text/javascript" id="page-scripts">
         $(document).ready(function() {
-            $('.tablesorter').tablesorter();
+            $('#vehiclesTable').tablesorter({
+                headers: {
+                    6: {sorter: false},
+                    5: {sorter: false}
+                }
+            });
+
+            $('#vehicleTypeFilter li a').click(function() {
+                $('#category').val($(this).attr('fieldData'));
+                $(this).parents('ul:first').find('.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+                $('.toOrderVehiclesForm').submit();
+            });
+
+            $('#minPriceFilter li a').click(function() {
+                $('#minPrice').val($(this).attr('fieldData'));
+                $(this).parents('ul:first').find('.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+                $('.toOrderVehiclesForm').submit();
+            });
+
+            $('#maxPriceFilter li a').click(function() {
+                $('#maxPrice').val($(this).attr('fieldData'));
+                $(this).parents('ul:first').find('.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+                $('.toOrderVehiclesForm').submit();
+            });
+
+            $('#minLevelFilter li a').click(function() {
+                $('#minLevel').val($(this).attr('fieldData'));
+                $(this).parents('ul:first').find('.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+                $('.toOrderVehiclesForm').submit();
+            });
+
+            $('#maxLevelFilter li a').click(function() {
+                $('#maxLevel').val($(this).attr('fieldData'));
+                $(this).parents('ul:first').find('.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+                $('.toOrderVehiclesForm').submit();
+            });
+
+            var toOrderVehicles = null;
+            /**
+             * Manipulação do formulário enviado para atualizar os veículos a venda.
+             */
+            $('.toOrderVehiclesForm').submit(function(e) {
+                var parent = this;
+                var noty = null;
+
+                if(toOrderVehicles !== null) {
+                    toOrderVehicles.abort();
+                }
+
+                toOrderVehicles = $.ajax({
+                    url: $(parent).attr('action'),
+                    type: $(parent).attr('method'),
+                    data: $(this).serializeArray(),
+                    beforeSend: function(xhr) {
+                        $(".toOrderVehiclesForm").find("*").attr('disabled', 'disabled');
+                        $(".toOrderVehiclesForm").find("*").not('#noty-container').css('opacity', '0.7');
+                        noty = $(".toOrderVehiclesForm #noty-container").noty({text: 'Carregando veículos...', closeWith: []});
+                    },
+                    timeout: 8000
+                }).error(function(jqXHR, textStatus, errorThrown) {
+                    var notyText = getAjaxErrorText(textStatus);
+
+                    $(".toOrderVehiclesForm #noty-container").noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
+                }).success(function(data) {
+                    if(data.error) {
+                        $(".toOrderVehiclesForm #noty-container").noty({text: data.message, type: 'error', /*killer: true,*/ timeout: 3000});
+                    } else if(data.success) {
+                        var vehiclesDiv = $('#vehiclesTable');
+                        var vehiclesTableRecords = vehiclesDiv.find('tbody');
+
+                        vehiclesTableRecords.html('');
+
+                        for(record in data.data) {
+                            var line = $('<tr></tr>')
+                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].ID_VEICULO))
+                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].NM_VEICULO))
+                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].VL_COMUM_VEICULO))
+                                .append($('<td></td>').css({verticalAlign: 'middle'}).append((data.data[record].CT_VEICULO)?data.data[record].CT_VEICULO.NM_CAT:''))
+                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].NV_VEICULO))
+                                .append($('<td></td>').css({verticalAlign: 'middle'}).append('<img src="{{ sails.config.brazucasConfig.sampObjectsWebPath }}/'+ (parseInt(data.data[record].ID_VEICULO) + 1) +'.jpg"/>'))
+                                .append(
+                                    $('<td></td>')
+                                        .attr({align: 'center'})
+                                        .css({verticalAlign: 'middle'})
+                                        .append(
+                                            $('<a></a>')
+                                                .attr({href: '#', title: 'Visualizar'})
+                                                .addClass('glyphicon')
+                                                .addClass('glyphicon-eye-open')
+                                                .css({textDecoration: 'none', fontSize: '16px', color: '#333', paddingRight: '10px'})
+                                        )
+                                        .append(
+                                            $('<a></a>')
+                                                .attr({href: '#', title: 'Comprar'})
+                                                .addClass('glyphicon')
+                                                .addClass('glyphicon-shopping-cart')
+                                                .css({textDecoration: 'none', fontSize: '16px', color: '#080808', paddingRight: '10px'})
+                                        )
+                                )
+                            ;
+
+                            vehiclesTableRecords.append(line);
+                        }
+
+                        vehiclesTableRecords.parents('table').trigger('update');
+                    } else {
+                        $(".toOrderVehiclesForm #noty-container").noty({text: 'Um erro desconhecido ocorreu!', type: 'error', /*killer: true,*/ timeout: 3000});
+                    }
+                }).always(function() {
+                    if(noty !== null) {
+                        noty.close();
+                    }
+
+                    toOrderVehicles = null;
+                    $(".toOrderVehiclesForm").find("*").removeAttr('disabled');
+                    $(".toOrderVehiclesForm").find("*").not('#noty-container').css('opacity', '1.0');
+                });
+
+                e.preventDefault();
+                return false;
+            });
         })
     </script>
 {% endblock %}
 
 {% block css_libs %}
     <style type="text/css">
-        #vehiclesTable tbody td {
-            vertical-align: middle;
-        }
+
     </style>
 {% endblock %}
 
 {% block conteudo %}
     <div class="rounded shadowed content container-fluid">
         <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categoria <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {% for categoria in categories %}
-                                    <li><a href="#">{{ categoria.NM_CAT }}</a></li>
-                                {% endfor %}
-                                <li class="divider"></li>
-                                <li><a href="#">Todas</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Preço mínimo<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {% for x in range(1, 11) %}
-                                    <li><a href="#">BRZ {{ x * 10000 }}</a></li>
-                                {% endfor %}
-                                <li class="divider"></li>
-                                <li><a href="#">Qualquer</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Preço máximo<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {% for x in range(1, 11) %}
-                                    <li><a href="#">BRZ {{ x * 10000 }}</a></li>
-                                {% endfor %}
-                                <li class="divider"></li>
-                                <li><a href="#">Qualquer</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nível mínimo <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {% for level in levels %}
-                                    <li><a href="#">{{ level.NV_VEICULO }}</a></li>
-                                {% endfor %}
-                                <li class="divider"></li>
-                                <li><a href="#">Qualquer</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nível máximo <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {% for level in levels %}
-                                    <li><a href="#">{{ level.NV_VEICULO }}</a></li>
-                                {% endfor %}
-                                <li class="divider"></li>
-                                <li><a href="#">Qualquer</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="navbar-form navbar-right" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Nome do veículo">
+            <form class="toOrderVehiclesForm" method="post" action="/encomendarVeiculos/search">
+                <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
+                <input type="hidden" name="filterForm" value="1"/>
+                <input type="hidden" name="category" id="category" value=""/>
+                <input type="hidden" name="minPrice" id="minPrice" value=""/>
+                <input type="hidden" name="maxPrice" id="maxPrice" value=""/>
+                <input type="hidden" name="minLevel" id="minLevel" value=""/>
+                <input type="hidden" name="maxLevel" id="maxLevel" value=""/>
+
+                <div class="container-fluid">
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown" id="vehicleTypeFilter">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categoria <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for categoria in categories %}
+                                        <li><a href="#" fieldData="{{ categoria.ID_CAT }}">{{ categoria.NM_CAT }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li class="active"><a href="#" fieldData="">Todas</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown" id="minPriceFilter">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Preço mínimo<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for x in range(1, 11) %}
+                                        <li><a href="#" fieldData="{{ x * 10000 }}">BRZ {{ x * 10000 }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li class="active"><a href="#" fieldData="">Qualquer</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown" id="maxPriceFilter">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Preço máximo<span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for x in range(1, 11) %}
+                                        <li><a href="#" fieldData="{{ x * 10000 }}">BRZ {{ x * 10000 }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li class="active"><a href="#" fieldData="">Qualquer</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown" id="minLevelFilter">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nível mínimo <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for level in levels %}
+                                        <li><a href="#" fieldData="{{ level.NV_VEICULO }}">{{ level.NV_VEICULO }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li class="active"><a href="#" fieldData="">Qualquer</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown" id="maxLevelFilter">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nível máximo <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for level in levels %}
+                                        <li><a href="#" fieldData="{{ level.NV_VEICULO }}">{{ level.NV_VEICULO }}</a></li>
+                                    {% endfor %}
+                                    <li class="divider"></li>
+                                    <li class="active"><a href="#" fieldData="">Qualquer</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <div class="navbar-form navbar-right">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="nmVeiculo" placeholder="Nome do veículo">
+                            </div>
+                            <button type="submit" class="btn btn-default">Pesquisar</button>
                         </div>
-                        <button type="submit" class="btn btn-default">Pesquisar</button>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </nav>
 
         <div class="panel panel-default">
             <!-- Default panel contents -->
             <div class="panel-body">
-                <p>Encomenda de veículos</p>
+                <p>Para encomendar um veículo escolha um modelo e clique no ícone <a href="#" class="glyphicon glyphicon-shopping-cart" style="text-decoration: none; font-size: 16px; color: #080808" title="Comprar"></a>, em seguida confirme os dados para concretizar a compra. O veículo encomendado é encaminhado para a Brazuca's Autos, vá até lá para buscá-lo!</p>
             </div>
 
             <!-- Table -->
@@ -108,13 +242,13 @@
                 <tbody>
                     {% for veiculo in toOrderVehicles %}
                     <tr>
-                        <td>{{ veiculo.ID_VEICULO }}</td>
-                        <td>{{ veiculo.NM_VEICULO }}</td>
-                        <td>{{ veiculo.VL_COMUM_VEICULO }}</td>
-                        <td>{{ veiculo.CT_VEICULO.NM_CAT }}</td>
-                        <td>{{ veiculo.NV_VEICULO }}</td>
-                        <td>{{ veiculo.ID_VEICULO | sampObjectThumbnail }}</td>
-                        <td align="center">
+                        <td style="vertical-align: middle;">{{ veiculo.ID_VEICULO }}</td>
+                        <td style="vertical-align: middle;">{{ veiculo.NM_VEICULO }}</td>
+                        <td style="vertical-align: middle;">{{ veiculo.VL_COMUM_VEICULO }}</td>
+                        <td style="vertical-align: middle;">{{ veiculo.CT_VEICULO.NM_CAT }}</td>
+                        <td style="vertical-align: middle;">{{ veiculo.NV_VEICULO }}</td>
+                        <td style="vertical-align: middle;">{{ veiculo.ID_VEICULO | sampObjectThumbnail }}</td>
+                        <td align="center" style="vertical-align: middle;">
                             <a href="#" class="glyphicon glyphicon-eye-open" style="text-decoration: none; font-size: 16px; color: #333; padding-right: 10px" title="visualizar"></a>
                             <a href="#" class="glyphicon glyphicon-shopping-cart" style="text-decoration: none; font-size: 16px; color: #080808" title="Comprar"></a>
                         </td>

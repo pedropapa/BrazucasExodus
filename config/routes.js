@@ -47,6 +47,9 @@ module.exports.routes = {
   'get /rankingMinigames': ['RankingController.rankingMinigames'],
   'post /rankingMinigames/search': ['RankingController.rankingMinigamesSearch'],
 
+  'get /encomendarVeiculos': ['EncomendarVeiculosController.index'],
+  'post /encomendarVeiculos/search': ['EncomendarVeiculosController.search'],
+
   'get /socket/go': {
       controller: 'SocketController',
       action: 'main'
@@ -75,11 +78,6 @@ module.exports.routes = {
   'post /logout': {
     controller: 'CoreController',
     action: 'logout'
-  },
-
-  'get /encomendarVeiculos': {
-    controller: 'EncomendarVeiculosController',
-    action: 'index'
   },
 
   'get /administracao': {

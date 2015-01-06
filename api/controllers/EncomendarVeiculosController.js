@@ -42,6 +42,66 @@ module.exports = {
     }
   },
 
+  search: function(req, res) {
+    if(CoreService.isUserAuthenticated(req)) {
+      var category = req.param('category');
+      var minPrice = parseInt(req.param('minPrice'));
+      var maxPrice = parseInt(req.param('maxPrice'));
+      var minLevel = parseInt(req.param('minLevel'));
+      var maxLevel = parseInt(req.param('maxLevel'));
+      var vehicleName = req.param('nmVeiculo');
+
+      var queryFilter = {};
+
+      if(category) {
+        queryFilter.CT_VEICULO = category;
+      }
+
+      if(minPrice) {
+        queryFilter.VL_COMUM_VEICULO = {'>=': minPrice};
+      }
+
+      if(maxPrice) {
+        queryFilter.VL_COMUM_VEICULO = {'<=': maxPrice};
+      }
+
+      if(minLevel) {
+        queryFilter.NV_VEICULO = {'>=': minLevel};
+      }
+
+      if(maxLevel) {
+        queryFilter.NV_VEICULO = {'<=': maxLevel};
+      }
+
+      if(vehicleName) {
+        queryFilter.NM_VEICULO = {contains: vehicleName}
+      }
+
+      if(Object.keys(queryFilter).length == 0) {
+        queryFilter = null;
+      } else {
+        queryFilter.FL_VEICULO = 1;
+      }
+
+      var result = function(error, results) {
+        if(!error) {
+          var toOrderVehicles = results[0];
+
+          res.json({success: true, data: toOrderVehicles});
+        } else {
+          sails.log.error(error);
+          res.json({error: true, message: 'Um erro ocorreu ao acessar o banco de dados.'});
+        }
+      }
+
+      async.series([
+        function(callback) { RPGService.getToOrderVehicles(queryFilter, callback) }
+      ], result);
+    } else {
+      res.json({error: true, message: 'Você deve estar autenticado para utilizar esta funcionalidade.'})
+    }
+  },
+
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to DefaultController)
