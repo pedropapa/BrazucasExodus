@@ -30,9 +30,6 @@ module.exports.bootstrap = function (cb) {
   // Obtém dados da última release da aplicação no github.
   GitHubAPIService.getLastRelease();
 
-  // Lê o arquivo .zip das thumbnails dos objetos do sa-mp.
-  UtilsService.sampObjectsThumbnailsZip();
-
   // Sorteio de gifs para ser utilizado como a gif principal para carregar informações.
   // options is optional
   UtilsService.glob("**/images/loading/*.gif", options, function (er, files) {

@@ -79,21 +79,6 @@ module.exports = {
   },
 
   /**
-   * Carregamos as thumbnails dos objetos do sa-mp.
-   *
-   * @constructor
-   */
-  sampObjectsThumbnailsZip: function() {
-    var fs = require("fs");
-    var JSZip = require("jszip");
-
-    fs.readFile(sails.config.brazucasConfig.sampObjectsPublicPath, function(err, data) {
-      if (err) throw err;
-      UtilsService.sampObjectsThumbnails = new JSZip(data);
-    });
-  },
-
-  /**
    * Inicializamos as configurações de template.
    */
   template: function() {
@@ -126,9 +111,7 @@ module.exports = {
     });
 
     this.nunjucksEnv.addFilter('sampObjectThumbnail', function(objectId) {
-      var binary = new Buffer(UtilsService.sampObjectsThumbnails.file(objectId + '.jpg').asBinary()).toString('base64');
-
-      return '<img src="data:image/gif;base64,'+binary+'"/>';
+      return '<img src="'+ sails.config.brazucasConfig.sampObjectsWebPath + '/'+ objectId +'.jpg"/>';
     });
 
     this.nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {

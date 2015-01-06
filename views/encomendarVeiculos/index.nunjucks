@@ -1,6 +1,6 @@
 {% extends view_layout %}
 
-{% block titulo %}Início{% endblock %}
+{% block titulo %}Encomendar Veículos{% endblock %}
 
 {% block javascript_libs %}
     <script type="text/javascript" id="page-scripts">
@@ -8,6 +8,14 @@
             $('.tablesorter').tablesorter();
         })
     </script>
+{% endblock %}
+
+{% block css_libs %}
+    <style type="text/css">
+        #vehiclesTable tbody td {
+            vertical-align: middle;
+        }
+    </style>
 {% endblock %}
 
 {% block conteudo %}
@@ -85,7 +93,7 @@
             </div>
 
             <!-- Table -->
-            <table class="table tablesorter">
+            <table class="table tablesorter" id="vehiclesTable">
                 <thead>
                 <tr>
                     <th>ID</th>
