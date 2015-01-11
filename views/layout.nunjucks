@@ -108,7 +108,7 @@
 
                     <div class="col-md-8"><b>Olá</b>, <span id="nickname">{{ req.session.loginInfo.nick }}</span>.</div>
                     <div class="col-md-4 text-right"><a href="#"><button style="padding: 4px; font-size: 10px;" class="btn btn-primary" id="sair">Sair</button></a></div>
-                    <div class="col-md-6 text-left" style="margin-top: 10px; font-size:15px">#33 <span style="font-size:15px; color: #006600" id="kills">{{ req.session.loginInfo.kills }}</span>/<span style="font-size: 15px; color: #aaaa00" id="deaths">{{ req.session.loginInfo.assists }}</span>/<span style="font-size: 15px; color: #cc0000" id="assists">{{ req.session.loginInfo.deaths }}</span></div>
+                    <div class="col-md-6 text-left" style="margin-top: 10px; font-size:15px">#33 <span style="font-size:15px; color: #006600" id="kills">{{ req.session.loginInfo.kills }}</span>/<span style="font-size: 15px; color: #aaaa00" id="assists">{{ req.session.loginInfo.assists }}</span>/<span style="font-size: 15px; color: #cc0000" id="deaths">{{ req.session.loginInfo.deaths }}</span></div>
                     <div class="col-md-6 text-right" style="margin-top: 13px;"><a href="#"></a><a href="#"></a><a href="#">Minha Conta</a></div>
                 </div>
             </div>

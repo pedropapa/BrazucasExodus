@@ -49,6 +49,8 @@ module.exports.routes = {
 
   'get /encomendarVeiculos': ['EncomendarVeiculosController.index'],
   'post /encomendarVeiculos/search': ['EncomendarVeiculosController.search'],
+  'get /encomendarVeiculos/comprar/:vehicleId': ['EncomendarVeiculosController.buy'],
+  'post /encomendarVeiculos/confirmar': ['EncomendarVeiculosController.confirmOrder'],
 
   'get /socket/go': {
       controller: 'SocketController',

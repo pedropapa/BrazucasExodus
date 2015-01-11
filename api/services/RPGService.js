@@ -51,22 +51,51 @@ module.exports = {
     ], result);
   },
 
-  getToOrderVehicles: function(filter, callback) {
+  getToOrderVehicles: function(page, rows, filter, callback) {
+    if(!page) {
+      page = 1;
+    }
+
+    if(!rows) {
+      rows = 10;
+    }
+
     if(!filter) {
       filter = {FL_VEICULO: 1};
     }
 
-    vl_veiculos.find({where: filter}).populateAll().exec(function(error, veiculos) {
+    vl_veiculos.find({where: filter}).exec(function(error, veiculos) {
       if(!error) {
-        callback(null, veiculos);
+        vl_veiculos.find({where: filter}).skip((page - 1) * rows).limit(rows).populateAll().exec(function(error2, veiculos2) {
+          if(!error2) {
+            var result = {};
+            result.records = veiculos2;
+            result.total = veiculos.length;
+            result.pages = Math.ceil(veiculos.length / rows);
+
+            callback(null, result);
+          } else {
+            callback(error2);
+          }
+        });
       } else {
         callback(error);
       }
-    })
+    });
   },
 
   getDistinctedVehicleLevel: function(callback) {
     vl_veiculos.query('select distinct NV_VEICULO from vl_veiculos', function(error, niveis) {
+      if(!error) {
+        callback(null, niveis);
+      } else {
+        callback(error);
+      }
+    });
+  },
+
+  getPrecos: function(callback) {
+    precos.find().limit(1).exec(function(error, niveis) {
       if(!error) {
         callback(null, niveis);
       } else {

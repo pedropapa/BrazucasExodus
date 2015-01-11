@@ -69,6 +69,10 @@ $(document).ready(function() {
     }, 'xml');
   });
 
+  $('body').on('hidden.bs.modal', '.modal', function () {
+    $(this).removeData('bs.modal');
+  });
+
 //  $(document).mousemove(function(e) {
 //    $("#weed").css({left: e.pageX + 1, top: e.pageY + 1});
 //  });

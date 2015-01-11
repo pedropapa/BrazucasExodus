@@ -111,7 +111,7 @@ module.exports = {
     });
 
     this.nunjucksEnv.addFilter('sampObjectThumbnail', function(objectId) {
-      return '<img src="'+ sails.config.brazucasConfig.sampObjectsWebPath + '/'+ (objectId + 1) +'.jpg"/>';
+      return '<img src="'+ sails.config.brazucasConfig.sampObjectsWebPath48x48 + '/'+ (objectId + 1) +'.jpg"/>';
     });
 
     this.nunjucksEnv.addFilter('date', function (input, format, offset, abbr) {

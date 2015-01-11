@@ -47,11 +47,53 @@
                 $('.toOrderVehiclesForm').submit();
             });
 
+            /**
+             * Troca de páginas.
+             */
+            var hasChangedPage = false;
+            $('#vehiclesDiv ._pagination ul li a').click(function() {
+                var pageSelected = $(this).html();
+                var itensPerPage = parseInt($('#itensPerPage').val());
+                var currentPage = parseInt($('#currentPage').val());
+                var totalRecords = parseInt($('#totalRecords').val());
+
+                if($(this).hasClass('_previous') && currentPage > 1) {
+                    pageSelected = currentPage - 1;
+                } else if($(this).hasClass('_next') && currentPage < Math.ceil(totalRecords/itensPerPage)) {
+                    pageSelected = currentPage + 1;
+                } else {
+                    if(!parseInt(pageSelected)) {
+                        pageSelected = currentPage;
+                    } else {
+                        pageSelected = parseInt(pageSelected);
+                    }
+                }
+
+                $(this).parents('ul').find('li.active').removeClass('active');
+                $(this).parents('ul').find('a').filter(function() {
+                    return parseInt($(this).html()) === pageSelected;
+                }).parent('li').addClass('active');
+
+                hasChangedPage = true;
+
+                $('.toOrderVehiclesForm #currentPage').val(pageSelected);
+                $('.toOrderVehiclesForm').submit();
+
+                e.preventDefault();
+                return false;
+            });
+
             var toOrderVehicles = null;
             /**
              * Manipulação do formulário enviado para atualizar os veículos a venda.
              */
             $('.toOrderVehiclesForm').submit(function(e) {
+                if(!hasChangedPage) {
+                    $('#currentPage').val('1');
+                }
+
+                hasChangedPage = false;
+
                 var parent = this;
                 var noty = null;
 
@@ -64,69 +106,85 @@
                     type: $(parent).attr('method'),
                     data: $(this).serializeArray(),
                     beforeSend: function(xhr) {
-                        $(".toOrderVehiclesForm").find("*").attr('disabled', 'disabled');
-                        $(".toOrderVehiclesForm").find("*").not('#noty-container').css('opacity', '0.7');
-                        noty = $(".toOrderVehiclesForm #noty-container").noty({text: 'Carregando veículos...', closeWith: []});
+                        $(parent).find("*").attr('disabled', 'disabled');
+                        $(parent).find("*").not('#noty-container').css('opacity', '0.7');
+                        noty = $(parent).find('#noty-container').noty({text: 'Carregando veículos...', closeWith: []});
                     },
                     timeout: 8000
                 }).error(function(jqXHR, textStatus, errorThrown) {
-                    var notyText = getAjaxErrorText(textStatus);
+                            var notyText = getAjaxErrorText(textStatus);
 
-                    $(".toOrderVehiclesForm #noty-container").noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
-                }).success(function(data) {
-                    if(data.error) {
-                        $(".toOrderVehiclesForm #noty-container").noty({text: data.message, type: 'error', /*killer: true,*/ timeout: 3000});
-                    } else if(data.success) {
-                        var vehiclesDiv = $('#vehiclesTable');
-                        var vehiclesTableRecords = vehiclesDiv.find('tbody');
+                            $(parent).find('#noty-container').noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
+                        }).success(function(data) {
+                            if(data.error) {
+                                $(parent).find('#noty-container').noty({text: data.message, type: 'error', /*killer: true,*/ timeout: 3000});
+                            } else if(data.success) {
+                                var vehiclesDiv = $('#vehiclesTable');
+                                var vehiclesTableRecords = vehiclesDiv.find('tbody');
 
-                        vehiclesTableRecords.html('');
+                                vehiclesTableRecords.html('');
 
-                        for(record in data.data) {
-                            var line = $('<tr></tr>')
-                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].ID_VEICULO))
-                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].NM_VEICULO))
-                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].VL_COMUM_VEICULO))
-                                .append($('<td></td>').css({verticalAlign: 'middle'}).append((data.data[record].CT_VEICULO)?data.data[record].CT_VEICULO.NM_CAT:''))
-                                .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data[record].NV_VEICULO))
-                                .append($('<td></td>').css({verticalAlign: 'middle'}).append('<img src="{{ sails.config.brazucasConfig.sampObjectsWebPath }}/'+ (parseInt(data.data[record].ID_VEICULO) + 1) +'.jpg"/>'))
-                                .append(
-                                    $('<td></td>')
-                                        .attr({align: 'center'})
-                                        .css({verticalAlign: 'middle'})
-                                        .append(
-                                            $('<a></a>')
-                                                .attr({href: '#', title: 'Visualizar'})
-                                                .addClass('glyphicon')
-                                                .addClass('glyphicon-eye-open')
-                                                .css({textDecoration: 'none', fontSize: '16px', color: '#333', paddingRight: '10px'})
-                                        )
-                                        .append(
-                                            $('<a></a>')
-                                                .attr({href: '#', title: 'Comprar'})
-                                                .addClass('glyphicon')
-                                                .addClass('glyphicon-shopping-cart')
-                                                .css({textDecoration: 'none', fontSize: '16px', color: '#080808', paddingRight: '10px'})
-                                        )
-                                )
-                            ;
+                                for(record in data.data.records) {
+                                    var line = $('<tr></tr>')
+                                                    .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data.records[record].ID_VEICULO))
+                                                    .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data.records[record].NM_VEICULO))
+                                                    .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data.records[record].VL_COMUM_VEICULO))
+                                                    .append($('<td></td>').css({verticalAlign: 'middle'}).append((data.data.records[record].CT_VEICULO)?data.data.records[record].CT_VEICULO.NM_CAT:''))
+                                                    .append($('<td></td>').css({verticalAlign: 'middle'}).append(data.data.records[record].NV_VEICULO))
+                                                    .append($('<td></td>').css({verticalAlign: 'middle'}).append('<img src="{{ sails.config.brazucasConfig.sampObjectsWebPath48x48 }}/'+ (parseInt(data.data.records[record].ID_VEICULO) + 1) +'.jpg"/>'))
+                                                    .append(
+                                                            $('<td></td>')
+                                                                    .attr({align: 'center'})
+                                                                    .css({verticalAlign: 'middle'})
+                                                                    .append(
+                                                                            $('<a></a>')
+                                                                                    .attr({href: '#', title: 'Visualizar'})
+                                                                                    .addClass('glyphicon')
+                                                                                    .addClass('glyphicon-eye-open')
+                                                                                    .css({textDecoration: 'none', fontSize: '16px', color: '#333', paddingRight: '10px'})
+                                                                    )
+                                                                    .append(
+                                                                            $('<a></a>')
+                                                                                    .attr({href: '/encomendarVeiculos/comprar/'+ data.data.records[record].ID_VEICULO, title: 'Comprar', 'data-target': '#modalComprar', 'data-toggle': 'modal'})
+                                                                                    .addClass('glyphicon')
+                                                                                    .addClass('glyphicon-shopping-cart')
+                                                                                    .css({textDecoration: 'none', fontSize: '16px', color: '#080808', paddingRight: '10px'})
+                                                                    )
+                                                    )
+                                            ;
 
-                            vehiclesTableRecords.append(line);
-                        }
+                                    vehiclesTableRecords.append(line);
+                                }
 
-                        vehiclesTableRecords.parents('table').trigger('update');
-                    } else {
-                        $(".toOrderVehiclesForm #noty-container").noty({text: 'Um erro desconhecido ocorreu!', type: 'error', /*killer: true,*/ timeout: 3000});
-                    }
-                }).always(function() {
-                    if(noty !== null) {
-                        noty.close();
-                    }
+                                vehiclesTableRecords.parents('table').trigger('update');
 
-                    toOrderVehicles = null;
-                    $(".toOrderVehiclesForm").find("*").removeAttr('disabled');
-                    $(".toOrderVehiclesForm").find("*").not('#noty-container').css('opacity', '1.0');
-                });
+                                var pages = $('.pagination');
+                                var currentPage = parseInt($('#currentPage').val());
+
+                                pages.find('li a').not('._previous').not('._next').hide();
+                                for(var page = 1; page <= data.data.pages; page++) {
+                                    pages.find('li a').filter(function() {
+                                        return parseInt($(this).html()) === page;
+                                    }).show();
+                                }
+
+                                pages.find('li.active').removeClass('active');
+
+                                pages.find('li a').filter(function() {
+                                    return parseInt($(this).html()) === currentPage;
+                                }).parent('li').addClass('active');
+                            } else {
+                                $(parent).find('#noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', /*killer: true,*/ timeout: 3000});
+                            }
+                        }).always(function() {
+                            if(noty !== null) {
+                                noty.close();
+                            }
+
+                            toOrderVehicles = null;
+                            $(parent).find("*").removeAttr('disabled');
+                            $(parent).find("*").not('#noty-container').css('opacity', '1.0');
+                        });
 
                 e.preventDefault();
                 return false;
@@ -144,14 +202,18 @@
 {% block conteudo %}
     <div class="rounded shadowed content container-fluid">
         <nav class="navbar navbar-default">
-            <form class="toOrderVehiclesForm" method="post" action="/encomendarVeiculos/search">
+            <form class="toOrderVehiclesForm" method="post" action="/encomendarVeiculos/search" autocomplete="off">
                 <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
+
                 <input type="hidden" name="filterForm" value="1"/>
                 <input type="hidden" name="category" id="category" value=""/>
                 <input type="hidden" name="minPrice" id="minPrice" value=""/>
                 <input type="hidden" name="maxPrice" id="maxPrice" value=""/>
                 <input type="hidden" name="minLevel" id="minLevel" value=""/>
                 <input type="hidden" name="maxLevel" id="maxLevel" value=""/>
+                <input type="hidden" name="itensPerPage" id="itensPerPage" value="{{ itensPerPage }}"/>
+                <input type="hidden" name="currentPage" id="currentPage" value="1"/>
+                <input type="hidden" id="totalRecords" value="{{ toOrderVehicles.total }}"/>
 
                 <div class="container-fluid">
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -220,7 +282,7 @@
             </form>
         </nav>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="vehiclesDiv">
             <!-- Default panel contents -->
             <div class="panel-body">
                 <p>Para encomendar um veículo escolha um modelo e clique no ícone <a href="#" class="glyphicon glyphicon-shopping-cart" style="text-decoration: none; font-size: 16px; color: #080808" title="Comprar"></a>, em seguida confirme os dados para concretizar a compra. O veículo encomendado é encaminhado para a Brazuca's Autos, vá até lá para buscá-lo!</p>
@@ -229,18 +291,18 @@
             <!-- Table -->
             <table class="table tablesorter" id="vehiclesTable">
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Veículo</th>
-                    <th>Preço</th>
-                    <th>Categoria</th>
-                    <th>Nível requerido</th>
-                    <th>Prévia</th>
-                    <th>Ação</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Veículo</th>
+                        <th>Preço</th>
+                        <th>Categoria</th>
+                        <th>Nível requerido</th>
+                        <th>Prévia</th>
+                        <th>Ação</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    {% for veiculo in toOrderVehicles %}
+                {% for veiculo in toOrderVehicles.records %}
                     <tr>
                         <td style="vertical-align: middle;">{{ veiculo.ID_VEICULO }}</td>
                         <td style="vertical-align: middle;">{{ veiculo.NM_VEICULO }}</td>
@@ -250,12 +312,34 @@
                         <td style="vertical-align: middle;">{{ veiculo.ID_VEICULO | sampObjectThumbnail }}</td>
                         <td align="center" style="vertical-align: middle;">
                             <a href="#" class="glyphicon glyphicon-eye-open" style="text-decoration: none; font-size: 16px; color: #333; padding-right: 10px" title="visualizar"></a>
-                            <a href="#" class="glyphicon glyphicon-shopping-cart" style="text-decoration: none; font-size: 16px; color: #080808" title="Comprar"></a>
+                            <a href="/encomendarVeiculos/comprar/{{ veiculo.ID_VEICULO }}" data-target="#modalComprar" data-toggle="modal" class="glyphicon glyphicon-shopping-cart" style="text-decoration: none; font-size: 16px; color: #080808" title="Comprar"></a>
                         </td>
                     </tr>
-                    {% endfor %}
+                {% endfor %}
                 </tbody>
             </table>
+
+            <nav class="_pagination right">
+                <ul class="pagination">
+                    <li><a href="javascript: void(0)" class="_previous"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+                    {% for i in range(0, toOrderVehicles.pages) %}
+                        <li {% if loop.first %}class="active"{% endif %}><a href="javascript: void(0)">{{ loop.index }}</a></li>
+                    {% endfor %}
+                    <li><a href="javascript: void(0)" class="_next"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalComprar" tabindex="-1" role="dialog" aria-labelledby="Encomendar veículo" aria-hidden="true" style="z-index: 5000000">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalComprarLabel">Encomendar Veículo</h4>
+                </div>
+                <div class="modal-body"></div>
+            </div>
         </div>
     </div>
 {% endblock %}

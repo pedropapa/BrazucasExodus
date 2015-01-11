@@ -1,0 +1,364 @@
+<script type="text/javascript">
+    var opcionaisPrecos = {{ precosRpg | json }};
+    var vehiclePrice = {{ vehicleInfo.VL_COMUM_VEICULO }};
+    var buyVehicle = null;
+
+    $(document).ready(function() {
+        calcularValorTotal();
+
+        $('[opcionalId]').change(function() {
+            calcularValorTotal();
+        });
+
+        $('#todos').change(function() {
+           if($(this).is(':checked')) {
+               $('[opcionalId]').each(function(index, obj) {
+                   $(obj).prop('checked', true);
+                   $(obj).trigger('change');
+               });
+           } else {
+               $('[opcionalId]').each(function(index, obj) {
+                   $(obj).prop('checked', false);
+                   $(obj).trigger('change');
+               });
+           }
+        });
+
+        function calcularValorTotal() {
+            var subTotal = parseInt(vehiclePrice);
+
+            $('#valores').html('');
+
+            $('[opcionalId]').each(function(index, obj) {
+                if($(obj).is(':checked')) {
+                    var optionalPrice = parseInt(opcionaisPrecos[$(obj).attr('opcionalId')]);
+                    var optionalName = $(obj).parent('div').parent('div').find('.optionalDescription').html();
+
+                    $('#valores').append(
+                      $('<div></div>')
+                          .addClass('container-fluid')
+                          .append(
+                              $('<div></div>')
+                                  .addClass('col-md-8')
+                                  .append(optionalName)
+                          )
+                          .append(
+                              $('<div></div>')
+                                  .addClass('col-md-4')
+                                  .append(optionalPrice)
+                          )
+                    );
+
+                    subTotal += optionalPrice;
+                }
+            });
+
+            $('#subTotal').html(subTotal);
+        }
+
+        /**
+         * Manipulação do formulário enviado para realizar a encomenda de um veículo para o RPG.
+         */
+        $('.buyVehicle').submit(function(e) {
+            var parent = this;
+            var noty = null;
+
+            if(buyVehicle !== null) {
+                buyVehicle.abort();
+            }
+
+            buyVehicle = $.ajax({
+                url: $(parent).attr('action'),
+                type: $(parent).attr('method'),
+                data: $(this).serializeArray(),
+                beforeSend: function(xhr) {
+                    $(parent).find("*").attr('disabled', 'disabled');
+                    $(parent).find("*").not('#noty-container').css('opacity', '0.7');
+                    noty = $(parent).find('#noty-container').noty({text: 'Realizando compra...', closeWith: []});
+                },
+                timeout: 8000
+            }).error(function(jqXHR, textStatus, errorThrown) {
+                var notyText = getAjaxErrorText(textStatus);
+
+                $(parent).find('#noty-container').noty({text: notyText, type: 'warning', /*killer: true,*/ timeout: 3000});
+            }).success(function(data) {
+                if(data.error) {
+                    $(parent).find('#noty-container').noty({text: data.message, type: 'error', /*killer: true,*/ timeout: 3000});
+                } else if(data.success) {
+                    var vehicleName = data.vehicleName;
+                    var orderSubTotal = data.orderSubTotal;
+                    var previousAccountBalance = data.previousAccountBalance;
+                    var currentAccountBalance = data.currentAccountBalance;
+
+                    $('#orderSuccess #vehicleName').html(vehicleName);
+                    $('#orderSuccess #previousAccountBalance').html(previousAccountBalance);
+                    $('#orderSuccess #currentAccountBalance').html(currentAccountBalance);
+                    $('#orderSuccess #subTotalOrder').html(orderSubTotal);
+
+                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                    $('#orderSuccess').modal('show');
+                } else {
+                    $(parent).find('#noty-container').noty({text: 'Um erro desconhecido ocorreu!', type: 'error', /*killer: true,*/ timeout: 3000});
+                }
+            }).always(function() {
+                if(noty !== null) {
+                    noty.close();
+                }
+
+                buyVehicle = null;
+                $(parent).find("*").removeAttr('disabled');
+                $(parent).find("*").not('#noty-container').css('opacity', '1.0');
+            });
+
+            e.preventDefault();
+            return false;
+        });
+    });
+</script>
+
+<div class="container-fluid row" style="padding: 15px;">
+    <form method="POST" action="encomendarVeiculos/confirmar" class="buyVehicle">
+        <input type="hidden" name="vehicleId" value="{{ vehicleInfo.ID_VEICULO }}" />
+
+        <div id="noty-container" style="position: absolute; left: 0; top: 0; width: 100%; z-index: 2000"></div>
+
+        <div class="container-fluid">
+            <label class="modal-title">Encomendar Veículo</label>
+
+            <hr />
+        </div>
+
+        <div class="container-fluid">
+            <div class="col-md-4">
+                <h5>Informações do veículo</h5>
+
+                <hr />
+
+                <div class="container-fluid">
+                    <img width="150px" src="{{ sails.config.brazucasConfig.sampObjectsWebPathOriginal }}/{{ vehicleInfo.ID_VEICULO + 1 }}.jpg"/>
+                </div>
+
+                <div class="container-fluid">
+                    <label>Modelo: {{ vehicleInfo.NM_VEICULO }} ({{ vehicleInfo.ID_VEICULO }})</label>
+                </div>
+
+                <div class="container-fluid">
+                    <label>Preço: {{ vehicleInfo.VL_COMUM_VEICULO }}</label>
+                </div>
+
+                <div class="container-fluid">
+                    <label>Nível mínimo requerido: {{ vehicleInfo.NV_VEICULO }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-5 text-center">
+                <h5>Opcionais</h5>
+
+                <hr />
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PTurbo]" opcionalId="PTurbo" id="turbo"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="turbo" class="optionalDescription">Turbo</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label id="preco">{{ precosRpg.PTurbo }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PGPS]" opcionalId="PGPS" id="gps"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="gps" class="optionalDescription">GPS</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="gps" id="preco">{{ precosRpg.PGPS }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PRadio]" opcionalId="PRadio" id="radio"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="radio" class="optionalDescription">Rádio</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="radio" id="preco">{{ precosRpg.PRadio }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PTravas]" opcionalId="PTravas" id="travas"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="travas" class="optionalDescription">Travas</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="travas" id="preco">{{ precosRpg.PTravas }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PAlarmeV]" opcionalId="PAlarmeV" id="alarme"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="alarme" class="optionalDescription">Alarme</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="alarme" id="preco">{{ precosRpg.PAlarmeV }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PAntiFurto]" opcionalId="PAntiFurto" id="antifurto"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="antifurto" class="optionalDescription">Antifurto</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="antifurto" id="preco">{{ precosRpg.PAntiFurto }}</label>
+                    </div>
+                </div>
+
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PBlindagem]" opcionalId="PBlindagem" id="blindagem"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="blindagem" class="optionalDescription">Blindagem</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="blindagem" id="preco">{{ precosRpg.PBlindagem }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PRastreador]" opcionalId="PRastreador" id="rastreador"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="rastreador" class="optionalDescription">Rastreador</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="rastreador" id="preco">{{ precosRpg.PRastreador }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PLimitador]" opcionalId="PLimitador" id="limitador"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="limitador" class="optionalDescription">Limitador</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="limitador" id="preco">{{ precosRpg.PLimitador }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PAutomatico]" opcionalId="PAutomatico" id="pilotoAutomatico"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="pilotoAutomatico" class="optionalDescription">Piloto Automático</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="pilotoAutomatico" id="preco">{{ precosRpg.PAutomatico }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid center">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="opcionais[PABS]" opcionalId="PABS" id="abs"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="abs" class="optionalDescription">ABS</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="abs" id="preco">{{ precosRpg.PABS }}</label>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="todos" id="todos"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="todos" class="label label-info rounded">Todos</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <h5>Total</h5>
+
+                <hr />
+
+                <div class="container-fluid text-left" id="valores"></div>
+
+                <hr />
+
+                <div class="container-fluid">
+                    <div class="col-md-6 text-left"><label>Total</label></div>
+                    <div class="col-md-6 text-right" id="subTotal"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid right">
+            <hr />
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmar-compra">Comprar</button>
+        </div>
+
+        <div class="modal fade" id="confirmar-compra" tabindex="-1" role="dialog" aria-labelledby="Confirmar Encomenda" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="modal-title">Confirmar encomenda de veículo</span>
+                    </div>
+                    <div class="modal-body">
+                        Deseja continuar com a compra? esta ação é irreversível.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="orderSuccess" tabindex="-1" role="dialog" aria-labelledby="Encomenda realizada com sucesso!" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title"><span class="glyphicon glyphicon-ok" style="color: darkgreen; font-size: 15px;"></span> Encomenda realizada com sucesso!</span>
+            </div>
+            <div class="modal-body">
+                <span class="text-success">A encomenda do veículo <label id="vehicleName"></label> foi feita com sucesso, vá até a autos para buscá-lo!</span>
+                <br /><br /><br /><br />
+                <div class="text-warning">Dados da transação</div>
+                <hr />
+                <div class="container-fluid"><label>Saldo em conta anterior:</label> <span id="previousAccountBalance" class="text-info"></span></div>
+                <div class="container-fluid"><label>Valor da compra:</label> <span id="subTotalOrder" class="text-danger"></span></div>
+                <div class="container-fluid"><label>Saldo em conta atual:</label> <span id="currentAccountBalance" class="text-success"></span></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default text" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
