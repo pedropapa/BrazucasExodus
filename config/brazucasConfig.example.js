@@ -8,6 +8,7 @@ module.exports.brazucasConfig = {
   hashSalt: 'yourgeneralhashsalt',
   gitHubAppPath: ':username/:repository',
   sampServerCmdTimeout: 10000,
-  sampObjectsWebPath: 'http://yourwebserver.com/pathtoobjectsimages48x48'
+  sampObjectsWebPath: 'http://yourwebserver.com/pathtoobjectsimages48x48',
+  digitalOceanToken: 'yourdigitaloceanapitoken'
 };
 
