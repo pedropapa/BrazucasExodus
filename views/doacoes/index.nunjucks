@@ -1,0 +1,128 @@
+{% extends view_layout %}
+
+{% block titulo %}Doações{% endblock %}
+
+{% block javascript_libs %}
+    <script type="text/javascript" id="page-scripts">
+        $(document).ready(function() {
+            $('.donation #anonymous').change(function() {
+                if($(this).is(':checked')) {
+                    $('.donation #item_name').val('Doação ({{ req.session.loginInfo.nick }})');
+                } else {
+                    $('.donation #item_name').val('Doação (Anônimo)');
+                }
+            });
+        })
+    </script>
+{% endblock %}
+
+{% block conteudo %}
+<div class="rounded shadowed content container-fluid">
+    <div class="container-fluid">
+        <div class="col-md-12 panel">
+            Para manter o servidor online é de extrema importância que os jogadores doem qualquer quantia para o caixa. Por ser uma doação, não há qualquer retorno em benefícios para o
+            jogador por suas doações feitas.
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="container-fluid panel text-center">
+            <div class="panel-title">Servidores Contratados</div>
+        </div>
+
+        {% for droplet in droplets %}
+            <div class="panel container-fluid">
+                <div class="col-md-8">
+                    <div class="container-fluid"><label>Nome:</label> {{ droplet.name }}</div>
+                    <div class="container-fluid"><label>Memória:</label> {{ droplet.memory }}MB</div>
+                    <div class="container-fluid"><label>CPUs:</label> {{ droplet.vcpus }}</div>
+                    <div class="container-fluid"><label>Disco:</label> {{ droplet.disk }}GB</div>
+                    <div class="container-fluid"><label>Status:</label> {{ droplet.status }}</div>
+                    <div class="container-fluid"><label>Sistema Operacional:</label> {{ droplet.image.name }}</div>
+                    <div class="container-fluid"><label>Criado em:</label> {{ droplet.created_at | date('d/m/Y') }}</div>
+                    <div class="container-fluid"><label>Local:</label> {{ droplet.region.name }}</div>
+                </div>
+                <div class="col-md-4">
+                    <h1 class="text-success">US${{ droplet.price }}</h1>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-6">
+        <div class="container-fluid panel text-center">
+            <div class="panel-title">Extrato ({{ now | date('m/Y') }})</div>
+        </div>
+
+        <div class="panel">
+            {% for droplet in droplets %}
+                <div class="container-fluid">
+                    <div class="col-md-10">
+                        <label>{{ droplet.name }}</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="text-danger">US${{ droplet.price }} D</label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="panel">
+            <div class="container-fluid">
+                <div class="col-md-10">
+                    <label>Total:</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="{% if balance < 0 %}text-danger{% else %}text-success{% endif %}">US${% if balance < 0 %}{{ balance * -1 }}{% else %}{{ balance }}{% endif %} {% if balance < 0 %}D{% else %}C{% endif %}</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid panel text-center">
+            <div class="panel-title">Faça uma doação</div>
+        </div>
+
+        <div class="panel">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="form-group container-fluid donation" target="_blank">
+                <input type="hidden" name="cmd" value="_donations">
+                <input type="hidden" name="business" value="{{ sails.config.brazucasConfig.paypalAccount }}">
+                <input type="hidden" name="item_name" id="item_name" value="Doação (Anônimo)">
+                <input type="hidden" name="first_name" value="Brazucas">
+                <input type="hidden" name="last_name" value="Server">
+                <input TYPE="hidden" name="charset" value="utf-8">
+
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <label>Valor:</label>
+                    </div>
+                    <div class="col-md-10 text-left">
+                        <select class="dropdown" name="amount">
+                            <option value="1.00">US$1</option>
+                            <option value="5.00">US$5</option>
+                            <option value="10.00">US$10</option>
+                            <option value="20.00">US$20</option>
+                            <option value="30.00">US$30</option>
+                            <option value="40.00">US$40</option>
+                            <option value="50.00">US$50</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="col-md-2">
+                        <input type="checkbox" name="anonymous" id="anonymous" class="checkbox"/>
+                    </div>
+                    <div class="col-md-10 text-left">
+                        <label for="anonymous">Permitir que meu nick apareça na lista de doadores</label>
+                    </div>
+
+                    <br /><br />
+
+                    <div class="col-md-12 text-center">
+                        <input type="submit" class="btn btn-primary" value="Doar!"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

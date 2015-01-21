@@ -7,8 +7,14 @@ module.exports.brazucasConfig = {
   maxChatMessageLength: 128,
   hashSalt: 'yourgeneralhashsalt',
   gitHubAppPath: ':username/:repository',
+  digitalOceanApiPath: '/v2',
+  digitalOceanApiHost: 'api.digitalocean.com',
   sampServerCmdTimeout: 10000,
-  sampObjectsWebPath: 'http://yourwebserver.com/pathtoobjectsimages48x48',
-  digitalOceanToken: 'yourdigitaloceanapitoken'
+  sampObjectsWebPath48x48: 'http://yourwebserver.com/pathtoobjectsimages48x48',
+  sampObjectsWebPathOriginal: 'http://yourwebserver.com/pathtoobjectsimagesoriginal',
+  digitalOceanToken: 'yourdigitaloceanapitoken',
+  paypalAPIClientID: 'yourpaypalapiclientid',
+  paypalAPIClientSecret: 'yourpaypalapiclientsecret',
+  paypalAccount: 'yourpaypalemail'
 };
 

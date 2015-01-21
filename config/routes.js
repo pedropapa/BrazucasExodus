@@ -85,6 +85,11 @@ module.exports.routes = {
   'get /administracao': {
     controller: 'AdministracaoController',
     action: 'index'
+  },
+
+  'get /doacoes': {
+    controller: 'DoacoesController',
+    action: 'index'
   }
 
   /*

@@ -29,7 +29,7 @@
                         </div>
                     </span>
                     <span id="menu-ranking">
-                        <a href="/ranking.php"><li>F.A.Q.</li></a>
+                        <a href="/doacoes"><li>DOAÇÕES</li></a>
 
                         <div class="menuItem rounded shadowed"></div>
                     </span>
